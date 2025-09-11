@@ -2,6 +2,7 @@
 import pandas as pd
 from pathlib import Path
 import subprocess
+import sys
 
 def run_irvalue_agent(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -18,9 +19,9 @@ def run_irvalue_agent(df: pd.DataFrame) -> pd.DataFrame:
     if not ir_main.exists():
         raise FileNotFoundError(f"IRValue agent main.py not found: {ir_main}")
 
-    # Run IRValue CLI with input/output arguments
+    # ✅ Use the current Python interpreter instead of plain "python"
     subprocess.run(
-        ["python", str(ir_main), "--input", str(tmp_input), "--output", str(tmp_output)],
+        [sys.executable, str(ir_main), "--input", str(tmp_input), "--output", str(tmp_output)],
         check=True
     )
 
