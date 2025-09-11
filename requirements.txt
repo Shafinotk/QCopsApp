@@ -1,27 +1,27 @@
 # Core
-streamlit>=1.37
-fastapi
-uvicorn
+streamlit==1.37.1
+fastapi==0.116.1
+uvicorn==0.30.6
 
 # Data handling
-pandas>=2.1
-numpy
-openpyxl>=3.1
-XlsxWriter>=3.2
+pandas==2.2.2
+numpy==1.26.4
+openpyxl==3.1.5
+XlsxWriter==3.2.5
 
 # Parsing & text utilities
-beautifulsoup4>=4.12
-requests>=2.31
-httpx
-chardet
-tqdm>=4.66
-aiohttp
-rapidfuzz>=3.9
-tldextract>=5.1
+beautifulsoup4==4.12.3
+requests==2.32.3
+httpx==0.28.1
+chardet==5.2.0
+tqdm==4.66.5
+aiohttp==3.10.10
+rapidfuzz==3.9.7
+tldextract==5.1.2
 
 # Search & external APIs
-duckduckgo_search>=6.3.7
-ddgs
+duckduckgo-search==6.3.7
+ddgs==1.7.5
 
 # Config & environment
-python-dotenv>=1.0
+python-dotenv==1.0.1
