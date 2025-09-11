@@ -21,7 +21,7 @@ tldextract==5.1.2
 
 # Search & external APIs
 duckduckgo-search==6.3.7
-ddgs==1.7.5
+ddgs  # no version pin
 
 # Config & environment
 python-dotenv==1.0.1
