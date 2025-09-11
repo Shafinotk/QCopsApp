@@ -1,13 +1,27 @@
-streamlit
-pandas
-openpyxl
-chardet
-ddgs
-rapidfuzz
-python-dotenv
-tqdm
-aiohttp
+# Core
+streamlit>=1.37
+fastapi
+uvicorn
+
+# Data handling
+pandas>=2.1
 numpy
-requests
-beautifulsoup4
-tldextract
+openpyxl>=3.1
+XlsxWriter>=3.2
+
+# Parsing & text utilities
+beautifulsoup4>=4.12
+requests>=2.31
+httpx
+chardet
+tqdm>=4.66
+aiohttp
+rapidfuzz>=3.9
+tldextract>=5.1
+
+# Search & external APIs
+duckduckgo_search>=6.3.7
+ddgs
+
+# Config & environment
+python-dotenv>=1.0

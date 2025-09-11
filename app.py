@@ -4,6 +4,8 @@ import tempfile
 import io
 from pathlib import Path
 import chardet
+import sys, os
+sys.path.append(os.path.dirname(__file__))
 
 # Import wrappers
 from wrappers.mailname_wrapper import run_mailname_agent
