@@ -5,7 +5,13 @@ import io
 from pathlib import Path
 import chardet
 import sys, os
-sys.path.append(os.path.dirname(__file__))
+
+# ---------------------------
+# Ensure project root is on sys.path
+# ---------------------------
+ROOT_DIR = os.path.dirname(__file__)
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
 
 # Import wrappers
 from wrappers.mailname_wrapper import run_mailname_agent
@@ -20,6 +26,9 @@ from utils.properization import apply_properization
 from agents.mailname.qc_checker import apply_mailname_coloring
 from agents.qc_domain.qc_agent.io_utils import apply_qc_domain_coloring
 
+# ---------------------------
+# Streamlit UI config
+# ---------------------------
 st.set_page_config(page_title="Combined Data Processing Agent", layout="wide")
 st.title("📊 Combined Data Processing Agent")
 st.markdown(
@@ -31,21 +40,34 @@ st.markdown(
 # ---------------------------
 uploaded_file = st.file_uploader("Upload CSV or Excel file", type=["csv", "xlsx"])
 
+
 def read_csv_flexible_bytes(uploaded_bytes) -> pd.DataFrame:
+    """Read CSV with encoding detection and fallbacks."""
     result = chardet.detect(uploaded_bytes)
-    encoding = result['encoding'] if result['encoding'] else 'utf-8'
+    encoding = result["encoding"] if result["encoding"] else "utf-8"
     try:
-        df = pd.read_csv(io.BytesIO(uploaded_bytes), encoding=encoding, dtype=str, keep_default_na=False)
+        df = pd.read_csv(
+            io.BytesIO(uploaded_bytes),
+            encoding=encoding,
+            dtype=str,
+            keep_default_na=False,
+        )
     except Exception:
-        for enc in ['utf-8', 'ISO-8859-1', 'cp1252', 'latin1']:
+        for enc in ["utf-8", "ISO-8859-1", "cp1252", "latin1"]:
             try:
-                df = pd.read_csv(io.BytesIO(uploaded_bytes), encoding=enc, dtype=str, keep_default_na=False)
+                df = pd.read_csv(
+                    io.BytesIO(uploaded_bytes),
+                    encoding=enc,
+                    dtype=str,
+                    keep_default_na=False,
+                )
                 break
             except Exception:
                 continue
         else:
             raise
     return df
+
 
 # ---------------------------
 # Main pipeline
@@ -85,10 +107,14 @@ if uploaded_file:
             st.write("🔄 Running LinkedIn Agent (may take time)...")
             df = run_linkedin_agent(df)
             if "linkedin_link_found" in df.columns:
-                count_links = df["linkedin_link_found"].apply(lambda x: bool(str(x).strip())).sum()
+                count_links = df["linkedin_link_found"].apply(
+                    lambda x: bool(str(x).strip())
+                ).sum()
                 st.write(f"LinkedIn links found: {count_links} / {len(df)}")
             else:
-                st.write("⚠️ LinkedIn agent did not add a linkedin_link_found column.")
+                st.write(
+                    "⚠️ LinkedIn agent did not add a linkedin_link_found column."
+                )
 
             # ---------------------------
             # Step 3: QC Domain Agent
@@ -134,7 +160,7 @@ if uploaded_file:
                     label="📥 Download Final Output with Coloring",
                     data=f.read(),
                     file_name="final_output.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 )
 
         except Exception as e:
