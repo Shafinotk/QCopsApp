@@ -21,6 +21,8 @@ tldextract>=5.1
 
 # Search & external APIs
 duckduckgo-search>=8.1.0
+ddgs>=9.0.0
+
 # OR: ddgs>=9.0.0  (but don’t use both)
 
 # Config & environment
