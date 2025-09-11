@@ -2,7 +2,7 @@
 import subprocess
 from pathlib import Path
 import pandas as pd
-import os
+import sys
 
 def run_mailname_agent(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -28,9 +28,9 @@ def run_mailname_agent(df: pd.DataFrame) -> pd.DataFrame:
     if not mailname_main.exists():
         raise FileNotFoundError(f"MailName agent main.py not found: {mailname_main}")
 
-    # Run MailName CLI
+    # Run MailName CLI using the *same* Python interpreter as Streamlit
     subprocess.run(
-        ["python", str(mailname_main), "--input", str(tmp_input), "--output", str(tmp_output)],
+        [sys.executable, str(mailname_main), "--input", str(tmp_input), "--output", str(tmp_output)],
         check=True
     )
 
@@ -38,9 +38,9 @@ def run_mailname_agent(df: pd.DataFrame) -> pd.DataFrame:
         raise FileNotFoundError("MailName agent did not produce the expected output.")
 
     # Read processed output
-    processed_df = pd.read_excel(tmp_output)
+    processed_df = pd.read_excel(tmp_output, dtype=str)
 
-    # Clean up temp files if needed
+    # Clean up temp files
     tmp_input.unlink(missing_ok=True)
     tmp_output.unlink(missing_ok=True)
 
