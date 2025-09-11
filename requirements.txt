@@ -1,0 +1,13 @@
+streamlit
+pandas
+openpyxl
+chardet
+ddgs
+rapidfuzz
+python-dotenv
+tqdm
+aiohttp
+numpy
+requests
+beautifulsoup4
+tldextract

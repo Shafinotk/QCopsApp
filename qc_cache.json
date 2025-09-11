@@ -1,0 +1,326 @@
+{
+  "AG1||drinkag1.com||ddg": {
+    "provided_company": "AG1",
+    "provided_domain": "drinkag1.com",
+    "discovered_domain": "drinkag1.com",
+    "discovered_company": "Nutrition + Sleep for Whole Body Health | AG1 & AGZ",
+    "match_status": "match",
+    "reason": "Provided company 'AG1' strongly matches discovered company 'Nutrition + Sleep for Whole Body Health | AG1 & AGZ' (similarity=100.0%). (source: ddg) Evidence: https://drinkag1.com/",
+    "evidence_url": "https://drinkag1.com/"
+  },
+  "Aventri||aventri.com||ddg": {
+    "provided_company": "Aventri",
+    "provided_domain": "aventri.com",
+    "discovered_domain": "stova.io",
+    "discovered_company": "Event Management Solutions - Stova",
+    "match_status": "mismatch",
+    "reason": "Provided company 'Aventri' has borderline similarity (66.66666666666667%) with discovered company 'Event Management Solutions - Stova', but no relation found. (source: ddg) Evidence: https://stova.io",
+    "evidence_url": "https://stova.io"
+  },
+  "Academy Securities||academysecurities.com||ddg": {
+    "provided_company": "Academy Securities",
+    "provided_domain": "academysecurities.com",
+    "discovered_domain": "academysecurities.com",
+    "discovered_company": "Academy Securities",
+    "match_status": "match",
+    "reason": "Domain root 'academysecurities' matches and company-domain similarity is strong (97%). (source: ddg) Evidence: https://academysecurities.com/",
+    "evidence_url": "https://academysecurities.com/"
+  },
+  "AWL||awl.com||ddg": {
+    "provided_company": "AWL",
+    "provided_domain": "awl.com",
+    "discovered_domain": "awl.com",
+    "discovered_company": "AWL: The Smarter, Simpler, & Faster Way to Acquire Insurance Customers",
+    "match_status": "match",
+    "reason": "Domain root 'awl' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://awl.com/",
+    "evidence_url": "https://awl.com/"
+  },
+  "Alera Group, Inc.||aleragroup.com||ddg": {
+    "provided_company": "Alera Group, Inc.",
+    "provided_domain": "aleragroup.com",
+    "discovered_domain": "aleragroup.com",
+    "discovered_company": "Welcome | Alera Group",
+    "match_status": "match",
+    "reason": "Domain root 'aleragroup' matches and company-domain similarity is strong (80%). (source: ddg) Evidence: https://aleragroup.com/",
+    "evidence_url": "https://aleragroup.com/"
+  },
+  "Beyond Finance||beyondfinance.com||ddg": {
+    "provided_company": "Beyond Finance",
+    "provided_domain": "beyondfinance.com",
+    "discovered_domain": "beyondfinance.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "match",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "https://beyondfinance.com/"
+  },
+  "Bush Foundation||hired.com||ddg": {
+    "provided_company": "Bush Foundation",
+    "provided_domain": "hired.com",
+    "discovered_domain": "lhh.com",
+    "discovered_company": "Our story | LHH",
+    "match_status": "mismatch",
+    "reason": "Provided company 'Bush Foundation' and discovered company 'Our story | LHH' have very low similarity (40.0%), no relation check performed. (source: ddg) Evidence: https://www.lhh.com/en-us/about-us/our-story",
+    "evidence_url": "https://www.lhh.com/en-us/about-us/our-story"
+  },
+  "Boulevard||joinblvd.com||ddg": {
+    "provided_company": "Boulevard",
+    "provided_domain": "joinblvd.com",
+    "discovered_domain": "joinblvd.com",
+    "discovered_company": "Boulevard | Fastest Growing Client Experience Platform",
+    "match_status": "match",
+    "reason": "Provided company 'Boulevard' strongly matches discovered company 'Boulevard | Fastest Growing Client Experience Platform' (similarity=100.0%). (source: ddg) Evidence: https://www.joinblvd.com/",
+    "evidence_url": "https://www.joinblvd.com/"
+  },
+  "Aeg Management Ct LLC||xlcenter.com||ddg": {
+    "provided_company": "Aeg Management Ct LLC",
+    "provided_domain": "xlcenter.com",
+    "discovered_domain": "peoplesbankarena.com",
+    "discovered_company": "PeoplesBank Arena",
+    "match_status": "mismatch",
+    "reason": "Provided company 'Aeg Management Ct LLC' and discovered company 'PeoplesBank Arena' have very low similarity (42.85714285714286%), no relation check performed. (source: ddg) Evidence: https://www.peoplesbankarena.com/",
+    "evidence_url": "https://www.peoplesbankarena.com/"
+  },
+  "Ambridge Group||ambridge-group.com||ddg": {
+    "provided_company": "Ambridge Group",
+    "provided_domain": "ambridge-group.com",
+    "discovered_domain": "ambridge-group.com",
+    "discovered_company": "Ambridge | Ambridge",
+    "match_status": "match",
+    "reason": "Domain root 'ambridge-group' matches and company-domain similarity is strong (92%). (source: ddg) Evidence: https://ambridge-group.com/",
+    "evidence_url": "https://ambridge-group.com/"
+  },
+  "Blue Cross Blue Shield Of Michigan||grotenhuis.com||ddg": {
+    "provided_company": "Blue Cross Blue Shield Of Michigan",
+    "provided_domain": "grotenhuis.com",
+    "discovered_domain": "nexben.com",
+    "discovered_company": "Products & Services - Nexben",
+    "match_status": "mismatch",
+    "reason": "Provided company 'Blue Cross Blue Shield Of Michigan' and discovered company 'Products & Services - Nexben' have very low similarity (35.89743589743589%), no relation check performed. (source: ddg) Evidence: https://www.nexben.com/insurance-solutions/products-and-services",
+    "evidence_url": "https://www.nexben.com/insurance-solutions/products-and-services"
+  },
+  "Bradford White Corporation||bradfordwhite.com||ddg": {
+    "provided_company": "Bradford White Corporation",
+    "provided_domain": "bradfordwhite.com",
+    "discovered_domain": "bradfordwhite.com",
+    "discovered_company": "Bradford White Water Heaters",
+    "match_status": "match",
+    "reason": "Provided company 'Bradford White Corporation' strongly matches discovered company 'Bradford White Water Heaters' (similarity=75.0%). (source: ddg) Evidence: https://www.bradfordwhite.com/",
+    "evidence_url": "https://www.bradfordwhite.com/"
+  },
+  "Bicycle Therapeutics||bicycletx.com||ddg": {
+    "provided_company": "Bicycle Therapeutics",
+    "provided_domain": "bicycletx.com",
+    "discovered_domain": "bicycletherapeutics.com",
+    "discovered_company": "Bicycle Therapeutics",
+    "match_status": "match",
+    "reason": "Provided company 'Bicycle Therapeutics' strongly matches discovered company 'Bicycle Therapeutics' (similarity=100.0%). (source: ddg) Evidence: https://www.bicycletherapeutics.com/",
+    "evidence_url": "https://www.bicycletherapeutics.com/"
+  },
+  "123Loadboard||123loadboard.com||ddg": {
+    "provided_company": "123Loadboard",
+    "provided_domain": "123loadboard.com",
+    "discovered_domain": "123loadboard.com",
+    "discovered_company": "Best load board to find truck loads and freight for truckers",
+    "match_status": "match",
+    "reason": "Domain root '123loadboard' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.123loadboard.com/",
+    "evidence_url": "https://www.123loadboard.com/"
+  },
+  "Acrisure Mortgage||acrisuremortgage.com||ddg": {
+    "provided_company": "Acrisure Mortgage",
+    "provided_domain": "acrisuremortgage.com",
+    "discovered_domain": "acrisuremortgage.com",
+    "discovered_company": "Home - Acrisure Mortgage",
+    "match_status": "match",
+    "reason": "Domain root 'acrisuremortgage' matches and company-domain similarity is strong (96%). (source: ddg) Evidence: https://acrisuremortgage.com/",
+    "evidence_url": "https://acrisuremortgage.com/"
+  },
+  "Angi||homeadvisor.com||ddg": {
+    "provided_company": "Angi",
+    "provided_domain": "homeadvisor.com",
+    "discovered_domain": "angi.com",
+    "discovered_company": "Angi Services Direct",
+    "match_status": "match",
+    "reason": "Provided company 'Angi' strongly matches discovered company 'Angi Services Direct' (similarity=100.0%). (source: ddg) Evidence: https://support.prepriced.angi.com/servicesdirect/s/",
+    "evidence_url": "https://support.prepriced.angi.com/servicesdirect/s/"
+  },
+  "Angie's List||houzz.com||ddg": {
+    "provided_company": "Angie's List",
+    "provided_domain": "houzz.com",
+    "discovered_domain": "houzz.com",
+    "discovered_company": "Houzz for Pros and Homeowners | Build and Design Software | Try Free for 30 Days",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.houzz.com/",
+    "evidence_url": "https://www.houzz.com/"
+  },
+  "ASIâ„¢||americanstrategic.com||ddg": {
+    "provided_company": "ASIâ„¢",
+    "provided_domain": "americanstrategic.com",
+    "discovered_domain": "americanstrategic.com",
+    "discovered_company": "Corporate Portal",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://americanstrategic.com/",
+    "evidence_url": "https://americanstrategic.com/"
+  },
+  "Acco Brands||powera.com||ddg": {
+    "provided_company": "Acco Brands",
+    "provided_domain": "powera.com",
+    "discovered_domain": "powera.com",
+    "discovered_company": "PowerA | Accessories for Xbox, PlayStation, Nintendo, and more",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.powera.com/",
+    "evidence_url": "https://www.powera.com/"
+  },
+  "Bill Howe Family of Companies||billhowe.com||ddg": {
+    "provided_company": "Bill Howe Family of Companies",
+    "provided_domain": "billhowe.com",
+    "discovered_domain": "billhowe.com",
+    "discovered_company": "HVAC, Plumbing, Heating, AC & Flood Services in San Diego",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.billhowe.com/",
+    "evidence_url": "https://www.billhowe.com/"
+  },
+  "American Gem Society||playags.com||ddg": {
+    "provided_company": "American Gem Society",
+    "provided_domain": "playags.com",
+    "discovered_domain": "playags.com",
+    "discovered_company": "Home - Play AGS",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://playags.com/",
+    "evidence_url": "https://playags.com/"
+  },
+  "Vervint||vervint.com||ddg": {
+    "provided_company": "Vervint",
+    "provided_domain": "vervint.com",
+    "discovered_domain": "vervint.com",
+    "discovered_company": "Vervint | Empowering people and organizations to thrive digitally.",
+    "match_status": "match",
+    "reason": "Domain root 'vervint' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://vervint.com/",
+    "evidence_url": "https://vervint.com/"
+  },
+  "Inmarket||inmarket.com||ddg": {
+    "provided_company": "Inmarket",
+    "provided_domain": "inmarket.com",
+    "discovered_domain": "inmarket.com",
+    "discovered_company": "InMarket | Real-Time Marketing and Measurement",
+    "match_status": "match",
+    "reason": "Domain root 'inmarket' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://inmarket.com/",
+    "evidence_url": "https://inmarket.com/"
+  },
+  "Stable Kernel||stablekernel.com||ddg": {
+    "provided_company": "Stable Kernel",
+    "provided_domain": "stablekernel.com",
+    "discovered_domain": "stablekernel.com",
+    "discovered_company": "Digital Transformation Company | Stable Kernel | Atlanta, GA",
+    "match_status": "match",
+    "reason": "Provided company 'Stable Kernel' strongly matches discovered company 'Digital Transformation Company | Stable Kernel | Atlanta, GA' (similarity=100.0%). (source: ddg) Evidence: https://stablekernel.com/",
+    "evidence_url": "https://stablekernel.com/"
+  },
+  "Windsurf||windsurf.com||ddg": {
+    "provided_company": "Windsurf",
+    "provided_domain": "windsurf.com",
+    "discovered_domain": "windsurf.com",
+    "discovered_company": "Windsurf - The best AI for Coding",
+    "match_status": "match",
+    "reason": "Domain root 'windsurf' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://windsurf.com/",
+    "evidence_url": "https://windsurf.com/"
+  },
+  "The Port of Virginia||portofvirginia.com||ddg": {
+    "provided_company": "The Port of Virginia",
+    "provided_domain": "portofvirginia.com",
+    "discovered_domain": "portofvirginia.com",
+    "discovered_company": "America's Most Modern Gateway | The Port of Virginia",
+    "match_status": "match",
+    "reason": "Domain root 'portofvirginia' matches and company-domain similarity is strong (70%). (source: ddg) Evidence: https://www.portofvirginia.com/",
+    "evidence_url": "https://www.portofvirginia.com/"
+  },
+  "NinjaOne||ninjaone.com||ddg": {
+    "provided_company": "NinjaOne",
+    "provided_domain": "ninjaone.com",
+    "discovered_domain": "ninjaone.com",
+    "discovered_company": "NinjaOne - Top-rated UEM & IT Management Software",
+    "match_status": "match",
+    "reason": "Domain root 'ninjaone' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.ninjaone.com/",
+    "evidence_url": "https://www.ninjaone.com/"
+  },
+  "RKON||rkon.com||ddg": {
+    "provided_company": "RKON",
+    "provided_domain": "rkon.com",
+    "discovered_domain": "rkon.com",
+    "discovered_company": "IT Transformation & Cybersecurity Services Provider | RKON",
+    "match_status": "match",
+    "reason": "Domain root 'rkon' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.rkon.com/",
+    "evidence_url": "https://www.rkon.com/"
+  },
+  "Relay||relaypro.com||ddg": {
+    "provided_company": "Relay",
+    "provided_domain": "relaypro.com",
+    "discovered_domain": "relaypro.com",
+    "discovered_company": "Relay - Cloud-Based Smart Radio for Business Communication",
+    "match_status": "match",
+    "reason": "Domain root 'relaypro' matches and company-domain similarity is strong (76%). (source: ddg) Evidence: https://relaypro.com/",
+    "evidence_url": "https://relaypro.com/"
+  },
+  "Theorem||theoreminc.net||ddg": {
+    "provided_company": "Theorem",
+    "provided_domain": "theoreminc.net",
+    "discovered_domain": "theorem.digital",
+    "discovered_company": "Theorem | Digital Marketing Services & Marketing Experts",
+    "match_status": "match",
+    "reason": "Provided company 'Theorem' strongly matches discovered company 'Theorem | Digital Marketing Services & Marketing Experts' (similarity=100.0%). (source: ddg) Evidence: https://theorem.digital/",
+    "evidence_url": "https://theorem.digital/"
+  },
+  "Phibro Animal Health||pahc.com||ddg": {
+    "provided_company": "Phibro Animal Health",
+    "provided_domain": "pahc.com",
+    "discovered_domain": "pahc.com",
+    "discovered_company": "PAHC",
+    "match_status": "related",
+    "reason": "Provided company 'Phibro Animal Health' has borderline similarity (66.66666666666667%) with discovered company 'PAHC', relation confirmed by evidence. (source: ddg) Evidence: https://www.pahc.com/",
+    "evidence_url": "https://www.pahc.com/"
+  },
+  "Promutuel Assurance||promutuel.ca||ddg": {
+    "provided_company": "Promutuel Assurance",
+    "provided_domain": "promutuel.ca",
+    "discovered_domain": "promutuelassurance.ca",
+    "discovered_company": "Promutuel Assurance est LÀ, pour vous, partout au Québec",
+    "match_status": "match",
+    "reason": "Provided company 'Promutuel Assurance' strongly matches discovered company 'Promutuel Assurance est LÀ, pour vous, partout au Québec' (similarity=100.0%). (source: ddg) Evidence: https://www.promutuelassurance.ca/fr",
+    "evidence_url": "https://www.promutuelassurance.ca/fr"
+  },
+  "Ionetix||ionetix.com||ddg": {
+    "provided_company": "Ionetix",
+    "provided_domain": "ionetix.com",
+    "discovered_domain": "ionetix.com",
+    "discovered_company": "Ionetix | Leading Radiopharmaceuticals & Targeted Alpha Therapy",
+    "match_status": "match",
+    "reason": "Domain root 'ionetix' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.ionetix.com/",
+    "evidence_url": "https://www.ionetix.com/"
+  },
+  "MGIC||mgic.com||ddg": {
+    "provided_company": "MGIC",
+    "provided_domain": "mgic.com",
+    "discovered_domain": "mgic.com",
+    "discovered_company": "Mortgage Insurance | MGIC",
+    "match_status": "match",
+    "reason": "Domain root 'mgic' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.mgic.com/",
+    "evidence_url": "https://www.mgic.com/"
+  },
+  "Nonstop Administration & Insurance Services||nonstophealth.com||ddg": {
+    "provided_company": "Nonstop Administration & Insurance Services",
+    "provided_domain": "nonstophealth.com",
+    "discovered_domain": "nonstophealth.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "need_manual_check",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "http://nonstophealth.com/"
+  },
+  "WCB Nova Scotia||wcb.ns.ca||ddg": {
+    "provided_company": "WCB Nova Scotia",
+    "provided_domain": "wcb.ns.ca",
+    "discovered_domain": "wcb.ns.ca",
+    "discovered_company": "Invalid domain",
+    "match_status": "match",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "http://wcb.ns.ca"
+  }
+}
