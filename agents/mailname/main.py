@@ -4,6 +4,7 @@ import os
 import argparse
 import pandas as pd
 import chardet  # encoding detection
+import sys
 from qc_checker import qc_check  # existing QC logic
 
 # Optional directories (still kept for CLI mode)
@@ -47,6 +48,11 @@ def run_cli():
     parser.add_argument("--input", required=True, help="Path to input CSV")
     parser.add_argument("--output", required=True, help="Path to save output XLSX/CSV")
     args = parser.parse_args()
+
+    # Validate input file
+    if not os.path.exists(args.input):
+        print(f"❌ Input file not found: {args.input}", file=sys.stderr)
+        sys.exit(1)
 
     # Detect encoding
     with open(args.input, "rb") as f:
