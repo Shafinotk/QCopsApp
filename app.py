@@ -20,7 +20,7 @@ from wrappers.irvalue_wrapper import run_irvalue_agent
 from wrappers.linkedin_wrapper import run_linkedin_agent
 
 # Import properization utils
-from .utils.properization import apply_properization
+from utils.properization import apply_properization
 
 # Import coloring functions
 from agents.mailname.qc_checker import apply_mailname_coloring
