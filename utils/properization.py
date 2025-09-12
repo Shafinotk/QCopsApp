@@ -88,7 +88,7 @@ def _properize_zip(zipcode: str, country: str) -> str:
     zipcode = str(zipcode).strip()
     country = str(country).strip().upper()
 
-    if country in ("US", "UNITED STATES"):
+    if country in ("US", "UNITED STATES", "USA", "UNITED STATES OF AMERICA", "United States", "United States Of America"):
         if ZIPCODE_RE.match(zipcode):
             if len(zipcode) == 4:
                 return f"`0{zipcode}`"  # add leading zero and wrap with backticks

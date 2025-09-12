@@ -5,8 +5,10 @@ from concurrent.futures import ThreadPoolExecutor
 import re
 import chardet
 from tqdm import tqdm
+import numpy as np
+from urllib.parse import urlparse, unquote
 
-from search_utils import search_zoominfo, search_linkedin
+from search_utils import search_zoominfo, search_linkedin, fetch_html
 from extract_utils import (
     extract_employees, extract_revenue, extract_industry,
     format_employee_value, format_revenue_value, parse_industry_value,
@@ -22,10 +24,10 @@ def employee_queries(company_name: str, domain: str, country: str):
         f'{company_name} employees site:zoominfo.com',
     ]
 
-def revenue_queries(company_name: str, domain: str, country: str):
+def revenue_queries(company_name, domain, country):
     return [
-        f'{domain} {company_name} {country} revenue zoominfo',
-        f'{domain} {company_name} {country} company revenue zoominfo',
+        f'{domain} {company_name} {country} revenue site:zoominfo.com',
+        f'{domain} {company_name} {country} company revenue site:zoominfo.com',
         f'{company_name} {domain} {country} revenue site:zoominfo.com',
         f'{company_name} {country} annual revenue site:zoominfo.com',
         f'{domain} {country} revenue site:zoominfo.com',
@@ -41,7 +43,7 @@ def industry_queries(company_name: str, domain: str, country: str):
         f'{name_q} {country} site:linkedin.com/company',
     ]
 
-# ---------- Normalization helpers ----------
+# ---------- Helpers ----------
 LEGAL_SUFFIXES = r'(?:inc|incorporated|llc|l\.l\.c|ltd|limited|corp|corporation|co|company|plc|gmbh|s\.p\.a|s\.a|bv)'
 
 def _normalize_company(s: str) -> str:
@@ -57,32 +59,58 @@ def _normalize_company(s: str) -> str:
 def _company_matches(company_name: str, text: str) -> bool:
     cn = _normalize_company(company_name)
     t = _normalize_company(text or "")
-    return cn in t if cn else False
+    # require whole token match (substring only if safe)
+    if not cn:
+        return False
+    # check tokens presence
+    cn_tokens = set(cn.split())
+    t_tokens = set(t.split())
+    # require at least half of company tokens to appear (prevents accidental short substring matches)
+    if not cn_tokens:
+        return False
+    common = cn_tokens.intersection(t_tokens)
+    return (len(common) >= max(1, len(cn_tokens)//2))
 
 def _domain_mentioned(domain: str, r: dict) -> bool:
     joined = ((r.get("href") or "") + " " + (r.get("title") or "") + " " + (r.get("body") or "")).lower()
     return domain.lower() in joined if domain else False
 
-# ---------- Scoring ----------
-def _score_result(r, company_name, domain, extractor):
-    score = 0
-    title, body, href = r.get("title") or "", r.get("body") or "", r.get("href") or ""
-    text = title + " " + body
-    if _company_matches(company_name, text):
-        score += 2
-    if _domain_mentioned(domain, r):
-        score += 3
-    if extractor(body) or extractor(title):
-        score += 1
-    return score
+def is_zoominfo_profile(href: str) -> bool:
+    if not href:
+        return False
+    h = href.lower()
+    return ("zoominfo.com" in h) and (
+        "/company/" in h or "/c/" in h or "/profile/" in h or "/company-profile" in h
+    )
+
+def url_slug_matches_company(company_name: str, href: str) -> bool:
+    """Look at URL path slug and check if company tokens appear there."""
+    if not href or not company_name:
+        return False
+    try:
+        p = urlparse(href)
+        path = unquote(p.path)
+        slug = path.strip("/").replace("-", " ").replace("_", " ").lower()
+        return _company_matches(company_name, slug)
+    except Exception:
+        return False
+
+def company_near_revenue(text: str, company_name: str, revenue_substring: str, window_chars:int=80) -> bool:
+    """Return True if company_name appears within window_chars around revenue_substring in text."""
+    if not text or not company_name or not revenue_substring:
+        return False
+    idx = text.lower().find(revenue_substring.lower())
+    if idx == -1:
+        return False
+    start = max(0, idx - window_chars)
+    end = idx + len(revenue_substring) + window_chars
+    snippet = text[start:end]
+    return _company_matches(company_name, snippet)
 
 # ---------- Extraction pipelines ----------
 def _best_result(results, company_name, domain, extractor, parser,
-                 enforce_company_match=False, validator=None, emp_val=None):
+                 enforce_company_match=False, validator=None, emp_val=None, debug=False):
     candidates = []
-    best = None
-    best_score = -1
-    best_similarity = -1
 
     for r in results:
         title, body, href = r.get("title") or "", r.get("body") or "", r.get("href") or ""
@@ -91,73 +119,163 @@ def _best_result(results, company_name, domain, extractor, parser,
         if enforce_company_match and not (_company_matches(company_name, text_block) or _company_matches(company_name, href)):
             continue
 
-        score = _score_result(r, company_name, domain, extractor)
-        val = extractor(body) or extractor(title)
-        if not val:
-            continue
-        parsed_val = parser(val)
-        if not parsed_val:
-            continue
+        if extractor == extract_revenue:
+            # Only ZoomInfo pages (per requirement)
+            if "zoominfo.com" not in (href or "").lower():
+                continue
 
-        similarity = len(company_name) if company_name.lower() in text_block.lower() else 0
-        candidates.append((val, parsed_val, href, score, similarity))
+            # Try snippet first (DDG title/body)
+            revenue_val_snippet = extractor(body) or extractor(title)
 
-        if score > best_score or (score == best_score and similarity > best_similarity):
-            best = (val, parsed_val, href)
-            best_score = score
-            best_similarity = similarity
+            # If available, fetch the zoominfo page HTML (page parsing is much more accurate)
+            revenue_val_html = None
+            try:
+                html = fetch_html(href, timeout=8)
+                if html:
+                    # run extractor on page HTML (this will try to find revenue label on the page)
+                    revenue_val_html = extractor(html)
+            except Exception:
+                revenue_val_html = None
+
+            # Prefer revenue found on the page HTML (more authoritative) otherwise use snippet
+            revenue_val = revenue_val_html or revenue_val_snippet
+            if not revenue_val:
+                continue
+
+            # parsed numeric value
+            parsed_val = None
+            try:
+                parsed_val = parse_revenue(revenue_val)
+            except Exception:
+                parsed_val = None
+            if not parsed_val:
+                # If parse_revenue returned None (e.g. odd formats), still keep raw candidate but mark approx
+                # We'll still include it so fallback can pick it.
+                parsed_val = None
+
+            # Matching checks: company token presence and domain mention and URL slug
+            company_match = _company_matches(company_name, text_block) or url_slug_matches_company(company_name, href)
+            domain_match = _domain_mentioned(domain, r)
+            profile_flag = is_zoominfo_profile(href)
+
+            # proximity check: company name near revenue substring (if snippet provided)
+            prox_ok = False
+            if revenue_val:
+                prox_ok = company_near_revenue(text_block, company_name, revenue_val, window_chars=80)
+                # also check HTML snippet if present
+                if not prox_ok and revenue_val_html and html:
+                    prox_ok = company_near_revenue(html, company_name, revenue_val_html, window_chars=200)
+
+            # require either company_match or domain_match or slug match or profile_flag (tighten)
+            if not (company_match or domain_match or profile_flag):
+                # skip likely wrong matches (too loose)
+                continue
+
+            # Score: profile and domain and company_match and proximity
+            score = 0
+            if profile_flag:
+                score += 4
+            if domain_match:
+                score += 3
+            if company_match:
+                score += 3
+            if prox_ok:
+                score += 2
+
+            # approx flag if revenue contains '<' or '>'
+            approx = isinstance(revenue_val, str) and revenue_val.strip().startswith(("<", ">"))
+
+            candidates.append({
+                "val_raw": revenue_val,
+                "parsed": parsed_val,
+                "href": href,
+                "score": score,
+                "approx": approx
+            })
+
+        else:
+            # non-revenue extraction (employees / industry)
+            val = extractor(body) or extractor(title)
+            if not val:
+                continue
+            parsed_val = parser(val)
+            if not parsed_val:
+                continue
+            candidates.append({"val_raw": val, "parsed": parsed_val, "href": href, "score": 1, "approx": False})
 
     if not candidates:
         return None, None, False
 
-    # Apply RPE validator if available
-    if validator and emp_val:
-        emp_num = parse_employees(emp_val)
-        valid = []
-        for (orig, parsed, h, s, sim) in candidates:
-            parsed_num = parse_revenue(parsed)
-            if emp_num and parsed_num and validator(parsed_num, emp_num):
-                valid.append((orig, parsed_num, h))
-        if valid:
-            return valid[0][0], valid[0][2], False
-        else:
-            return best[0], best[2], True
+    # For revenue: sort by score, prefer non-approx before approx, and then by parsed value (desc)
+    if extractor == extract_revenue:
+        candidates.sort(key=lambda c: (c["score"], not c["approx"], c["parsed"] or 0), reverse=True)
 
-    return best[0], best[2], False
+        # RPE validation: if employee value present, prefer numeric candidates that pass RPE
+        if validator and emp_val:
+            emp_num = parse_employees(emp_val)
+            if isinstance(emp_num, int):
+                # first try non-approx numeric candidates that pass RPE
+                for c in candidates:
+                    if (not c["approx"]) and (c["parsed"] is not None) and validator(c["parsed"], emp_num):
+                        return c["val_raw"], c["href"], False
+                # if none pass, consider approx numeric candidates if they might still pass as bounds
+                for c in candidates:
+                    if c["approx"] and (c["parsed"] is not None):
+                        # treat '<X' as upper bound. We'll accept approx only if using the numeric value would not produce impossible RPE
+                        # Conservative: accept approx only if validator(parsed_value, emp_num) is True (i.e., even upper bound passes)
+                        if validator(c["parsed"], emp_num):
+                            return c["val_raw"], c["href"], False
+                # no candidate passed RPE strictly -> return best candidate but flagged True
+                top = candidates[0]
+                return top["val_raw"], top["href"], True
 
-def extract_field_via_queries(queries, company_name, domain, extractor, parser, search_func, enforce_company_match=False, validator=None, emp_val=None):
+    # Default return: take best candidate
+    # sort by score descending for non-revenue or fallback
+    candidates.sort(key=lambda c: c["score"], reverse=True)
+    top = candidates[0]
+    return top["val_raw"], top["href"], False
+
+
+def extract_field_via_queries(queries, company_name, domain, extractor, parser, search_func,
+                              enforce_company_match=False, validator=None, emp_val=None, debug=False):
     aggregated = []
     seen_hrefs = set()
     for q in queries:
-        results = search_func(q, max_results=50)
+        results = search_func(q, max_results=100)   # increased results
         if not results:
             continue
         for r in results:
             href = r.get("href") or ""
-            if href in seen_hrefs:
+            # minor normalization to avoid fragments causing duplicates
+            href_norm = href.split("#")[0]
+            if href_norm in seen_hrefs:
                 continue
-            seen_hrefs.add(href)
+            seen_hrefs.add(href_norm)
             aggregated.append(r)
     if not aggregated:
         return None, None, False
-    return _best_result(aggregated, company_name, domain, extractor, parser, enforce_company_match=enforce_company_match, validator=validator, emp_val=emp_val)
+    return _best_result(aggregated, company_name, domain, extractor, parser,
+                        enforce_company_match=enforce_company_match, validator=validator, emp_val=emp_val, debug=debug)
 
 # ---------- Worker ----------
-def find_company_info(domain, country, company):
+def find_company_info(domain, country, company, debug=False):
     emp_val, _, _ = extract_field_via_queries(
         employee_queries(company, domain, country),
         company, domain,
         extract_employees, format_employee_value,
         search_zoominfo
     )
+
     rev_val, _, flagged = extract_field_via_queries(
         revenue_queries(company, domain, country),
         company, domain,
         extract_revenue, format_revenue_value,
         search_zoominfo,
         validator=is_valid_rpe,
-        emp_val=emp_val
+        emp_val=emp_val,
+        debug=debug
     )
+
     ind_val, _, _ = extract_field_via_queries(
         industry_queries(company, domain, country),
         company, domain,
@@ -166,13 +284,12 @@ def find_company_info(domain, country, company):
         enforce_company_match=True
     )
 
-    # --- Ensure numeric parsing before saving ---
     emp_num = parse_employees(emp_val)
-    rev_num = parse_revenue(rev_val)
+    rev_num = parse_revenue(rev_val) if rev_val else None
 
     return emp_val, rev_val, ind_val, flagged, emp_num, rev_num
 
-# ---------- Async orchestration with progress ----------
+# ---------- Async orchestration ----------
 async def process_unique_domain(loop, executor, domain, country, company):
     return await loop.run_in_executor(executor, find_company_info, domain, country, company)
 
@@ -184,7 +301,6 @@ async def irvalue_logic(df: pd.DataFrame) -> pd.DataFrame:
         else:
             df[col] = ""
 
-    # Precompute RPE range (fixed now at 60k–9M)
     if "Revenue_per_Employee" in df.columns:
         set_rpe_range_from_data(df["Revenue_per_Employee"])
 
@@ -219,6 +335,7 @@ def run_cli():
     parser = argparse.ArgumentParser(description="Run IRValue Agent")
     parser.add_argument("--input", required=True, help="Path to input CSV")
     parser.add_argument("--output", required=True, help="Path to save output CSV")
+    parser.add_argument("--debug", action="store_true", help="Enable debug logging")
     args = parser.parse_args()
 
     with open(args.input, "rb") as f:

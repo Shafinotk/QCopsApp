@@ -25,49 +25,64 @@ def format_employee_value(s: str):
 def parse_employees(s):
     if not s:
         return None
-    if isinstance(s, (int, float)):
-        return int(s)
-    digits = re.sub(r"[^\d]", "", str(s))
+    s = str(s).strip()
+    if s.startswith("<") or s.startswith(">"):
+        return s
+    digits = re.sub(r"[^\d]", "", s)
     return int(digits) if digits else None
 
+
 # ---------- Revenue Extraction ----------
-def extract_revenue(text: str):
+def extract_revenue(text: str, employees: int | None = None):
+    """
+    Extract revenue from the given text.
+    Optionally use `employees` to validate revenue via Revenue Per Employee (RPE).
+    """
     if not text:
         return None
+
     money = r'\$\s*[\d,.]+'
     unit = r'(?:\s*(?:Million|Billion|Thousand|M|B|K))?'
     patterns = [
         rf'{money}\s*{unit}\+?',
         rf'<\s*{money}\s*{unit}',
     ]
+
     for p in patterns:
         m = re.search(p, text, flags=re.IGNORECASE)
         if m:
-            return m.group(0).strip()
+            raw_value = m.group(0).strip()
+            revenue_value = parse_revenue(raw_value)
+
+            # --- Optional RPE validation ---
+            if employees and revenue_value:
+                if not is_valid_rpe(revenue_value, employees):
+                    # RPE is outside allowed range, discard this revenue
+                    return None
+
+            return raw_value  # return the matched string if valid
+
     return None
 
 def format_revenue_value(s: str):
     return s.strip() if s else None
 
 def parse_revenue(s):
-    """
-    Parse strings like '$29.6 Billion', '$16.5M', '$500K', '$58'
-    into integer revenue in USD. Auto-corrects if value looks too small.
-    """
     if not s:
         return None
     if isinstance(s, (int, float)):
         return int(s)
 
-    s = s.replace("$", "").replace(",", "").strip().lower()
+    s = str(s).lower().strip()
+    s = s.replace("$", "").replace(",", "")
+    s = s.lstrip("<>")
 
-    # detect multiplier
     mult = 1
-    if "billion" in s or "b" in s:
+    if "billion" in s or s.endswith("b"):
         mult = 1_000_000_000
-    elif "million" in s or "m" in s:
+    elif "million" in s or s.endswith("m"):
         mult = 1_000_000
-    elif "thousand" in s or "k" in s:
+    elif "thousand" in s or s.endswith("k"):
         mult = 1_000
 
     digits = re.findall(r"[\d.]+", s)
@@ -75,11 +90,11 @@ def parse_revenue(s):
         return None
     val = float(digits[0]) * mult
 
-    # --- Auto-correct: if revenue < 1M and no unit provided, assume Million ---
     if val < 1_000_000 and mult == 1:
-        val = val * 1_000_000
+        val *= 1_000_000
 
     return int(val)
+
 
 # ---------- Industry Extraction ----------
 def extract_industry(text: str):
@@ -124,19 +139,15 @@ def parse_industry_value(s: str):
         return None
     return normalize_industry(s) if 2 <= len(s) <= 100 else None
 
+
 # ---------- Revenue per Employee Validation ----------
-# Fixed hard-coded range
-RPE_MIN, RPE_MAX = 60_000, 9_000_000  
+RPE_MIN, RPE_MAX = 60_000, 7_000_000
 
 def set_rpe_range_from_data(series):
-    """
-    (Disabled dynamic percentile-based range. Using fixed 60k–9M instead.)
-    """
     global RPE_MIN, RPE_MAX
-    RPE_MIN, RPE_MAX = 60_000, 9_000_000
+    RPE_MIN, RPE_MAX = 60_000, 7_000_000
 
 def is_valid_rpe(revenue: int, employees: int) -> bool:
-    global RPE_MIN, RPE_MAX
     if not revenue or not employees or employees <= 0:
         return False
     rpe = revenue / employees
