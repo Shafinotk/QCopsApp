@@ -79,8 +79,16 @@ if uploaded_file:
         f.write(uploaded_file.getbuffer())
     st.success(f"File uploaded: {uploaded_file.name}")
 
-    # Optional IRValue checkbox
-    run_irvalue = st.checkbox("Run IRValue Agent (phase_4)", value=False)
+    # Optional checkboxes BEFORE pipeline starts
+    col1, col2 = st.columns(2)
+    with col1:
+        run_irvalue = st.checkbox("Run IRValue Agent (phase_4)", value=False)
+    with col2:
+        enforce_common_street = st.checkbox(
+            "Enforce most common street per Domain",
+            value=True,
+            help="If checked, all rows with the same domain will get the most common street value."
+        )
 
     if st.button("▶️ Run Pipeline"):
         try:
@@ -135,7 +143,7 @@ if uploaded_file:
             # Step 5: Properization
             # ---------------------------
             st.write("✨ Applying Properization...")
-            df = apply_properization(df)
+            df = apply_properization(df, enforce_common_street=enforce_common_street)
 
             # ---------------------------
             # Save final output as Excel

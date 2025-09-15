@@ -21,6 +21,9 @@ def process_csv(file_bytes: bytes) -> bytes:
     """
     Process uploaded CSV bytes, add 'linkedin_link_found' column (if missing),
     and return CSV bytes.
+    - If "LinkedIn/Lead Validation Url" column exists and has a value, copy it
+      to 'linkedin_link_found' and skip LinkedIn search.
+    - If empty, perform LinkedIn search and populate it.
     """
     # Detect encoding
     enc_result = chardet.detect(file_bytes)
@@ -38,6 +41,7 @@ def process_csv(file_bytes: bytes) -> bytes:
     title_col = _find_column(df, "Title") or "Title"
     domain_col = _find_column(df, "Domain") or "Domain"
     email_col = _find_column(df, "Email") or "Email"
+    lead_url_col = _find_column(df, "LinkedIn/Lead Validation Url")  # NEW
 
     # Ensure columns exist
     for col in [first_col, last_col, company_col, title_col, domain_col, email_col]:
@@ -51,10 +55,22 @@ def process_csv(file_bytes: bytes) -> bytes:
 
     total = len(df)
     found_count = 0
+    skipped_count = 0
     print(f"[file_handler] Processing {total} rows (cols: {first_col}, {last_col}, {company_col}, {title_col}, {domain_col}, {email_col})")
 
     for idx, row in df.iterrows():
         try:
+            # Check if LinkedIn/Lead Validation Url already exists
+            existing_link = ""
+            if lead_url_col:
+                existing_link = (row.get(lead_url_col) or "").strip()
+
+            if existing_link:
+                df.at[idx, out_col] = existing_link
+                skipped_count += 1
+                continue  # Skip LinkedIn search
+
+            # Otherwise, run search
             first = (row.get(first_col) or "").strip()
             last = (row.get(last_col) or "").strip()
             company = (row.get(company_col) or "").strip()
@@ -68,12 +84,12 @@ def process_csv(file_bytes: bytes) -> bytes:
                 found_count += 1
 
             if idx and idx % 50 == 0:
-                print(f"[file_handler] progress: {idx}/{total} rows, found {found_count} links so far.")
+                print(f"[file_handler] progress: {idx}/{total} rows, found {found_count} links, skipped {skipped_count} existing ones.")
         except Exception as e:
             print(f"[file_handler] Error processing row {idx}: {e}")
             continue
 
-    print(f"[file_handler] Done. Found {found_count} links out of {total} rows.")
+    print(f"[file_handler] Done. Found {found_count} new links, skipped {skipped_count} existing ones.")
 
     # Write CSV back to bytes
     output_buffer = io.StringIO()
