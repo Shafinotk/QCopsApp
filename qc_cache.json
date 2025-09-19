@@ -322,5 +322,1328 @@
     "match_status": "match",
     "reason": "Provided domain is invalid or unreachable.",
     "evidence_url": "http://wcb.ns.ca"
+  },
+  "Pinterest||pinterest.com||ddg": {
+    "provided_company": "Pinterest",
+    "provided_domain": "pinterest.com",
+    "discovered_domain": "pinterest.com",
+    "discovered_company": "Pinterest",
+    "match_status": "match",
+    "reason": "Domain root 'pinterest' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.pinterest.com/",
+    "evidence_url": "https://www.pinterest.com/"
+  },
+  "Rimini Street||riministreet.com||ddg": {
+    "provided_company": "Rimini Street",
+    "provided_domain": "riministreet.com",
+    "discovered_domain": "riministreet.com",
+    "discovered_company": "Enterprise Software Solutions: Support & Managed Services | Rimini Street",
+    "match_status": "match",
+    "reason": "Domain root 'riministreet' matches and company-domain similarity is strong (96%). (source: ddg) Evidence: https://www.riministreet.com/",
+    "evidence_url": "https://www.riministreet.com/"
+  },
+  "Simmons Bank||simmonsbank.com||ddg": {
+    "provided_company": "Simmons Bank",
+    "provided_domain": "simmonsbank.com",
+    "discovered_domain": "simmonsbank.com",
+    "discovered_company": "Personal & Business Banking, Credit Cards & Home Loans, Wealth Management | Simmons Bank",
+    "match_status": "match",
+    "reason": "Provided company 'Simmons Bank' strongly matches discovered company 'Personal & Business Banking, Credit Cards & Home Loans, Wealth Management | Simmons Bank' (similarity=100.0%). (source: ddg) Evidence: https://www.simmonsbank.com:443/",
+    "evidence_url": "https://www.simmonsbank.com:443/"
+  },
+  "Care Initiatives||careinitiatives.org||ddg": {
+    "provided_company": "Care Initiatives",
+    "provided_domain": "careinitiatives.org",
+    "discovered_domain": "careinitiatives.org",
+    "discovered_company": "Care Initiatives - Skilled Nursing, Rehabilitation, and Hospice Care",
+    "match_status": "match",
+    "reason": "Domain root 'careinitiatives' matches and company-domain similarity is strong (96%). (source: ddg) Evidence: https://www.careinitiatives.org/",
+    "evidence_url": "https://www.careinitiatives.org/"
+  },
+  "Calix||calix.com||ddg": {
+    "provided_company": "Calix",
+    "provided_domain": "calix.com",
+    "discovered_domain": "calix.com",
+    "discovered_company": "Calix | Calix Managed Services | Calix Broadband Platform | Calix Inc",
+    "match_status": "match",
+    "reason": "Domain root 'calix' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.calix.com/",
+    "evidence_url": "https://www.calix.com/"
+  },
+  "Intapp||intapp.com||ddg": {
+    "provided_company": "Intapp",
+    "provided_domain": "intapp.com",
+    "discovered_domain": "intapp.com",
+    "discovered_company": "Intapp | Intelligence Applied",
+    "match_status": "match",
+    "reason": "Domain root 'intapp' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.intapp.com//",
+    "evidence_url": "https://www.intapp.com//"
+  },
+  "Edelman Financial Engines||edelmanfinancialengines.com||ddg": {
+    "provided_company": "Edelman Financial Engines",
+    "provided_domain": "edelmanfinancialengines.com",
+    "discovered_domain": "edelmanfinancialengines.com",
+    "discovered_company": "Financial Advisors | Edelman Financial Engines",
+    "match_status": "match",
+    "reason": "Provided company 'Edelman Financial Engines' strongly matches discovered company 'Financial Advisors | Edelman Financial Engines' (similarity=100.0%). (source: ddg) Evidence: https://www.edelmanfinancialengines.com/",
+    "evidence_url": "https://www.edelmanfinancialengines.com/"
+  },
+  "Penn Mutual||pennmutual.com||ddg": {
+    "provided_company": "Penn Mutual",
+    "provided_domain": "pennmutual.com",
+    "discovered_domain": "pennmutual.com",
+    "discovered_company": "The Penn Mutual Life Insurance Company",
+    "match_status": "match",
+    "reason": "Provided company 'Penn Mutual' strongly matches discovered company 'The Penn Mutual Life Insurance Company' (similarity=100.0%). (source: ddg) Evidence: https://www.pennmutual.com:443/",
+    "evidence_url": "https://www.pennmutual.com:443/"
+  },
+  "Family Services||familyservicesny.org||ddg": {
+    "provided_company": "Family Services",
+    "provided_domain": "familyservicesny.org",
+    "discovered_domain": "fairfaxcounty.gov",
+    "discovered_company": "Family Services Program Directory | Family Services",
+    "match_status": "match",
+    "reason": "Provided company 'Family Services' strongly matches discovered company 'Family Services Program Directory | Family Services' (similarity=100.0%). (source: ddg) Evidence: https://www.fairfaxcounty.gov/familyservices/directory",
+    "evidence_url": "https://www.fairfaxcounty.gov/familyservices/directory"
+  },
+  "ACE Cash Express , Inc.||acecashexpress.com||ddg": {
+    "provided_company": "ACE Cash Express , Inc.",
+    "provided_domain": "acecashexpress.com",
+    "discovered_domain": "simplycodes.com",
+    "discovered_company": "ACE Cash Express Promo Codes - 20% Off Coupons Sep 2025",
+    "match_status": "match",
+    "reason": "Provided company 'ACE Cash Express , Inc.' strongly matches discovered company 'ACE Cash Express Promo Codes - 20% Off Coupons Sep 2025' (similarity=90.32258064516128%). (source: ddg) Evidence: https://simplycodes.com/store/acecashexpress.com",
+    "evidence_url": "https://simplycodes.com/store/acecashexpress.com"
+  },
+  "Gilbane Building Company||gilbaneco.com||ddg": {
+    "provided_company": "Gilbane Building Company",
+    "provided_domain": "gilbaneco.com",
+    "discovered_domain": "gilbaneco.com",
+    "discovered_company": "Gilbane - A Leading Global Building & Real Estate Development Company",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.gilbaneco.com/",
+    "evidence_url": "https://www.gilbaneco.com/"
+  },
+  "Rust-Oleum Corporation||rustoleum.com||ddg": {
+    "provided_company": "Rust-Oleum Corporation",
+    "provided_domain": "rustoleum.com",
+    "discovered_domain": "rustoleum.com",
+    "discovered_company": "Rust-Oleum | Spray Paint, Wood Stains, Floor Coatings and More",
+    "match_status": "match",
+    "reason": "Provided company 'Rust-Oleum Corporation' strongly matches discovered company 'Rust-Oleum | Spray Paint, Wood Stains, Floor Coatings and More' (similarity=73.6842105263158%). (source: ddg) Evidence: https://www.rustoleum.com/",
+    "evidence_url": "https://www.rustoleum.com/"
+  },
+  "ARC Document Solutions, Inc.||e-arc.com||ddg": {
+    "provided_company": "ARC Document Solutions, Inc.",
+    "provided_domain": "e-arc.com",
+    "discovered_domain": "e-arc.com",
+    "discovered_company": "Reprographics And Digital Printing Services | ARC Print Shop",
+    "match_status": "related",
+    "reason": "Domain matches, company names differ. Relation confirmed by evidence. (source: ddg) Evidence: https://www.e-arc.com/",
+    "evidence_url": "https://www.e-arc.com/"
+  },
+  "Baxter Auto Group||baxterauto.com||ddg": {
+    "provided_company": "Baxter Auto Group",
+    "provided_domain": "baxterauto.com",
+    "discovered_domain": "baxterauto.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "invalid_domain",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": ""
+  },
+  "Banca Generali||bancagenerali.com||ddg": {
+    "provided_company": "Banca Generali",
+    "provided_domain": "bancagenerali.com",
+    "discovered_domain": "bancagenerali.com",
+    "discovered_company": "Banca Generali Group",
+    "match_status": "match",
+    "reason": "Domain root 'bancagenerali' matches and company-domain similarity is strong (96%). (source: ddg) Evidence: https://www.bancagenerali.com/",
+    "evidence_url": "https://www.bancagenerali.com/"
+  },
+  "CDP Cassa Depositi e Prestiti||cdp.it||ddg": {
+    "provided_company": "CDP Cassa Depositi e Prestiti",
+    "provided_domain": "cdp.it",
+    "discovered_domain": "cdp.it",
+    "discovered_company": "Cassa Depositi e Prestiti | CDP",
+    "match_status": "match",
+    "reason": "Domain root 'cdp' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.cdp.it/sitointernet/it/homepage.page",
+    "evidence_url": "https://www.cdp.it/sitointernet/it/homepage.page"
+  },
+  "ANIMA Sgr||animasgr.it||ddg": {
+    "provided_company": "ANIMA Sgr",
+    "provided_domain": "animasgr.it",
+    "discovered_domain": "animasgr.it",
+    "discovered_company": "ANIMA Sgr",
+    "match_status": "match",
+    "reason": "Domain root 'animasgr' matches and company-domain similarity is strong (94%). (source: ddg) Evidence: https://www.animasgr.it/IT/investitore-privato/Pagine/default.aspx",
+    "evidence_url": "https://www.animasgr.it/IT/investitore-privato/Pagine/default.aspx"
+  },
+  "Arca Fondi SGR||arcafondi.it||ddg": {
+    "provided_company": "Arca Fondi SGR",
+    "provided_domain": "arcafondi.it",
+    "discovered_domain": "arcafondi.it",
+    "discovered_company": "Arca Fondi SGR SPA",
+    "match_status": "match",
+    "reason": "Domain root 'arcafondi' matches and company-domain similarity is strong (78%). (source: ddg) Evidence: https://www.arcafondi.it/s/accedi",
+    "evidence_url": "https://www.arcafondi.it/s/accedi"
+  },
+  "Nexi Group||nexigroup.com||ddg": {
+    "provided_company": "Nexi Group",
+    "provided_domain": "nexigroup.com",
+    "discovered_domain": "nexigroup.com",
+    "discovered_company": "Nexi, The European PayTech",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.nexigroup.com/en/",
+    "evidence_url": "https://www.nexigroup.com/en/"
+  },
+  "Tangerine||tangerine.ca||ddg": {
+    "provided_company": "Tangerine",
+    "provided_domain": "tangerine.ca",
+    "discovered_domain": "tangerine.ca",
+    "discovered_company": "Personal Online Banking: Digital Banking in Canada | Tangerine",
+    "match_status": "match",
+    "reason": "Domain root 'tangerine' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.tangerine.ca/en/personal",
+    "evidence_url": "https://www.tangerine.ca/en/personal"
+  },
+  "Tangerine Bank||tangerine.ca||ddg": {
+    "provided_company": "Tangerine Bank",
+    "provided_domain": "tangerine.ca",
+    "discovered_domain": "tangerine.ca",
+    "discovered_company": "Personal Online Banking: Digital Banking in Canada | Tangerine",
+    "match_status": "match",
+    "reason": "Domain root 'tangerine' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.tangerine.ca/en/personal",
+    "evidence_url": "https://www.tangerine.ca/en/personal"
+  },
+  "CPP Investments Investissements RPC||cppinvestments.com||ddg": {
+    "provided_company": "CPP Investments Investissements RPC",
+    "provided_domain": "cppinvestments.com",
+    "discovered_domain": "cppinvestments.com",
+    "discovered_company": "Home | CPP Investments",
+    "match_status": "match",
+    "reason": "Provided company 'CPP Investments Investissements RPC' strongly matches discovered company 'Home | CPP Investments' (similarity=87.5%). (source: ddg) Evidence: https://www.cppinvestments.com:443/",
+    "evidence_url": "https://www.cppinvestments.com:443/"
+  },
+  "Central 1||central1.com||ddg": {
+    "provided_company": "Central 1",
+    "provided_domain": "central1.com",
+    "discovered_domain": "central1.com",
+    "discovered_company": "Central 1",
+    "match_status": "match",
+    "reason": "Domain root 'central1' matches and company-domain similarity is strong (82%). (source: ddg) Evidence: https://www.central1.com/",
+    "evidence_url": "https://www.central1.com/"
+  },
+  "Home Trust Co||hometrust.ca||ddg": {
+    "provided_company": "Home Trust Co",
+    "provided_domain": "hometrust.ca",
+    "discovered_domain": "trustcobank.com",
+    "discovered_company": "Come Home To Trustco Bank | Your Home Town Bank",
+    "match_status": "match",
+    "reason": "Provided company 'Home Trust Co' strongly matches discovered company 'Come Home To Trustco Bank | Your Home Town Bank' (similarity=81.81818181818181%). (source: ddg) Evidence: https://www.trustcobank.com/",
+    "evidence_url": "https://www.trustcobank.com/"
+  },
+  "Pure Storage||purestorage.com||ddg": {
+    "provided_company": "Pure Storage",
+    "provided_domain": "purestorage.com",
+    "discovered_domain": "purestorage.com",
+    "discovered_company": "The Data Platform | Pure Storage",
+    "match_status": "match",
+    "reason": "Domain root 'purestorage' matches and company-domain similarity is strong (95%). (source: ddg) Evidence: https://www.purestorage.com/",
+    "evidence_url": "https://www.purestorage.com/"
+  },
+  "DXC Technology Company||dxc.com||ddg": {
+    "provided_company": "DXC Technology Company",
+    "provided_domain": "dxc.com",
+    "discovered_domain": "dxc.com",
+    "discovered_company": "DXC Technology  | DXC Technology",
+    "match_status": "match",
+    "reason": "Domain root 'dxc' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://dxc.com/us/en",
+    "evidence_url": "https://dxc.com/us/en"
+  },
+  "Microsoft Corporation||microsoft.com||ddg": {
+    "provided_company": "Microsoft Corporation",
+    "provided_domain": "microsoft.com",
+    "discovered_domain": "microsoft.com",
+    "discovered_company": "Microsoft – AI, Cloud, Productivity, Computing, Gaming & Apps",
+    "match_status": "match",
+    "reason": "Domain root 'microsoft' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.microsoft.com/en-in/",
+    "evidence_url": "https://www.microsoft.com/en-in/"
+  },
+  "Squarespace||squarespace.com||ddg": {
+    "provided_company": "Squarespace",
+    "provided_domain": "squarespace.com",
+    "discovered_domain": "squarespace.com",
+    "discovered_company": "Website Builder – Easily Create Your Own Website — Squarespace",
+    "match_status": "match",
+    "reason": "Domain root 'squarespace' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.squarespace.com/",
+    "evidence_url": "https://www.squarespace.com/"
+  },
+  "Zscaler, Inc.||zscaler.com||ddg": {
+    "provided_company": "Zscaler, Inc.",
+    "provided_domain": "zscaler.com",
+    "discovered_domain": "zscaler.com",
+    "discovered_company": "Leading Cloud Enterprise Security Provider for Zero Trust",
+    "match_status": "match",
+    "reason": "Domain root 'zscaler' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.zscaler.com:443/",
+    "evidence_url": "https://www.zscaler.com:443/"
+  },
+  "Fiserv, Inc.||fiserv.com||ddg": {
+    "provided_company": "Fiserv, Inc.",
+    "provided_domain": "fiserv.com",
+    "discovered_domain": "fiserv.com",
+    "discovered_company": "Financial Services Technology, Mobile Banking, Payments | Fiserv",
+    "match_status": "match",
+    "reason": "Domain root 'fiserv' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.fiserv.com/",
+    "evidence_url": "https://www.fiserv.com/"
+  },
+  "SAP SE||sap.com||ddg": {
+    "provided_company": "SAP SE",
+    "provided_domain": "sap.com",
+    "discovered_domain": "devex.com",
+    "discovered_company": "SAP SE | Devex",
+    "match_status": "match",
+    "reason": "Provided company 'SAP SE' strongly matches discovered company 'SAP SE | Devex' (similarity=100.0%). (source: ddg) Evidence: https://www.devex.com/organizations/sap-se-22850",
+    "evidence_url": "https://www.devex.com/organizations/sap-se-22850"
+  },
+  "The Walt Disney Company||thewaltdisneycompany.com||ddg": {
+    "provided_company": "The Walt Disney Company",
+    "provided_domain": "thewaltdisneycompany.com",
+    "discovered_domain": "thewaltdisneycompany.com",
+    "discovered_company": "The Walt Disney Company",
+    "match_status": "match",
+    "reason": "Provided company 'The Walt Disney Company' strongly matches discovered company 'The Walt Disney Company' (similarity=100.0%). (source: ddg) Evidence: https://thewaltdisneycompany.com/",
+    "evidence_url": "https://thewaltdisneycompany.com/"
+  },
+  "Nexstar Broadcasting Group, Inc.||nexstar.tv||ddg": {
+    "provided_company": "Nexstar Broadcasting Group, Inc.",
+    "provided_domain": "nexstar.tv",
+    "discovered_domain": "nexstar.tv",
+    "discovered_company": "Nexstar Media Group, Inc. | A Leading Local Media Company With National Reach",
+    "match_status": "match",
+    "reason": "Domain root 'nexstar' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.nexstar.tv/",
+    "evidence_url": "https://www.nexstar.tv/"
+  },
+  "Zayo Group Holdings, Inc||zayo.com||ddg": {
+    "provided_company": "Zayo Group Holdings, Inc",
+    "provided_domain": "zayo.com",
+    "discovered_domain": "zayo.com",
+    "discovered_company": "International Network Connectivity Services & Fiber Solutions | Zayo",
+    "match_status": "match",
+    "reason": "Domain root 'zayo' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.zayo.com/",
+    "evidence_url": "https://www.zayo.com/"
+  },
+  "Altice USA, Inc.||alticeusa.com||ddg": {
+    "provided_company": "Altice USA, Inc.",
+    "provided_domain": "alticeusa.com",
+    "discovered_domain": "alticeusa.com",
+    "discovered_company": "AlticeUSA",
+    "match_status": "match",
+    "reason": "Domain root 'alticeusa' matches and company-domain similarity is strong (78%). (source: ddg) Evidence: https://www.alticeusa.com/",
+    "evidence_url": "https://www.alticeusa.com/"
+  },
+  "Teladoc Health, Inc.||teladochealth.com||ddg": {
+    "provided_company": "Teladoc Health, Inc.",
+    "provided_domain": "teladochealth.com",
+    "discovered_domain": "teladochealth.com",
+    "discovered_company": "Telehealth & Telemedicine Provider | Teladoc Health",
+    "match_status": "match",
+    "reason": "Provided company 'Teladoc Health, Inc.' strongly matches discovered company 'Telehealth & Telemedicine Provider | Teladoc Health' (similarity=89.65517241379311%). (source: ddg) Evidence: https://www.teladochealth.com/",
+    "evidence_url": "https://www.teladochealth.com/"
+  },
+  "Bentley Systems, Incorporated||bentley.com||ddg": {
+    "provided_company": "Bentley Systems, Incorporated",
+    "provided_domain": "bentley.com",
+    "discovered_domain": "bentley.com",
+    "discovered_company": "Bentley Systems | Infrastructure Engineering Software",
+    "match_status": "match",
+    "reason": "Domain root 'bentley' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.bentley.com/",
+    "evidence_url": "https://www.bentley.com/"
+  },
+  "TTEC Holdings, Inc||ttec.com||ddg": {
+    "provided_company": "TTEC Holdings, Inc",
+    "provided_domain": "ttec.com",
+    "discovered_domain": "ttec.com",
+    "discovered_company": "Worldwide digital leader in CX | TTEC",
+    "match_status": "match",
+    "reason": "Domain root 'ttec' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.ttec.com/",
+    "evidence_url": "https://www.ttec.com/"
+  },
+  "Dormakaba India Pvt Ltd||dormakaba.com||ddg": {
+    "provided_company": "Dormakaba India Pvt Ltd",
+    "provided_domain": "dormakaba.com",
+    "discovered_domain": "dormakaba.com",
+    "discovered_company": "Security and access solutions | dormakaba",
+    "match_status": "match",
+    "reason": "Domain root 'dormakaba' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.dormakaba.com/in-en",
+    "evidence_url": "https://www.dormakaba.com/in-en"
+  },
+  "Equifax, Inc.||equifax.com||ddg": {
+    "provided_company": "Equifax, Inc.",
+    "provided_domain": "equifax.com",
+    "discovered_domain": "equifax.com",
+    "discovered_company": "Equifax | Credit Bureau | Check Your Credit",
+    "match_status": "match",
+    "reason": "Domain root 'equifax' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.equifax.com/",
+    "evidence_url": "https://www.equifax.com/"
+  },
+  "ANSYS, Inc||ansys.com||ddg": {
+    "provided_company": "ANSYS, Inc",
+    "provided_domain": "ansys.com",
+    "discovered_domain": "ansys.com",
+    "discovered_company": "Ansys | Engineering Simulation Software",
+    "match_status": "match",
+    "reason": "Domain root 'ansys' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.ansys.com/",
+    "evidence_url": "https://www.ansys.com/"
+  },
+  "Applovin Corporation||applovin.com||ddg": {
+    "provided_company": "Applovin Corporation",
+    "provided_domain": "applovin.com",
+    "discovered_domain": "applovin.com",
+    "discovered_company": "AppLovin | Connect to audiences in-app, on mobile devices, and across streaming TV",
+    "match_status": "match",
+    "reason": "Domain root 'applovin' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.applovin.com/",
+    "evidence_url": "https://www.applovin.com/"
+  },
+  "Motorola Solutions, Inc.||motorolasolutions.com||ddg": {
+    "provided_company": "Motorola Solutions, Inc.",
+    "provided_domain": "motorolasolutions.com",
+    "discovered_domain": "motorolasolutions.com",
+    "discovered_company": "Solving for safer - Motorola Solutions Asia",
+    "match_status": "match",
+    "reason": "Domain root 'motorolasolutions' matches and company-domain similarity is strong (87%). (source: ddg) Evidence: https://www.motorolasolutions.com/en_xp.html?geo=redirect",
+    "evidence_url": "https://www.motorolasolutions.com/en_xp.html?geo=redirect"
+  },
+  "Mastercard Incorporated||mastercard.com||ddg": {
+    "provided_company": "Mastercard Incorporated",
+    "provided_domain": "mastercard.com",
+    "discovered_domain": "mastercard.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "match",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "https://www.mastercard.com/"
+  },
+  "MongoDB, Inc.||mongodb.com||ddg": {
+    "provided_company": "MongoDB, Inc.",
+    "provided_domain": "mongodb.com",
+    "discovered_domain": "mongodb.com",
+    "discovered_company": "MongoDB: The World’s Leading Modern Database | MongoDB",
+    "match_status": "match",
+    "reason": "Domain root 'mongodb' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.mongodb.com/",
+    "evidence_url": "https://www.mongodb.com/"
+  },
+  "Univision Communications Inc.||televisaunivision.com||ddg": {
+    "provided_company": "Univision Communications Inc.",
+    "provided_domain": "televisaunivision.com",
+    "discovered_domain": "televisaunivision.com",
+    "discovered_company": "Restricted - TelevisaUnivision",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://corporate.televisaunivision.com/restricted/",
+    "evidence_url": "https://corporate.televisaunivision.com/restricted/"
+  },
+  "T-Mobile USA, Inc.||t-mobile.com||ddg": {
+    "provided_company": "T-Mobile USA, Inc.",
+    "provided_domain": "t-mobile.com",
+    "discovered_domain": "t-mobile.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "need_manual_check",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "http://t-mobile.com/"
+  },
+  "KLA Corporation||kla-tencor.com||ddg": {
+    "provided_company": "KLA Corporation",
+    "provided_domain": "kla-tencor.com",
+    "discovered_domain": "kla.com",
+    "discovered_company": "KLA | Leaders in Process Control & Yield Management",
+    "match_status": "mismatch",
+    "reason": "No match or relation found. Marked as mismatch. (source: ddg) Evidence: https://www.kla.com/",
+    "evidence_url": "https://www.kla.com/"
+  },
+  "Lumen Technologies, Inc||lumen.com||ddg": {
+    "provided_company": "Lumen Technologies, Inc",
+    "provided_domain": "lumen.com",
+    "discovered_domain": "lumen.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "invalid_domain",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": ""
+  },
+  "Worldpay||worldpay.com||ddg": {
+    "provided_company": "Worldpay",
+    "provided_domain": "worldpay.com",
+    "discovered_domain": "worldpay.com",
+    "discovered_company": "Worldpay: Unleash Your Payments Potential",
+    "match_status": "match",
+    "reason": "Domain root 'worldpay' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://worldpay.com/en",
+    "evidence_url": "https://worldpay.com/en"
+  },
+  "Meridianlink||meridianlink.com||ddg": {
+    "provided_company": "Meridianlink",
+    "provided_domain": "meridianlink.com",
+    "discovered_domain": "meridianlink.com",
+    "discovered_company": "Digital Lending Platform for Every Financial Institution",
+    "match_status": "match",
+    "reason": "Domain root 'meridianlink' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.meridianlink.com//",
+    "evidence_url": "https://www.meridianlink.com//"
+  },
+  "Patientpoint||patientpoint.com||ddg": {
+    "provided_company": "Patientpoint",
+    "provided_domain": "patientpoint.com",
+    "discovered_domain": "patientpoint.com",
+    "discovered_company": "PatientPoint | The Point of Change Company",
+    "match_status": "match",
+    "reason": "Domain root 'patientpoint' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://patientpoint.com/",
+    "evidence_url": "https://patientpoint.com/"
+  },
+  "Mbh Settlement Group||mbh.com||ddg": {
+    "provided_company": "Mbh Settlement Group",
+    "provided_domain": "mbh.com",
+    "discovered_domain": "mbh.com",
+    "discovered_company": "MBH SETTLEMENT GROUP - MBH Settlement Group",
+    "match_status": "match",
+    "reason": "Domain root 'mbh' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://mbh.com/",
+    "evidence_url": "https://mbh.com/"
+  },
+  "Stardock||stardock.com||ddg": {
+    "provided_company": "Stardock",
+    "provided_domain": "stardock.com",
+    "discovered_domain": "stardock.com",
+    "discovered_company": "Stardock",
+    "match_status": "match",
+    "reason": "Domain root 'stardock' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.stardock.com/",
+    "evidence_url": "https://www.stardock.com/"
+  },
+  "Hoosier Hills Credit Union||hoosierhills.com||ddg": {
+    "provided_company": "Hoosier Hills Credit Union",
+    "provided_domain": "hoosierhills.com",
+    "discovered_domain": "hoosierhills.com",
+    "discovered_company": "Home - Hoosier Hills Credit Union",
+    "match_status": "match",
+    "reason": "Provided company 'Hoosier Hills Credit Union' strongly matches discovered company 'Home - Hoosier Hills Credit Union' (similarity=100.0%). (source: ddg) Evidence: https://hoosierhills.com/",
+    "evidence_url": "https://hoosierhills.com/"
+  },
+  "Boston Financial||bfim.com||ddg": {
+    "provided_company": "Boston Financial",
+    "provided_domain": "bfim.com",
+    "discovered_domain": "boston.financial",
+    "discovered_company": "Home - Boston Financial",
+    "match_status": "match",
+    "reason": "Provided company 'Boston Financial' strongly matches discovered company 'Home - Boston Financial' (similarity=100.0%). (source: ddg) Evidence: https://www.boston.financial/",
+    "evidence_url": "https://www.boston.financial/"
+  },
+  "The Word & Brown Companies||wordandbrowncompanies.com||ddg": {
+    "provided_company": "The Word & Brown Companies",
+    "provided_domain": "wordandbrowncompanies.com",
+    "discovered_domain": "wbcompanies.com",
+    "discovered_company": "Official Corporate Site | The Word & Brown Companies - Word & Brown Insurance Administrators, Inc.",
+    "match_status": "match",
+    "reason": "Provided company 'The Word & Brown Companies' strongly matches discovered company 'Official Corporate Site | The Word & Brown Companies - Word & Brown Insurance Administrators, Inc.' (similarity=100.0%). (source: ddg) Evidence: https://www.wbcompanies.com/",
+    "evidence_url": "https://www.wbcompanies.com/"
+  },
+  "Education Credit Union||educationcu.com||ddg": {
+    "provided_company": "Education Credit Union",
+    "provided_domain": "educationcu.com",
+    "discovered_domain": "educationcu.com",
+    "discovered_company": "Home - Education Credit Union",
+    "match_status": "match",
+    "reason": "Provided company 'Education Credit Union' strongly matches discovered company 'Home - Education Credit Union' (similarity=100.0%). (source: ddg) Evidence: https://www.educationcu.com/",
+    "evidence_url": "https://www.educationcu.com/"
+  },
+  "Sei||seic.com||ddg": {
+    "provided_company": "Sei",
+    "provided_domain": "seic.com",
+    "discovered_domain": "seic.com",
+    "discovered_company": "Technology and Investment Solutions | SEI U.S.",
+    "match_status": "match",
+    "reason": "Domain root 'seic' matches and company-domain similarity is strong (85%). (source: ddg) Evidence: https://www.seic.com/",
+    "evidence_url": "https://www.seic.com/"
+  },
+  "Synovus||synovus.com||ddg": {
+    "provided_company": "Synovus",
+    "provided_domain": "synovus.com",
+    "discovered_domain": "myfin.us",
+    "discovered_company": "Synovus Bank in Tennessee (TN) Near Me — Locations | Branches |  Contact details",
+    "match_status": "match",
+    "reason": "Provided company 'Synovus' strongly matches discovered company 'Synovus Bank in Tennessee (TN) Near Me — Locations | Branches |  Contact details' (similarity=100.0%). (source: ddg) Evidence: https://myfin.us/bank/tn/synovus-bank",
+    "evidence_url": "https://myfin.us/bank/tn/synovus-bank"
+  },
+  "Keysight Technologies||keysight.com||ddg": {
+    "provided_company": "Keysight Technologies",
+    "provided_domain": "keysight.com",
+    "discovered_domain": "asapaerosupplies.com",
+    "discovered_company": "CAGE Code 1LQK8 by Keysight Technologies Inc - NSN Parts Catalog",
+    "match_status": "match",
+    "reason": "Provided company 'Keysight Technologies' strongly matches discovered company 'CAGE Code 1LQK8 by Keysight Technologies Inc - NSN Parts Catalog' (similarity=100.0%). (source: ddg) Evidence: https://www.asapaerosupplies.com/cage-code/1lqk8/",
+    "evidence_url": "https://www.asapaerosupplies.com/cage-code/1lqk8/"
+  },
+  "Co-operative Insurance Companies||co-opinsurance.com||ddg": {
+    "provided_company": "Co-operative Insurance Companies",
+    "provided_domain": "co-opinsurance.com",
+    "discovered_domain": "marketscreener.com",
+    "discovered_company": "Co-operative Insurance Company PLC Stock (COOP.N0000) - Quote Colombo S.E.- MarketScreener",
+    "match_status": "match",
+    "reason": "Provided company 'Co-operative Insurance Companies' strongly matches discovered company 'Co-operative Insurance Company PLC Stock (COOP.N0000) - Quote Colombo S.E.- MarketScreener' (similarity=94.54545454545455%). (source: ddg) Evidence: https://www.marketscreener.com/quote/stock/CO-OPERATIVE-INSURANCE-CO-131301187/",
+    "evidence_url": "https://www.marketscreener.com/quote/stock/CO-OPERATIVE-INSURANCE-CO-131301187/"
+  },
+  "Snap Finance||snapfinance.com||ddg": {
+    "provided_company": "Snap Finance",
+    "provided_domain": "snapfinance.com",
+    "discovered_domain": "snapfinance.com",
+    "discovered_company": "Snap Finance - Perfect Credit Not Required",
+    "match_status": "match",
+    "reason": "Provided company 'Snap Finance' strongly matches discovered company 'Snap Finance - Perfect Credit Not Required' (similarity=100.0%). (source: ddg) Evidence: https://snapfinance.com/",
+    "evidence_url": "https://snapfinance.com/"
+  },
+  "Nord/Lb||nordlb.com||ddg": {
+    "provided_company": "Nord/Lb",
+    "provided_domain": "nordlb.com",
+    "discovered_domain": "nordlb.com",
+    "discovered_company": "NORD/LB - Creating true value.: NORD/LB",
+    "match_status": "match",
+    "reason": "Provided company 'Nord/Lb' strongly matches discovered company 'NORD/LB - Creating true value.: NORD/LB' (similarity=100.0%). (source: ddg) Evidence: https://www.nordlb.com",
+    "evidence_url": "https://www.nordlb.com"
+  },
+  "Repsol||repsol.com||ddg": {
+    "provided_company": "Repsol",
+    "provided_domain": "repsol.com",
+    "discovered_domain": "repsol.com",
+    "discovered_company": "Repsol, con toda la energía",
+    "match_status": "match",
+    "reason": "Domain root 'repsol' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.repsol.com/es/index.cshtml",
+    "evidence_url": "https://www.repsol.com/es/index.cshtml"
+  },
+  "Florida Southwestern State College||fsw.edu||ddg": {
+    "provided_company": "Florida Southwestern State College",
+    "provided_domain": "fsw.edu",
+    "discovered_domain": "fsw.edu",
+    "discovered_company": "FSW Home | Florida SouthWestern State College",
+    "match_status": "match",
+    "reason": "Provided company 'Florida Southwestern State College' strongly matches discovered company 'FSW Home | Florida SouthWestern State College' (similarity=100.0%). (source: ddg) Evidence: https://www.fsw.edu/",
+    "evidence_url": "https://www.fsw.edu/"
+  },
+  "Mount Sinai Health System||mskcc.org||ddg": {
+    "provided_company": "Mount Sinai Health System",
+    "provided_domain": "mskcc.org",
+    "discovered_domain": "mskcc.org",
+    "discovered_company": "Memorial Sloan Kettering Cancer Center",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.mskcc.org/",
+    "evidence_url": "https://www.mskcc.org/"
+  },
+  "Curtiss Wright Corporation||curtisswright.com||ddg": {
+    "provided_company": "Curtiss Wright Corporation",
+    "provided_domain": "curtisswright.com",
+    "discovered_domain": "curtisswright.com",
+    "discovered_company": "Curtiss-Wright Corporation | Home",
+    "match_status": "match",
+    "reason": "Provided company 'Curtiss Wright Corporation' strongly matches discovered company 'Curtiss-Wright Corporation | Home' (similarity=100.0%). (source: ddg) Evidence: http://curtisswright.com/",
+    "evidence_url": "http://curtisswright.com/"
+  },
+  "Marsh and Mclennan Agency LLC||marshmc.com||ddg": {
+    "provided_company": "Marsh and Mclennan Agency LLC",
+    "provided_domain": "marshmc.com",
+    "discovered_domain": "nationwide.com",
+    "discovered_company": "Marsh And Mclennan Agency LLC, Wenatchee, WA | Nationwide",
+    "match_status": "match",
+    "reason": "Provided company 'Marsh and Mclennan Agency LLC' strongly matches discovered company 'Marsh And Mclennan Agency LLC, Wenatchee, WA | Nationwide' (similarity=100.0%). (source: ddg) Evidence: https://agency.nationwide.com/wa/wenatchee/98801/marsh-and-mclennan-agency-llc",
+    "evidence_url": "https://agency.nationwide.com/wa/wenatchee/98801/marsh-and-mclennan-agency-llc"
+  },
+  "Trident BMC AB||tridentllc.com||ddg": {
+    "provided_company": "Trident BMC AB",
+    "provided_domain": "tridentllc.com",
+    "discovered_domain": "tridentllc.com",
+    "discovered_company": "Trident Maritime Systems | Maritime Systems Integration",
+    "match_status": "match",
+    "reason": "Provided company 'Trident BMC AB' strongly matches discovered company 'Trident Maritime Systems | Maritime Systems Integration' (similarity=85.71428571428572%). (source: ddg) Evidence: https://www.tridentllc.com/",
+    "evidence_url": "https://www.tridentllc.com/"
+  },
+  "Hydro Extruded Solutions AB||hydro.com||ddg": {
+    "provided_company": "Hydro Extruded Solutions AB",
+    "provided_domain": "hydro.com",
+    "discovered_domain": "hydro.com",
+    "discovered_company": "Hydro | Global",
+    "match_status": "match",
+    "reason": "Domain root 'hydro' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.hydro.com/en/en/",
+    "evidence_url": "https://www.hydro.com/en/en/"
+  },
+  "Valmet AB||valmet.com||ddg": {
+    "provided_company": "Valmet AB",
+    "provided_domain": "valmet.com",
+    "discovered_domain": "valmet.com",
+    "discovered_company": "Valmet: technologies, services and automation to pulp, energy and paper industries",
+    "match_status": "match",
+    "reason": "Domain root 'valmet' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.valmet.com/",
+    "evidence_url": "https://www.valmet.com/"
+  },
+  "Habia Cable AB||habia.com||ddg": {
+    "provided_company": "Habia Cable AB",
+    "provided_domain": "habia.com",
+    "discovered_domain": "habia.com",
+    "discovered_company": "Tailor-made cable solutions - Habia",
+    "match_status": "match",
+    "reason": "Domain root 'habia' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.habia.com/en/",
+    "evidence_url": "https://www.habia.com/en/"
+  },
+  "Konecranes AB||konecranes.com||ddg": {
+    "provided_company": "Konecranes AB",
+    "provided_domain": "konecranes.com",
+    "discovered_domain": "konecranes.com",
+    "discovered_company": "Konecranes moves what matters | A leader in material handling",
+    "match_status": "match",
+    "reason": "Domain root 'konecranes' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.konecranes.com/",
+    "evidence_url": "https://www.konecranes.com/"
+  },
+  "Scanfil Vellinge AB||scanfil.com||ddg": {
+    "provided_company": "Scanfil Vellinge AB",
+    "provided_domain": "scanfil.com",
+    "discovered_domain": "scanfil.com",
+    "discovered_company": "Trusted manufacturing partner - Scanfil",
+    "match_status": "match",
+    "reason": "Domain root 'scanfil' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.scanfil.com/",
+    "evidence_url": "https://www.scanfil.com/"
+  },
+  "HydraSpecma AB||hydraspecma.com||ddg": {
+    "provided_company": "HydraSpecma AB",
+    "provided_domain": "hydraspecma.com",
+    "discovered_domain": "thecompanycheck.com",
+    "discovered_company": "Hydraspecma India Private Limited - 2025 Insights",
+    "match_status": "match",
+    "reason": "Provided company 'HydraSpecma AB' strongly matches discovered company 'Hydraspecma India Private Limited - 2025 Insights' (similarity=91.66666666666666%). (source: ddg) Evidence: https://www.thecompanycheck.com/company/hydraspecma-india-private-limited/U29219TN2007PTC063264",
+    "evidence_url": "https://www.thecompanycheck.com/company/hydraspecma-india-private-limited/U29219TN2007PTC063264"
+  },
+  "Parker Hannifin Manufacturing Sweden AB||parker.com||ddg": {
+    "provided_company": "Parker Hannifin Manufacturing Sweden AB",
+    "provided_domain": "parker.com",
+    "discovered_domain": "parker.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "match",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "https://www.parker.com/"
+  },
+  "Nederman Nordic AB||nederman.com||ddg": {
+    "provided_company": "Nederman Nordic AB",
+    "provided_domain": "nederman.com",
+    "discovered_domain": "nederman.com",
+    "discovered_company": "Nederman India | The Clean Air Company| Solutions and products for air pollution",
+    "match_status": "match",
+    "reason": "Domain root 'nederman' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.nederman.com/",
+    "evidence_url": "https://www.nederman.com/"
+  },
+  "Ball Beverage Packaging Fosie AB||ball.com||ddg": {
+    "provided_company": "Ball Beverage Packaging Fosie AB",
+    "provided_domain": "ball.com",
+    "discovered_domain": "ball.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "match",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "https://www.ball.com/"
+  },
+  "Voith Turbo Safeset AB||voith.com||ddg": {
+    "provided_company": "Voith Turbo Safeset AB",
+    "provided_domain": "voith.com",
+    "discovered_domain": "voith.com",
+    "discovered_company": "Voith",
+    "match_status": "match",
+    "reason": "Domain root 'voith' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.voith.com/corp-en/index.html",
+    "evidence_url": "https://www.voith.com/corp-en/index.html"
+  },
+  "Federal-Mogul Goeteborg AB||tenneco.com||ddg": {
+    "provided_company": "Federal-Mogul Goeteborg AB",
+    "provided_domain": "tenneco.com",
+    "discovered_domain": "tenneco.com",
+    "discovered_company": "Tenneco - Cleaner, More Efficient and Reliable Performance | Tenneco",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://tenneco.com/",
+    "evidence_url": "https://tenneco.com/"
+  },
+  "Mondi Dynaes AB||mondigroup.com||ddg": {
+    "provided_company": "Mondi Dynaes AB",
+    "provided_domain": "mondigroup.com",
+    "discovered_domain": "mondigroup.com",
+    "discovered_company": "Mondi | Sustainable Packaging and Paper",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.mondigroup.com/",
+    "evidence_url": "https://www.mondigroup.com/"
+  },
+  "International Automotive Components Group Sweden AB||iacgroup.com||ddg": {
+    "provided_company": "International Automotive Components Group Sweden AB",
+    "provided_domain": "iacgroup.com",
+    "discovered_domain": "iacgroup.com",
+    "discovered_company": "Building a Sustainable Business for a Sustainable Future | IAC Group",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://iacgroup.com/",
+    "evidence_url": "https://iacgroup.com/"
+  },
+  "FlaektGroup Sweden AB||flaktgroup.com||ddg": {
+    "provided_company": "FlaektGroup Sweden AB",
+    "provided_domain": "flaktgroup.com",
+    "discovered_domain": "flaktgroup.com",
+    "discovered_company": "FläktGroup Sweden | FläktGroup",
+    "match_status": "match",
+    "reason": "Provided company 'FlaektGroup Sweden AB' strongly matches discovered company 'FläktGroup Sweden | FläktGroup' (similarity=88.23529411764706%). (source: ddg) Evidence: https://www.flaktgroup.com/se/",
+    "evidence_url": "https://www.flaktgroup.com/se/"
+  },
+  "Bilfinger Engineering & Maintenance Nordics AB||bilfinger.com||ddg": {
+    "provided_company": "Bilfinger Engineering & Maintenance Nordics AB",
+    "provided_domain": "bilfinger.com",
+    "discovered_domain": "nfea.no",
+    "discovered_company": "Bilfinger Engineering & Maintenance Nordics AS | NFEA",
+    "match_status": "match",
+    "reason": "Provided company 'Bilfinger Engineering & Maintenance Nordics AB' strongly matches discovered company 'Bilfinger Engineering & Maintenance Nordics AS | NFEA' (similarity=98.73417721518987%). (source: ddg) Evidence: https://nfea.no/medlemsbedrifter/bilfinger/",
+    "evidence_url": "https://nfea.no/medlemsbedrifter/bilfinger/"
+  },
+  "Shiloh Industries AB||durashiloh.com||ddg": {
+    "provided_company": "Shiloh Industries AB",
+    "provided_domain": "durashiloh.com",
+    "discovered_domain": "durashiloh.com",
+    "discovered_company": "Home — DURA | Shiloh — Join Together.™",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://durashiloh.com/",
+    "evidence_url": "https://durashiloh.com/"
+  },
+  "Metsae Tissue AB||metsagroup.com||ddg": {
+    "provided_company": "Metsae Tissue AB",
+    "provided_domain": "metsagroup.com",
+    "discovered_domain": "metsagroup.com",
+    "discovered_company": "Metsä Group – Growth, with a future",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.metsagroup.com/",
+    "evidence_url": "https://www.metsagroup.com/"
+  },
+  "HFG Sverige AB||hiltonfoods.com||ddg": {
+    "provided_company": "HFG Sverige AB",
+    "provided_domain": "hiltonfoods.com",
+    "discovered_domain": "hiltonfoods.com",
+    "discovered_company": "Hilton Foods",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.hiltonfoods.com/",
+    "evidence_url": "https://www.hiltonfoods.com/"
+  },
+  "Stora Enso AB||storaenso.com||ddg": {
+    "provided_company": "Stora Enso AB",
+    "provided_domain": "storaenso.com",
+    "discovered_domain": "interzum.com",
+    "discovered_company": "Stora Enso AB Central Administration",
+    "match_status": "match",
+    "reason": "Provided company 'Stora Enso AB' strongly matches discovered company 'Stora Enso AB Central Administration' (similarity=100.0%). (source: ddg) Evidence: https://www.interzum.com/en/exhibitor/stora_enso/",
+    "evidence_url": "https://www.interzum.com/en/exhibitor/stora_enso/"
+  },
+  "Stora Enso Re-Board AB||storaenso.com||ddg": {
+    "provided_company": "Stora Enso Re-Board AB",
+    "provided_domain": "storaenso.com",
+    "discovered_domain": "marketscreener.com",
+    "discovered_company": "Stora Enso - Case Study, St. Joseph's School, Ekeren, Belgium | MarketScreener",
+    "match_status": "mismatch",
+    "reason": "No match or relation found. Marked as mismatch. (source: ddg) Evidence: https://www.marketscreener.com/quote/stock/STORA-ENSO-OYJ-1412452/news/Stora-Enso-Case-Study-St-Joseph-s-School-Ekeren-Belgium-42729425/",
+    "evidence_url": "https://www.marketscreener.com/quote/stock/STORA-ENSO-OYJ-1412452/news/Stora-Enso-Case-Study-St-Joseph-s-School-Ekeren-Belgium-42729425/"
+  },
+  "LinkedIn||linkedin.com||ddg": {
+    "provided_company": "LinkedIn",
+    "provided_domain": "linkedin.com",
+    "discovered_domain": "linkedin.com",
+    "discovered_company": "LinkedIn: Log In or Sign Up",
+    "match_status": "match",
+    "reason": "Domain root 'linkedin' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.linkedin.com/",
+    "evidence_url": "https://www.linkedin.com/"
+  },
+  "ZOETIS INC.||zoetis.com||ddg": {
+    "provided_company": "ZOETIS INC.",
+    "provided_domain": "zoetis.com",
+    "discovered_domain": "zoetis.com",
+    "discovered_company": "Zoetis - Global Animal Health Company | Zoetis",
+    "match_status": "match",
+    "reason": "Domain root 'zoetis' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.zoetis.com/",
+    "evidence_url": "https://www.zoetis.com/"
+  },
+  "Delta Community Credit Union||deltacommunitycu.com||ddg": {
+    "provided_company": "Delta Community Credit Union",
+    "provided_domain": "deltacommunitycu.com",
+    "discovered_domain": "deltacommunitycu.com",
+    "discovered_company": "Delta Community\n        Credit Union - Financial Services",
+    "match_status": "match",
+    "reason": "Provided company 'Delta Community Credit Union' strongly matches discovered company 'Delta Community\n        Credit Union - Financial Services' (similarity=100.0%). (source: ddg) Evidence: https://www.deltacommunitycu.com/",
+    "evidence_url": "https://www.deltacommunitycu.com/"
+  },
+  "TransAmerica||transamerica.com||ddg": {
+    "provided_company": "TransAmerica",
+    "provided_domain": "transamerica.com",
+    "discovered_domain": "transamerica.com",
+    "discovered_company": "Company name not found",
+    "match_status": "match",
+    "reason": "Domain reachable but company name could not be extracted.",
+    "evidence_url": "https://www.transamerica.com/"
+  },
+  "MD Anderson Cancer Center||mdanderson.org||ddg": {
+    "provided_company": "MD Anderson Cancer Center",
+    "provided_domain": "mdanderson.org",
+    "discovered_domain": "mdanderson.org",
+    "discovered_company": "MD Anderson Cancer Center: Cancer Treatment & Cancer Research Hospital | MD Anderson Cancer Center",
+    "match_status": "match",
+    "reason": "Provided company 'MD Anderson Cancer Center' strongly matches discovered company 'MD Anderson Cancer Center: Cancer Treatment & Cancer Research Hospital | MD Anderson Cancer Center' (similarity=100.0%). (source: ddg) Evidence: https://www.mdanderson.org/",
+    "evidence_url": "https://www.mdanderson.org/"
+  },
+  "American Red Cross||redcross.org||ddg": {
+    "provided_company": "American Red Cross",
+    "provided_domain": "redcross.org",
+    "discovered_domain": "redcross.org",
+    "discovered_company": "American Red Cross | Help Those Affected by Disasters",
+    "match_status": "match",
+    "reason": "Provided company 'American Red Cross' strongly matches discovered company 'American Red Cross | Help Those Affected by Disasters' (similarity=100.0%). (source: ddg) Evidence: https://www.redcross.org/",
+    "evidence_url": "https://www.redcross.org/"
+  },
+  "Intermountain Healthcare||imail.org||ddg": {
+    "provided_company": "Intermountain Healthcare",
+    "provided_domain": "imail.org",
+    "discovered_domain": "intermountainhealthcare.org",
+    "discovered_company": "Home - Intermountain Health",
+    "match_status": "match",
+    "reason": "Provided company 'Intermountain Healthcare' strongly matches discovered company 'Home - Intermountain Health' (similarity=90.47619047619048%). (source: ddg) Evidence: https://intermountainhealthcare.org/",
+    "evidence_url": "https://intermountainhealthcare.org/"
+  },
+  "Bank of America NA||bofa.com||ddg": {
+    "provided_company": "Bank of America NA",
+    "provided_domain": "bofa.com",
+    "discovered_domain": "ayouweb.com",
+    "discovered_company": "IDEMIA North America - IDEMIA North America-na.idemia.com",
+    "match_status": "match",
+    "reason": "Provided company 'Bank of America NA' strongly matches discovered company 'IDEMIA North America - IDEMIA North America-na.idemia.com' (similarity=80.0%). (source: ddg) Evidence: http://na.idemia.com.ayouweb.com/",
+    "evidence_url": "http://na.idemia.com.ayouweb.com/"
+  },
+  "Prudential International Insurance||prudential.com||ddg": {
+    "provided_company": "Prudential International Insurance",
+    "provided_domain": "prudential.com",
+    "discovered_domain": "prudential.com",
+    "discovered_company": "Invest, Insure, Retire and Plan | Prudential Financial",
+    "match_status": "match",
+    "reason": "Domain root 'prudential' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.prudential.com/",
+    "evidence_url": "https://www.prudential.com/"
+  },
+  "PricewaterhouseCoopers - Houston TX||pwc.com||ddg": {
+    "provided_company": "PricewaterhouseCoopers - Houston TX",
+    "provided_domain": "pwc.com",
+    "discovered_domain": "pwc.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "need_manual_check",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "http://pwc.com"
+  },
+  "Alfa Insurance-AL||alfains.com||ddg": {
+    "provided_company": "Alfa Insurance-AL",
+    "provided_domain": "alfains.com",
+    "discovered_domain": "alfainsurance.com",
+    "discovered_company": "Car Insurance in Alabama | AlfaInsurance.com",
+    "match_status": "match",
+    "reason": "Provided company 'Alfa Insurance-AL' strongly matches discovered company 'Car Insurance in Alabama | AlfaInsurance.com' (similarity=86.66666666666667%). (source: ddg) Evidence: https://www.alfainsurance.com/auto-quote/alabama-quote",
+    "evidence_url": "https://www.alfainsurance.com/auto-quote/alabama-quote"
+  },
+  "Illumina, Inc.||illumina.com||ddg": {
+    "provided_company": "Illumina, Inc.",
+    "provided_domain": "illumina.com",
+    "discovered_domain": "illumina.com",
+    "discovered_company": "Illumina | Sequencing and array solutions to fuel genomic discoveries",
+    "match_status": "match",
+    "reason": "Domain root 'illumina' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.illumina.com:443/",
+    "evidence_url": "https://www.illumina.com:443/"
+  },
+  "CommonSpirit Health||commonspirit.org||ddg": {
+    "provided_company": "CommonSpirit Health",
+    "provided_domain": "commonspirit.org",
+    "discovered_domain": "commonspirit.org",
+    "discovered_company": "Building Healthier Communities | CommonSpirit Health",
+    "match_status": "match",
+    "reason": "Domain root 'commonspirit' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.commonspirit.org/",
+    "evidence_url": "https://www.commonspirit.org/"
+  },
+  "DexCom, Inc.||dexcom.com||ddg": {
+    "provided_company": "DexCom, Inc.",
+    "provided_domain": "dexcom.com",
+    "discovered_domain": "dexcom.com",
+    "discovered_company": "Dexcom Continuous Glucose Monitoring - The most accurate CGM system1 | Dexcom",
+    "match_status": "match",
+    "reason": "Domain root 'dexcom' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.dexcom.com/",
+    "evidence_url": "https://www.dexcom.com/"
+  },
+  "Dollar General Corporation||dollargeneral.com||ddg": {
+    "provided_company": "Dollar General Corporation",
+    "provided_domain": "dollargeneral.com",
+    "discovered_domain": "dollargeneral.com",
+    "discovered_company": "Dollar General",
+    "match_status": "match",
+    "reason": "Provided company 'Dollar General Corporation' strongly matches discovered company 'Dollar General' (similarity=100.0%). (source: ddg) Evidence: https://www.dollargeneral.com/",
+    "evidence_url": "https://www.dollargeneral.com/"
+  },
+  "Henry Schein, Inc.||henryschein.com||ddg": {
+    "provided_company": "Henry Schein, Inc.",
+    "provided_domain": "henryschein.com",
+    "discovered_domain": "henryschein.com",
+    "discovered_company": "Dental Supplies and Medical Supplies - Henry Schein",
+    "match_status": "match",
+    "reason": "Domain root 'henryschein' matches and company-domain similarity is strong (81%). (source: ddg) Evidence: https://www.henryschein.com/",
+    "evidence_url": "https://www.henryschein.com/"
+  },
+  "Deere & Company||deere.com||ddg": {
+    "provided_company": "Deere & Company",
+    "provided_domain": "deere.com",
+    "discovered_domain": "deere.com",
+    "discovered_company": "John Deere US | Products & Services Information",
+    "match_status": "match",
+    "reason": "Domain root 'deere' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.deere.com/en/",
+    "evidence_url": "https://www.deere.com/en/"
+  },
+  "Hexcel Corporation||hexcel.com||ddg": {
+    "provided_company": "Hexcel Corporation",
+    "provided_domain": "hexcel.com",
+    "discovered_domain": "hexcel.com",
+    "discovered_company": "Hexcel | Composite Materials and Structures",
+    "match_status": "match",
+    "reason": "Domain root 'hexcel' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://hexcel.com/",
+    "evidence_url": "https://hexcel.com/"
+  },
+  "Danaher Corporation||danaher.com||ddg": {
+    "provided_company": "Danaher Corporation",
+    "provided_domain": "danaher.com",
+    "discovered_domain": "danaher.com",
+    "discovered_company": "Danaher Corporation",
+    "match_status": "match",
+    "reason": "Domain root 'danaher' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.danaher.com/",
+    "evidence_url": "https://www.danaher.com/"
+  },
+  "Dominos Pizza Inc||dominos.com||ddg": {
+    "provided_company": "Dominos Pizza Inc",
+    "provided_domain": "dominos.com",
+    "discovered_domain": "dominos.co.in",
+    "discovered_company": "Domino’s Pizza – Order Online | Get 2 Regular Pizza @99 Each",
+    "match_status": "match",
+    "reason": "Domain root 'dominos' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://m.dominos.co.in/",
+    "evidence_url": "https://m.dominos.co.in/"
+  },
+  "Karl Storz SE & Co. KG||karlstorz.com||ddg": {
+    "provided_company": "Karl Storz SE & Co. KG",
+    "provided_domain": "karlstorz.com",
+    "discovered_domain": "karlstorz.com",
+    "discovered_company": "Welcome to the world of endoscopy | KARL STORZ Endoskope",
+    "match_status": "match",
+    "reason": "Provided company 'Karl Storz SE & Co. KG' strongly matches discovered company 'Welcome to the world of endoscopy | KARL STORZ Endoskope' (similarity=80.0%). (source: ddg) Evidence: https://www.karlstorz.com/de/en/index.htm?target=",
+    "evidence_url": "https://www.karlstorz.com/de/en/index.htm?target="
+  },
+  "Guild Mortgage Company||guildmortgage.com||ddg": {
+    "provided_company": "Guild Mortgage Company",
+    "provided_domain": "guildmortgage.com",
+    "discovered_domain": "guildmortgage.com",
+    "discovered_company": "Guild Mortgage | Mortgage lender and advisor for home loan eligibility",
+    "match_status": "match",
+    "reason": "Domain root 'guildmortgage' matches and company-domain similarity is strong (74%). (source: ddg) Evidence: https://www.guildmortgage.com/",
+    "evidence_url": "https://www.guildmortgage.com/"
+  },
+  "Lear Corporation||lear.com||ddg": {
+    "provided_company": "Lear Corporation",
+    "provided_domain": "lear.com",
+    "discovered_domain": "lear.com",
+    "discovered_company": "Global Automotive Tech Leader | Lear Corporation",
+    "match_status": "match",
+    "reason": "Domain root 'lear' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.lear.com/",
+    "evidence_url": "https://www.lear.com/"
+  },
+  "Dropbox Inc||dropbox.com||ddg": {
+    "provided_company": "Dropbox Inc",
+    "provided_domain": "dropbox.com",
+    "discovered_domain": "dropbox.com",
+    "discovered_company": "Dropbox.com",
+    "match_status": "match",
+    "reason": "Domain root 'dropbox' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.dropbox.com/",
+    "evidence_url": "https://www.dropbox.com/"
+  },
+  "Kraft Heinz Company, The||kraftheinzcompany.com||ddg": {
+    "provided_company": "Kraft Heinz Company, The",
+    "provided_domain": "kraftheinzcompany.com",
+    "discovered_domain": "kraftheinzcompany.com",
+    "discovered_company": "The Kraft Heinz Company",
+    "match_status": "match",
+    "reason": "Provided company 'Kraft Heinz Company, The' strongly matches discovered company 'The Kraft Heinz Company' (similarity=91.89189189189189%). (source: ddg) Evidence: https://www.kraftheinzcompany.com",
+    "evidence_url": "https://www.kraftheinzcompany.com"
+  },
+  "Allied Universal Topco LLC||aus.com||ddg": {
+    "provided_company": "Allied Universal Topco LLC",
+    "provided_domain": "aus.com",
+    "discovered_domain": "aus.com",
+    "discovered_company": "Allied Universal | Leading Security Services & Solutions Worldwide",
+    "match_status": "match",
+    "reason": "Provided company 'Allied Universal Topco LLC' strongly matches discovered company 'Allied Universal | Leading Security Services & Solutions Worldwide' (similarity=82.05128205128204%). (source: ddg) Evidence: https://www.aus.com/",
+    "evidence_url": "https://www.aus.com/"
+  },
+  "Hubbell Incorporated||hubbell.com||ddg": {
+    "provided_company": "Hubbell Incorporated",
+    "provided_domain": "hubbell.com",
+    "discovered_domain": "hubbell.com",
+    "discovered_company": "Hubbell Incorporated | Electrify & Energize  | Hubbell",
+    "match_status": "match",
+    "reason": "Domain root 'hubbell' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.hubbell.com/hubbell/en",
+    "evidence_url": "https://www.hubbell.com/hubbell/en"
+  },
+  "eBay, Inc.||ebay.com||ddg": {
+    "provided_company": "eBay, Inc.",
+    "provided_domain": "ebay.com",
+    "discovered_domain": "ebay.com",
+    "discovered_company": "Electronics, Cars, Fashion, Collectibles & More | eBay",
+    "match_status": "match",
+    "reason": "Domain root 'ebay' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.ebay.com/",
+    "evidence_url": "https://www.ebay.com/"
+  },
+  "Bausch Health Companies Inc.||bauschhealth.com||ddg": {
+    "provided_company": "Bausch Health Companies Inc.",
+    "provided_domain": "bauschhealth.com",
+    "discovered_domain": "bauschhealth.com",
+    "discovered_company": "Home | Bausch Health",
+    "match_status": "match",
+    "reason": "Provided company 'Bausch Health Companies Inc.' strongly matches discovered company 'Home | Bausch Health' (similarity=85.71428571428572%). (source: ddg) Evidence: https://www.bauschhealth.com/",
+    "evidence_url": "https://www.bauschhealth.com/"
+  },
+  "Enersys||enersys.com||ddg": {
+    "provided_company": "Enersys",
+    "provided_domain": "enersys.com",
+    "discovered_domain": "enersys.com",
+    "discovered_company": "EnerSys | Global Leader in Stored Energy & Power Solutions",
+    "match_status": "match",
+    "reason": "Domain root 'enersys' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.enersys.com/",
+    "evidence_url": "https://www.enersys.com/"
+  },
+  "Excelerate Energy Holdings, LLC||excelerateenergy.com||ddg": {
+    "provided_company": "Excelerate Energy Holdings, LLC",
+    "provided_domain": "excelerateenergy.com",
+    "discovered_domain": "excelerateenergy.com",
+    "discovered_company": "Excelerate Energy | Leader in Integrated LNG Solutions",
+    "match_status": "match",
+    "reason": "Provided company 'Excelerate Energy Holdings, LLC' strongly matches discovered company 'Excelerate Energy | Leader in Integrated LNG Solutions' (similarity=78.43137254901961%). (source: ddg) Evidence: https://excelerateenergy.com/",
+    "evidence_url": "https://excelerateenergy.com/"
+  },
+  "Edwards Lifesciences Corporation||edwards.com||ddg": {
+    "provided_company": "Edwards Lifesciences Corporation",
+    "provided_domain": "edwards.com",
+    "discovered_domain": "edwards.com",
+    "discovered_company": "Edwards Lifesciences - the leader in heart valves & hemodynamic monitoring | Edwards Lifesciences",
+    "match_status": "match",
+    "reason": "Domain root 'edwards' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://edwards.com/",
+    "evidence_url": "https://edwards.com/"
+  },
+  "Elevance Health||elevancehealth.com||ddg": {
+    "provided_company": "Elevance Health",
+    "provided_domain": "elevancehealth.com",
+    "discovered_domain": "elevancehealth.com",
+    "discovered_company": "Elevance Health | Advancing Health Beyond Healthcare",
+    "match_status": "match",
+    "reason": "Domain root 'elevancehealth' matches and company-domain similarity is strong (96%). (source: ddg) Evidence: https://www.elevancehealth.com/",
+    "evidence_url": "https://www.elevancehealth.com/"
+  },
+  "Ecovyst Inc.||ecovyst.com||ddg": {
+    "provided_company": "Ecovyst Inc.",
+    "provided_domain": "ecovyst.com",
+    "discovered_domain": "ecovyst.com",
+    "discovered_company": "Home - Ecovyst",
+    "match_status": "match",
+    "reason": "Domain root 'ecovyst' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.ecovyst.com/",
+    "evidence_url": "https://www.ecovyst.com/"
+  },
+  "Brasfield & Gorrie, LLC||brasfieldgorrie.com||ddg": {
+    "provided_company": "Brasfield & Gorrie, LLC",
+    "provided_domain": "brasfieldgorrie.com",
+    "discovered_domain": "brasfieldgorrie.com",
+    "discovered_company": "Brasfield & Gorrie • Going beyond the build",
+    "match_status": "match",
+    "reason": "Domain root 'brasfieldgorrie' matches and company-domain similarity is strong (85%). (source: ddg) Evidence: https://www.brasfieldgorrie.com/",
+    "evidence_url": "https://www.brasfieldgorrie.com/"
+  },
+  "Carrier Global Corporation||carrier.com||ddg": {
+    "provided_company": "Carrier Global Corporation",
+    "provided_domain": "carrier.com",
+    "discovered_domain": "carrier.com",
+    "discovered_company": "For The World We Share | Carrier",
+    "match_status": "match",
+    "reason": "Domain root 'carrier' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.carrier.com/carrier/en/worldwide/",
+    "evidence_url": "https://www.carrier.com/carrier/en/worldwide/"
+  },
+  "F5, Inc.||f5.com||ddg": {
+    "provided_company": "F5, Inc.",
+    "provided_domain": "f5.com",
+    "discovered_domain": "f5.com",
+    "discovered_company": "F5 | Multicloud Security and Application Delivery",
+    "match_status": "match",
+    "reason": "Domain root 'f5' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.f5.com/",
+    "evidence_url": "https://www.f5.com/"
+  },
+  "Keysight Technologies, Inc.||keysight.com||ddg": {
+    "provided_company": "Keysight Technologies, Inc.",
+    "provided_domain": "keysight.com",
+    "discovered_domain": "asapaerosupplies.com",
+    "discovered_company": "CAGE Code 1LQK8 by Keysight Technologies Inc - NSN Parts Catalog",
+    "match_status": "match",
+    "reason": "Provided company 'Keysight Technologies, Inc.' strongly matches discovered company 'CAGE Code 1LQK8 by Keysight Technologies Inc - NSN Parts Catalog' (similarity=100.0%). (source: ddg) Evidence: https://www.asapaerosupplies.com/cage-code/1lqk8/",
+    "evidence_url": "https://www.asapaerosupplies.com/cage-code/1lqk8/"
+  },
+  "CareFirst, Inc.||carefirst.com||ddg": {
+    "provided_company": "CareFirst, Inc.",
+    "provided_domain": "carefirst.com",
+    "discovered_domain": "carefirst.com",
+    "discovered_company": "Company name not found",
+    "match_status": "match",
+    "reason": "Domain reachable but company name could not be extracted.",
+    "evidence_url": "https://carefirst.com/"
+  },
+  "BNSF Railway Company||bnsf.com||ddg": {
+    "provided_company": "BNSF Railway Company",
+    "provided_domain": "bnsf.com",
+    "discovered_domain": "bnsf.com",
+    "discovered_company": "BNSF Railway",
+    "match_status": "match",
+    "reason": "Domain root 'bnsf' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.bnsf.com/",
+    "evidence_url": "https://www.bnsf.com/"
+  },
+  "Children's National Medical Center||childrensnational.org||ddg": {
+    "provided_company": "Children's National Medical Center",
+    "provided_domain": "childrensnational.org",
+    "discovered_domain": "childrensnational.org",
+    "discovered_company": "Children’s National Hospital - Ranked Top 10 in the Nation",
+    "match_status": "match",
+    "reason": "Provided company 'Children's National Medical Center' strongly matches discovered company 'Children’s National Hospital - Ranked Top 10 in the Nation' (similarity=75.0%). (source: ddg) Evidence: https://www.childrensnational.org/",
+    "evidence_url": "https://www.childrensnational.org/"
+  },
+  "Coherent Corp||coherent.com||ddg": {
+    "provided_company": "Coherent Corp",
+    "provided_domain": "coherent.com",
+    "discovered_domain": "coherent.com",
+    "discovered_company": "Global Leader in Materials, Networking, and Lasers | Coherent",
+    "match_status": "match",
+    "reason": "Domain root 'coherent' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.coherent.com/",
+    "evidence_url": "https://www.coherent.com/"
+  },
+  "Getty Images Inc||gettyimages.com||ddg": {
+    "provided_company": "Getty Images Inc",
+    "provided_domain": "gettyimages.com",
+    "discovered_domain": "gettyimages.in",
+    "discovered_company": "Getty Images",
+    "match_status": "match",
+    "reason": "Domain root 'gettyimages' matches and company-domain similarity is strong (81%). (source: ddg) Evidence: https://www.gettyimages.in/bot-wall?returnUrl=%2F&language=en-gb",
+    "evidence_url": "https://www.gettyimages.in/bot-wall?returnUrl=%2F&language=en-gb"
+  },
+  "CarGurus||cargurus.com||ddg": {
+    "provided_company": "CarGurus",
+    "provided_domain": "cargurus.com",
+    "discovered_domain": "cargurus.com",
+    "discovered_company": "Buy & Sell Cars: Reviews, Prices, and Financing - CarGurus",
+    "match_status": "match",
+    "reason": "Domain root 'cargurus' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.cargurus.com/",
+    "evidence_url": "https://www.cargurus.com/"
+  },
+  "Church & Dwight Co., Inc.||churchdwight.com||ddg": {
+    "provided_company": "Church & Dwight Co., Inc.",
+    "provided_domain": "churchdwight.com",
+    "discovered_domain": "churchdwight.com",
+    "discovered_company": "Church and Dwight | Consumer Goods | Home and Personal Care Products",
+    "match_status": "match",
+    "reason": "Domain root 'churchdwight' matches and company-domain similarity is strong (75%). (source: ddg) Evidence: https://churchdwight.com/",
+    "evidence_url": "https://churchdwight.com/"
+  },
+  "Avera Mckennan Hospital & University||avera.org||ddg": {
+    "provided_company": "Avera Mckennan Hospital & University",
+    "provided_domain": "avera.org",
+    "discovered_domain": "allevents.in",
+    "discovered_company": "Discover Avera McKennan Hospital & University Health Center Events | Tickets & Details | AllEvents",
+    "match_status": "match",
+    "reason": "Provided company 'Avera Mckennan Hospital & University' strongly matches discovered company 'Discover Avera McKennan Hospital & University Health Center Events | Tickets & Details | AllEvents' (similarity=100.0%). (source: ddg) Evidence: https://allevents.in/org/avera-mckennan-hospital-and-university-health-center/26127802",
+    "evidence_url": "https://allevents.in/org/avera-mckennan-hospital-and-university-health-center/26127802"
+  },
+  "Chewy, Inc.||chewy.com||ddg": {
+    "provided_company": "Chewy, Inc.",
+    "provided_domain": "chewy.com",
+    "discovered_domain": "chewy.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "match",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "https://www.chewy.com/"
+  },
+  "Gentherm Incorporated||gentherm.com||ddg": {
+    "provided_company": "Gentherm Incorporated",
+    "provided_domain": "gentherm.com",
+    "discovered_domain": "gentherm.com",
+    "discovered_company": "Home - Gentherm",
+    "match_status": "match",
+    "reason": "Domain root 'gentherm' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://gentherm.com/en/",
+    "evidence_url": "https://gentherm.com/en/"
+  },
+  "Curtiss-Wright Corporation||curtisswright.com||ddg": {
+    "provided_company": "Curtiss-Wright Corporation",
+    "provided_domain": "curtisswright.com",
+    "discovered_domain": "curtisswright.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "need_manual_check",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "http://curtisswright.com/"
+  },
+  "General Atomics||ga.com||ddg": {
+    "provided_company": "General Atomics",
+    "provided_domain": "ga.com",
+    "discovered_domain": "ga.com",
+    "discovered_company": "Welcome to General Atomics | General Atomics",
+    "match_status": "match",
+    "reason": "Provided company 'General Atomics' strongly matches discovered company 'Welcome to General Atomics | General Atomics' (similarity=100.0%). (source: ddg) Evidence: https://www.ga.com/",
+    "evidence_url": "https://www.ga.com/"
+  },
+  "Glaukos Corporation||glaukos.com||ddg": {
+    "provided_company": "Glaukos Corporation",
+    "provided_domain": "glaukos.com",
+    "discovered_domain": "glaukos.com",
+    "discovered_company": "Advancing the Treatment of Ophthalmic Diseases | Glaukos",
+    "match_status": "match",
+    "reason": "Domain root 'glaukos' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.glaukos.com/",
+    "evidence_url": "https://www.glaukos.com/"
+  },
+  "Kohler Co (Inc)||kohler.com||ddg": {
+    "provided_company": "Kohler Co (Inc)",
+    "provided_domain": "kohler.com",
+    "discovered_domain": "kohler.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "match",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "http://kohler.com"
+  },
+  "Jacksonville Electric Authority||jea.com||ddg": {
+    "provided_company": "Jacksonville Electric Authority",
+    "provided_domain": "jea.com",
+    "discovered_domain": "jea.com",
+    "discovered_company": "JEA - Northeast Florida's Community-Owned Electric, Water and Sewer Utility",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.jea.com/",
+    "evidence_url": "https://www.jea.com/"
+  },
+  "American Lebanese Syrian Assoc Charities||stjude.org||ddg": {
+    "provided_company": "American Lebanese Syrian Assoc Charities",
+    "provided_domain": "stjude.org",
+    "discovered_domain": "stjude.org",
+    "discovered_company": "St. Jude Children's Research Hospital",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.stjude.org/",
+    "evidence_url": "https://www.stjude.org/"
+  },
+  "Federal Home Loan Mortgage Corporation||freddiemac.com||ddg": {
+    "provided_company": "Federal Home Loan Mortgage Corporation",
+    "provided_domain": "freddiemac.com",
+    "discovered_domain": "freddiemac.com",
+    "discovered_company": "Freddie Mac - We Make Home Possible - Freddie Mac",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.freddiemac.com/",
+    "evidence_url": "https://www.freddiemac.com/"
+  },
+  "Federal National Mortgage Association||fanniemae.com||ddg": {
+    "provided_company": "Federal National Mortgage Association",
+    "provided_domain": "fanniemae.com",
+    "discovered_domain": "amazon.in",
+    "discovered_company": "Buy Government Sponsorship of the Federal National Mortgage Association and the Federal Home Loan Mortgage Corporation Book Online at Low Prices in India | Government Sponsorship of the Federal National Mortgage Association and the Federal Home Loan Mortgage Corporation Reviews & Ratings - Amazon.in",
+    "match_status": "match",
+    "reason": "Provided company 'Federal National Mortgage Association' strongly matches discovered company 'Buy Government Sponsorship of the Federal National Mortgage Association and the Federal Home Loan Mortgage Corporation Book Online at Low Prices in India | Government Sponsorship of the Federal National Mortgage Association and the Federal Home Loan Mortgage Corporation Reviews & Ratings - Amazon.in' (similarity=100.0%). (source: ddg) Evidence: https://www.amazon.in/Government-Sponsorship-National-Association-Corporation/dp/B0FHBXJV87",
+    "evidence_url": "https://www.amazon.in/Government-Sponsorship-National-Association-Corporation/dp/B0FHBXJV87"
+  },
+  "El Paso Electric Company Inc||epelectric.com||ddg": {
+    "provided_company": "El Paso Electric Company Inc",
+    "provided_domain": "epelectric.com",
+    "discovered_domain": "epelectric.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "need_manual_check",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "https://www.epelectric.com/"
   }
 }
