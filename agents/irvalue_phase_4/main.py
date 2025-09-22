@@ -5,9 +5,8 @@ from concurrent.futures import ThreadPoolExecutor
 import re
 import chardet
 from tqdm import tqdm
-import numpy as np
 from urllib.parse import urlparse, unquote
-import sys
+from typing import Optional, Tuple, Any
 
 from search_utils import search_zoominfo, search_linkedin, fetch_html
 from extract_utils import (
@@ -16,8 +15,8 @@ from extract_utils import (
     parse_employees, parse_revenue, is_valid_rpe, set_rpe_range_from_data
 )
 
-# ---------- Query builders ----------
-def employee_queries(company_name: str, domain: str, country: str):
+# ---------- Query Builders ----------
+def employee_queries(company_name: str, domain: str, country: str) -> list[str]:
     return [
         f'{company_name} {domain} {country} employee size site:zoominfo.com',
         f'{company_name} {country} employees site:zoominfo.com',
@@ -25,7 +24,7 @@ def employee_queries(company_name: str, domain: str, country: str):
         f'{company_name} employees site:zoominfo.com',
     ]
 
-def revenue_queries(company_name, domain, country):
+def revenue_queries(company_name: str, domain: str, country: str) -> list[str]:
     return [
         f'{domain} {company_name} {country} revenue site:zoominfo.com',
         f'{domain} {company_name} {country} company revenue site:zoominfo.com',
@@ -35,7 +34,7 @@ def revenue_queries(company_name, domain, country):
         f'{company_name} revenue site:zoominfo.com',
     ]
 
-def industry_queries(company_name: str, domain: str, country: str):
+def industry_queries(company_name: str, domain: str, country: str) -> list[str]:
     name_q = f'"{company_name}"' if company_name else company_name
     return [
         f'{name_q} site:linkedin.com/company/about',
@@ -47,52 +46,43 @@ def industry_queries(company_name: str, domain: str, country: str):
 # ---------- Helpers ----------
 LEGAL_SUFFIXES = r'(?:inc|incorporated|llc|l\.l\.c|ltd|limited|corp|corporation|co|company|plc|gmbh|s\.p\.a|s\.a|bv)'
 
-def _normalize_company(s: str) -> str:
+def _normalize_company(s: Optional[str]) -> str:
     if not s:
         return ""
-    s = s.lower()
-    s = s.replace("&", " and ")
+    s = s.lower().replace("&", " and ")
     s = re.sub(r'[^a-z0-9 ]+', ' ', s)
     s = re.sub(rf'\b{LEGAL_SUFFIXES}\b', ' ', s)
-    s = re.sub(r'\s+', ' ', s).strip()
-    return s
+    return re.sub(r'\s+', ' ', s).strip()
 
-def _company_matches(company_name: str, text: str) -> bool:
-    cn = _normalize_company(company_name)
-    t = _normalize_company(text or "")
-    if not cn:
-        return False
-    cn_tokens = set(cn.split())
-    t_tokens = set(t.split())
+def _company_matches(company_name: str, text: Optional[str]) -> bool:
+    cn_tokens = set(_normalize_company(company_name).split())
+    t_tokens = set(_normalize_company(text).split()) if text else set()
     if not cn_tokens:
         return False
     common = cn_tokens.intersection(t_tokens)
-    return (len(common) >= max(1, len(cn_tokens)//2))
+    return len(common) >= max(1, len(cn_tokens) // 2)
 
 def _domain_mentioned(domain: str, r: dict) -> bool:
-    joined = ((r.get("href") or "") + " " + (r.get("title") or "") + " " + (r.get("body") or "")).lower()
-    return domain.lower() in joined if domain else False
+    combined_text = f"{r.get('href','')} {r.get('title','')} {r.get('body','')}".lower()
+    return domain.lower() in combined_text if domain else False
 
 def is_zoominfo_profile(href: str) -> bool:
     if not href:
         return False
-    h = href.lower()
-    return ("zoominfo.com" in h) and (
-        "/company/" in h or "/c/" in h or "/profile/" in h or "/company-profile" in h
-    )
+    href_lower = href.lower()
+    return "zoominfo.com" in href_lower and any(x in href_lower for x in ["/company/", "/c/", "/profile/", "/company-profile"])
 
 def url_slug_matches_company(company_name: str, href: str) -> bool:
     if not href or not company_name:
         return False
     try:
-        p = urlparse(href)
-        path = unquote(p.path)
+        path = unquote(urlparse(href).path)
         slug = path.strip("/").replace("-", " ").replace("_", " ").lower()
         return _company_matches(company_name, slug)
     except Exception:
         return False
 
-def company_near_revenue(text: str, company_name: str, revenue_substring: str, window_chars:int=80) -> bool:
+def company_near_revenue(text: str, company_name: str, revenue_substring: str, window_chars: int = 80) -> bool:
     if not text or not company_name or not revenue_substring:
         return False
     idx = text.lower().find(revenue_substring.lower())
@@ -103,46 +93,41 @@ def company_near_revenue(text: str, company_name: str, revenue_substring: str, w
     snippet = text[start:end]
     return _company_matches(company_name, snippet)
 
-# ---------- Extraction pipelines ----------
-def _best_result(results, company_name, domain, extractor, parser,
-                 enforce_company_match=False, validator=None, emp_val=None, debug=False):
+# ---------- Extraction Pipeline ----------
+def _best_result(results: list[dict], company_name: str, domain: str, extractor, parser,
+                 enforce_company_match: bool = False, validator=None, emp_val: Optional[str] = None,
+                 debug: bool = False) -> Tuple[Any, Optional[str], bool]:
+
     candidates = []
 
     if debug:
-        print(f"🔍 Evaluating {len(results)} results for {company_name} / {domain}")
+        print(f"Evaluating {len(results)} results for {company_name} / {domain}")
 
     for r in results:
-        title, body, href = r.get("title") or "", r.get("body") or "", r.get("href") or ""
+        title, body, href = r.get("title",""), r.get("body",""), r.get("href","")
         text_block = f"{title} {body}"
 
         if enforce_company_match and not (_company_matches(company_name, text_block) or _company_matches(company_name, href)):
-            if debug:
-                print(f"   ⏭ Skipping {href} (company mismatch)")
+            if debug: print(f"Skipping {href} (company mismatch)")
             continue
 
+        # Revenue-specific extraction
         if extractor == extract_revenue:
             if "zoominfo.com" not in (href or "").lower():
-                if debug:
-                    print(f"   ⏭ Skipping {href} (not ZoomInfo)")
+                if debug: print(f"Skipping {href} (not ZoomInfo)")
                 continue
 
             revenue_val_snippet = extractor(body) or extractor(title)
-
             revenue_val_html = None
-            html = None
             try:
                 html = fetch_html(href, timeout=8)
-                if html:
-                    revenue_val_html = extractor(html)
+                revenue_val_html = extractor(html) if html else None
             except Exception as e:
-                if debug:
-                    print(f"   ⚠️ fetch_html failed for {href}: {e}")
-                revenue_val_html = None
+                if debug: print(f"fetch_html failed for {href}: {e}")
 
             revenue_val = revenue_val_html or revenue_val_snippet
             if not revenue_val:
-                if debug:
-                    print(f"   ⏭ No revenue extracted from {href}")
+                if debug: print(f"No revenue extracted from {href}")
                 continue
 
             try:
@@ -153,37 +138,21 @@ def _best_result(results, company_name, domain, extractor, parser,
             company_match = _company_matches(company_name, text_block) or url_slug_matches_company(company_name, href)
             domain_match = _domain_mentioned(domain, r)
             profile_flag = is_zoominfo_profile(href)
-
-            prox_ok = False
-            if revenue_val:
-                prox_ok = company_near_revenue(text_block, company_name, revenue_val, 80)
-                if not prox_ok and revenue_val_html and html:
-                    prox_ok = company_near_revenue(html, company_name, revenue_val_html, 200)
+            prox_ok = company_near_revenue(text_block, company_name, revenue_val, 80)
+            if not prox_ok and revenue_val_html:
+                prox_ok = company_near_revenue(html, company_name, revenue_val_html, 200)
 
             if not (company_match or domain_match or profile_flag):
-                if debug:
-                    print(f"   ⏭ Skipping {href} (weak match)")
+                if debug: print(f"Skipping {href} (weak match)")
                 continue
 
-            score = 0
-            if profile_flag: score += 4
-            if domain_match: score += 3
-            if company_match: score += 3
-            if prox_ok: score += 2
-
+            score = (4 if profile_flag else 0) + (3 if domain_match else 0) + (3 if company_match else 0) + (2 if prox_ok else 0)
             approx = isinstance(revenue_val, str) and revenue_val.strip().startswith(("<", ">"))
 
-            if debug:
-                print(f"   ✅ Candidate revenue {revenue_val} (score {score}, approx={approx}) from {href}")
+            if debug: print(f"Candidate revenue {revenue_val} (score {score}, approx={approx}) from {href}")
+            candidates.append({"val_raw": revenue_val, "parsed": parsed_val, "href": href, "score": score, "approx": approx})
 
-            candidates.append({
-                "val_raw": revenue_val,
-                "parsed": parsed_val,
-                "href": href,
-                "score": score,
-                "approx": approx
-            })
-
+        # Generic extraction for employees or industry
         else:
             val = extractor(body) or extractor(title)
             if not val:
@@ -194,45 +163,40 @@ def _best_result(results, company_name, domain, extractor, parser,
             candidates.append({"val_raw": val, "parsed": parsed_val, "href": href, "score": 1, "approx": False})
 
     if not candidates:
-        if debug:
-            print("   ❌ No valid candidates found")
+        if debug: print("No valid candidates found")
         return None, None, False
 
     if extractor == extract_revenue:
         candidates.sort(key=lambda c: (c["score"], not c["approx"], c["parsed"] or 0), reverse=True)
-
         if validator and emp_val:
             emp_num = parse_employees(emp_val)
             if isinstance(emp_num, int):
                 for c in candidates:
-                    if (not c["approx"]) and (c["parsed"] is not None) and validator(c["parsed"], emp_num):
+                    if not c["approx"] and c["parsed"] is not None and validator(c["parsed"], emp_num):
                         return c["val_raw"], c["href"], False
                 for c in candidates:
-                    if c["approx"] and (c["parsed"] is not None) and validator(c["parsed"], emp_num):
+                    if c["approx"] and c["parsed"] is not None and validator(c["parsed"], emp_num):
                         return c["val_raw"], c["href"], False
-                top = candidates[0]
-                return top["val_raw"], top["href"], True
+        top = candidates[0]
+        return top["val_raw"], top["href"], True
 
     candidates.sort(key=lambda c: c["score"], reverse=True)
     top = candidates[0]
     return top["val_raw"], top["href"], False
 
-
-def extract_field_via_queries(queries, company_name, domain, extractor, parser, search_func,
-                              enforce_company_match=False, validator=None, emp_val=None, debug=False):
+def extract_field_via_queries(
+    queries: list[str], company_name: str, domain: str, extractor, parser, search_func,
+    enforce_company_match: bool = False, validator=None, emp_val: Optional[str] = None, debug: bool = False
+) -> Tuple[Any, Optional[str], bool]:
     aggregated = []
     seen_hrefs = set()
     for q in queries:
         results = search_func(q, max_results=100)
-        if debug:
-            print(f"🔎 Query: {q} -> {len(results) if results else 0} results")
-        if not results:
-            continue
+        if debug: print(f"Query: {q} -> {len(results) if results else 0} results")
+        if not results: continue
         for r in results:
-            href = r.get("href") or ""
-            href_norm = href.split("#")[0]
-            if href_norm in seen_hrefs:
-                continue
+            href_norm = (r.get("href") or "").split("#")[0]
+            if href_norm in seen_hrefs: continue
             seen_hrefs.add(href_norm)
             aggregated.append(r)
     if not aggregated:
@@ -241,9 +205,9 @@ def extract_field_via_queries(queries, company_name, domain, extractor, parser, 
                         enforce_company_match=enforce_company_match, validator=validator, emp_val=emp_val, debug=debug)
 
 # ---------- Worker ----------
-def find_company_info(domain, country, company, debug=False):
+def find_company_info(domain: str, country: str, company: str, debug: bool = False) -> Tuple[Any, Any, Any, bool, Any, Any]:
     if debug:
-        print(f"\n=== Processing {company} ({domain}, {country}) ===")
+        print(f"\nProcessing {company} ({domain}, {country})")
 
     emp_val, _, _ = extract_field_via_queries(
         employee_queries(company, domain, country),
@@ -277,17 +241,14 @@ def find_company_info(domain, country, company, debug=False):
 
     return emp_val, rev_val, ind_val, flagged, emp_num, rev_num
 
-# ---------- Async orchestration ----------
+# ---------- Async Orchestration ----------
 async def process_unique_domain(loop, executor, domain, country, company, debug=False):
     return await loop.run_in_executor(executor, find_company_info, domain, country, company, debug)
 
-async def irvalue_logic(df: pd.DataFrame, debug=False) -> pd.DataFrame:
+async def irvalue_logic(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
     df = df.copy()
     for col in ["Domain", "Country", "Company Name"]:
-        if col in df.columns:
-            df[col] = df[col].astype(str).str.strip()
-        else:
-            df[col] = ""
+        df[col] = df[col].astype(str).str.strip() if col in df.columns else ""
 
     if "Revenue_per_Employee" in df.columns:
         set_rpe_range_from_data(df["Revenue_per_Employee"])
@@ -310,7 +271,6 @@ async def irvalue_logic(df: pd.DataFrame, debug=False) -> pd.DataFrame:
     df["discovered_revenue_raw"] = df["Domain"].apply(lambda d: results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))[1])
     df["discovered_industry"] = df["Domain"].apply(lambda d: results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))[2])
     df["flagged_rpe"] = df["Domain"].apply(lambda d: results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))[3])
-
     df["discovered_employees"] = df["Domain"].apply(lambda d: results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))[4])
     df["discovered_revenue"] = df["Domain"].apply(lambda d: results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))[5])
 
@@ -334,7 +294,7 @@ def run_cli():
 
     result_df = asyncio.run(irvalue_logic(df, debug=args.debug))
     result_df.to_csv(args.output, index=False, encoding="utf-8")
-    print(f"✅ IRValue processing complete. Output saved to {args.output}")
+    print(f"IRValue processing complete. Output saved to {args.output}")  # Removed emoji for Windows-safe output
 
 if __name__ == "__main__":
     run_cli()
