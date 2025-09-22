@@ -32,7 +32,7 @@ from agents.qc_domain.qc_agent.io_utils import apply_qc_domain_coloring
 st.set_page_config(page_title="Combined Data Processing Agent", layout="wide")
 st.title("📊 Combined Data Processing Agent")
 st.markdown(
-    "Upload your data and run through MailName, LinkedIn, QC Domain, optional IRValue, and properization."
+    "Upload your data and run through IRValue (optional), MailName, LinkedIn, QC Domain, and properization."
 )
 
 # ---------------------------
@@ -82,7 +82,7 @@ if uploaded_file:
     # Optional checkboxes BEFORE pipeline starts
     col1, col2 = st.columns(2)
     with col1:
-        run_irvalue = st.checkbox("Run IRValue Agent (phase_4)", value=False)
+        run_irvalue = st.checkbox("Run IRValue Agent (phase_1)", value=False)
     with col2:
         enforce_common_street = st.checkbox(
             "Enforce most common street per Domain",
@@ -103,14 +103,23 @@ if uploaded_file:
             st.write(f"Rows: {len(df)} | Columns: {list(df.columns)}")
 
             # ---------------------------
-            # Step 1: MailName Agent
+            # Step 1: IRValue (optional, run first now)
+            # ---------------------------
+            if run_irvalue:
+                st.write("🔄 Running IRValue Agent (first)...")
+                df = run_irvalue_agent(df)
+            else:
+                st.write("⏭️ Skipping IRValue Agent (phase_1)")
+
+            # ---------------------------
+            # Step 2: MailName Agent
             # ---------------------------
             st.write("🔄 Running MailName Agent...")
             df = run_mailname_agent(df)
             st.write(f"After MailName: rows={len(df)}, cols={len(df.columns)}")
 
             # ---------------------------
-            # Step 2: LinkedIn Agent
+            # Step 3: LinkedIn Agent
             # ---------------------------
             st.write("🔄 Running LinkedIn Agent (may take time)...")
             df = run_linkedin_agent(df)
@@ -125,19 +134,10 @@ if uploaded_file:
                 )
 
             # ---------------------------
-            # Step 3: QC Domain Agent
+            # Step 4: QC Domain Agent
             # ---------------------------
             st.write("🔄 Running QC Domain Agent...")
             df = run_qc_domain_agent(df)
-
-            # ---------------------------
-            # Step 4: IRValue (optional)
-            # ---------------------------
-            if run_irvalue:
-                st.write("🔄 Running IRValue Agent...")
-                df = run_irvalue_agent(df)
-            else:
-                st.write("⏭️ Skipping IRValue Agent (phase_4)")
 
             # ---------------------------
             # Step 5: Properization
