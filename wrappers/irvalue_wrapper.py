@@ -3,43 +3,51 @@ import pandas as pd
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 
 def run_irvalue_agent(df: pd.DataFrame) -> pd.DataFrame:
     """
     Run the IRValue agent on a DataFrame via its CLI.
     Saves the DataFrame to a temporary CSV and reads back the enriched data.
     """
-    tmp_input = Path("temp_irvalue_input.csv")
-    tmp_output = Path("temp_irvalue_output.csv")
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmp_input = Path(tmpdir) / "input.csv"
+        tmp_output = Path(tmpdir) / "output.csv"
 
-    df.to_csv(tmp_input, index=False, encoding="utf-8")
+        # Save input file
+        df.to_csv(tmp_input, index=False, encoding="utf-8")
 
-    # Path to IRValue main.py
-    ir_main = Path(__file__).resolve().parents[1] / "agents" / "irvalue_phase_4" / "main.py"
-    if not ir_main.exists():
-        raise FileNotFoundError(f"IRValue agent main.py not found: {ir_main}")
+        # Path to IRValue main.py
+        ir_main = Path(__file__).resolve().parents[1] / "agents" / "irvalue_phase_4" / "main.py"
+        if not ir_main.exists():
+            raise FileNotFoundError(f"IRValue agent main.py not found: {ir_main}")
 
-    # ✅ Use the current Python interpreter instead of plain "python"
-    subprocess.run(
-        [sys.executable, str(ir_main), "--input", str(tmp_input), "--output", str(tmp_output)],
-        check=True
-    )
+        # Run subprocess and capture logs
+        result = subprocess.run(
+            [sys.executable, str(ir_main), "--input", str(tmp_input), "--output", str(tmp_output)],
+            capture_output=True,
+            text=True
+        )
 
-    if not tmp_output.exists():
-        raise FileNotFoundError("IRValue agent did not produce the expected output.")
+        # Debug logs
+        print("=== IRValue STDOUT ===")
+        print(result.stdout)
+        print("=== IRValue STDERR ===")
+        print(result.stderr)
 
-    # Read processed output
-    processed_df = pd.read_csv(tmp_output, dtype=str, keep_default_na=False)
+        if result.returncode != 0:
+            raise RuntimeError(f"IRValue agent failed with code {result.returncode}")
 
-    # Cleanup temp files
-    tmp_input.unlink(missing_ok=True)
-    tmp_output.unlink(missing_ok=True)
+        if not tmp_output.exists():
+            raise FileNotFoundError("IRValue agent did not produce the expected output.")
+
+        # Read processed output
+        processed_df = pd.read_csv(tmp_output, dtype=str, keep_default_na=False)
 
     return processed_df
 
 
 if __name__ == "__main__":
-    # Quick test
     df = pd.DataFrame({
         "Company Name": ["Acme Inc", "Beta LLC"],
         "Domain": ["acme.com", "beta.com"],
