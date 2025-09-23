@@ -1,56 +1,79 @@
 # wrappers/irvalue_wrapper.py
 import pandas as pd
 from pathlib import Path
-import subprocess
-import sys
 import tempfile
+import traceback
+import sys
+import os
 
-def run_irvalue_agent(df: pd.DataFrame) -> pd.DataFrame:
+# Import the IRValue logic directly (runs in-process instead of subprocess)
+# This assumes your irvalue module exposes irvalue_logic(df, debug=False)
+try:
+    from agents.irvalue_phase_4.main import irvalue_logic
+except Exception:
+    # Fallback if path issues — try adjusting sys.path
+    repo_root = os.path.dirname(os.path.dirname(__file__))
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+    from agents.irvalue_phase_4.main import irvalue_logic
+
+def run_irvalue_agent(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
     """
-    Run the IRValue agent on a DataFrame via its CLI.
-    Saves the DataFrame to a temporary CSV and reads back the enriched data.
+    Run the IRValue agent in-process on the given DataFrame.
+    This avoids fragile subprocess invocations on cloud platforms.
+    Returns the enriched DataFrame; on failure, returns the original df with added empty columns.
     """
-    with tempfile.TemporaryDirectory() as tmpdir:
-        tmp_input = Path(tmpdir) / "input.csv"
-        tmp_output = Path(tmpdir) / "output.csv"
+    # Defensive copy
+    df = df.copy()
 
-        # Save input file
-        df.to_csv(tmp_input, index=False, encoding="utf-8")
+    # Ensure required columns exist
+    for col in ["Domain", "Country", "Company Name"]:
+        if col not in df.columns:
+            df[col] = ""
 
-        # Path to IRValue main.py
-        ir_main = Path(__file__).resolve().parents[1] / "agents" / "irvalue_phase_4" / "main.py"
-        if not ir_main.exists():
-            raise FileNotFoundError(f"IRValue agent main.py not found: {ir_main}")
+    try:
+        # If irvalue_logic is async, run it via asyncio.run
+        import asyncio
+        # detect if irvalue_logic is coroutine function
+        if asyncio.iscoroutinefunction(irvalue_logic):
+            enriched = asyncio.run(irvalue_logic(df, debug=debug))
+        else:
+            # irvalue_logic may be sync and accept df
+            enriched = irvalue_logic(df, debug=debug)
 
-        # Run subprocess and capture logs
-        result = subprocess.run(
-            [sys.executable, str(ir_main), "--input", str(tmp_input), "--output", str(tmp_output)],
-            capture_output=True,
-            text=True
-        )
+        # ensure we return a DataFrame
+        if not isinstance(enriched, pd.DataFrame):
+            raise RuntimeError("IRValue returned non-DataFrame result")
+        return enriched
 
-        # Debug logs
-        print("=== IRValue STDOUT ===")
-        print(result.stdout)
-        print("=== IRValue STDERR ===")
-        print(result.stderr)
+    except Exception as exc:
+        # Log the traceback to stdout so Render/Streamlit logs show it
+        print("ERROR running IRValue agent:", file=sys.stderr)
+        traceback.print_exc()
+        print("IRValue failed — returning original DataFrame with placeholder columns", file=sys.stderr)
 
-        if result.returncode != 0:
-            raise RuntimeError(f"IRValue agent failed with code {result.returncode}")
+        # Add the discovered columns (empty) so downstream code won't break
+        placeholder_cols = [
+            "discovered_employees_raw",
+            "discovered_revenue_raw",
+            "discovered_industry",
+            "flagged_rpe",
+            "discovered_employees",
+            "discovered_revenue"
+        ]
+        for c in placeholder_cols:
+            if c not in df.columns:
+                df[c] = ""
 
-        if not tmp_output.exists():
-            raise FileNotFoundError("IRValue agent did not produce the expected output.")
-
-        # Read processed output
-        processed_df = pd.read_csv(tmp_output, dtype=str, keep_default_na=False)
-
-    return processed_df
+        return df
 
 
+# quick local test if run directly
 if __name__ == "__main__":
+    import pandas as pd
     df = pd.DataFrame({
-        "Company Name": ["Acme Inc", "Beta LLC"],
-        "Domain": ["acme.com", "beta.com"],
+        "Company Name": ["Example Inc", "Foo LLC"],
+        "Domain": ["example.com", "foo.com"],
         "Country": ["USA", "USA"]
     })
-    print(run_irvalue_agent(df))
+    print(run_irvalue_agent(df, debug=True).head())

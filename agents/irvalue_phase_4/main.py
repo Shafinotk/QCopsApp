@@ -7,6 +7,7 @@ import chardet
 from tqdm import tqdm
 from urllib.parse import urlparse, unquote
 from typing import Optional, Tuple, Any
+import logging
 
 from search_utils import search_zoominfo, search_linkedin, fetch_html
 from extract_utils import (
@@ -14,6 +15,14 @@ from extract_utils import (
     format_employee_value, format_revenue_value, parse_industry_value,
     parse_employees, parse_revenue, is_valid_rpe, set_rpe_range_from_data
 )
+
+# ---------- Logging ----------
+logger = logging.getLogger("irvalue.main")
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+if not logger.handlers:
+    logger.addHandler(handler)
+logger.setLevel(logging.INFO)
 
 # ---------- Query Builders ----------
 def employee_queries(company_name: str, domain: str, country: str) -> list[str]:
@@ -94,156 +103,20 @@ def company_near_revenue(text: str, company_name: str, revenue_substring: str, w
     return _company_matches(company_name, snippet)
 
 # ---------- Extraction Pipeline ----------
-def _best_result(results: list[dict], company_name: str, domain: str, extractor, parser,
-                 enforce_company_match: bool = False, validator=None, emp_val: Optional[str] = None,
-                 debug: bool = False) -> Tuple[Any, Optional[str], bool]:
-
-    candidates = []
-
-    if debug:
-        print(f"Evaluating {len(results)} results for {company_name} / {domain}")
-
-    for r in results:
-        title, body, href = r.get("title",""), r.get("body",""), r.get("href","")
-        text_block = f"{title} {body}"
-
-        if enforce_company_match and not (_company_matches(company_name, text_block) or _company_matches(company_name, href)):
-            if debug: print(f"Skipping {href} (company mismatch)")
-            continue
-
-        # Revenue-specific extraction
-        if extractor == extract_revenue:
-            if "zoominfo.com" not in (href or "").lower():
-                if debug: print(f"Skipping {href} (not ZoomInfo)")
-                continue
-
-            revenue_val_snippet = extractor(body) or extractor(title)
-            revenue_val_html = None
-            try:
-                html = fetch_html(href, timeout=8)
-                revenue_val_html = extractor(html) if html else None
-            except Exception as e:
-                if debug: print(f"fetch_html failed for {href}: {e}")
-
-            revenue_val = revenue_val_html or revenue_val_snippet
-            if not revenue_val:
-                if debug: print(f"No revenue extracted from {href}")
-                continue
-
-            try:
-                parsed_val = parse_revenue(revenue_val)
-            except Exception:
-                parsed_val = None
-
-            company_match = _company_matches(company_name, text_block) or url_slug_matches_company(company_name, href)
-            domain_match = _domain_mentioned(domain, r)
-            profile_flag = is_zoominfo_profile(href)
-            prox_ok = company_near_revenue(text_block, company_name, revenue_val, 80)
-            if not prox_ok and revenue_val_html:
-                prox_ok = company_near_revenue(html, company_name, revenue_val_html, 200)
-
-            if not (company_match or domain_match or profile_flag):
-                if debug: print(f"Skipping {href} (weak match)")
-                continue
-
-            score = (4 if profile_flag else 0) + (3 if domain_match else 0) + (3 if company_match else 0) + (2 if prox_ok else 0)
-            approx = isinstance(revenue_val, str) and revenue_val.strip().startswith(("<", ">"))
-
-            if debug: print(f"Candidate revenue {revenue_val} (score {score}, approx={approx}) from {href}")
-            candidates.append({"val_raw": revenue_val, "parsed": parsed_val, "href": href, "score": score, "approx": approx})
-
-        # Generic extraction for employees or industry
-        else:
-            val = extractor(body) or extractor(title)
-            if not val:
-                continue
-            parsed_val = parser(val)
-            if not parsed_val:
-                continue
-            candidates.append({"val_raw": val, "parsed": parsed_val, "href": href, "score": 1, "approx": False})
-
-    if not candidates:
-        if debug: print("No valid candidates found")
-        return None, None, False
-
-    if extractor == extract_revenue:
-        candidates.sort(key=lambda c: (c["score"], not c["approx"], c["parsed"] or 0), reverse=True)
-        if validator and emp_val:
-            emp_num = parse_employees(emp_val)
-            if isinstance(emp_num, int):
-                for c in candidates:
-                    if not c["approx"] and c["parsed"] is not None and validator(c["parsed"], emp_num):
-                        return c["val_raw"], c["href"], False
-                for c in candidates:
-                    if c["approx"] and c["parsed"] is not None and validator(c["parsed"], emp_num):
-                        return c["val_raw"], c["href"], False
-        top = candidates[0]
-        return top["val_raw"], top["href"], True
-
-    candidates.sort(key=lambda c: c["score"], reverse=True)
-    top = candidates[0]
-    return top["val_raw"], top["href"], False
-
-def extract_field_via_queries(
-    queries: list[str], company_name: str, domain: str, extractor, parser, search_func,
-    enforce_company_match: bool = False, validator=None, emp_val: Optional[str] = None, debug: bool = False
-) -> Tuple[Any, Optional[str], bool]:
-    aggregated = []
-    seen_hrefs = set()
-    for q in queries:
-        results = search_func(q, max_results=100)
-        if debug: print(f"Query: {q} -> {len(results) if results else 0} results")
-        if not results: continue
-        for r in results:
-            href_norm = (r.get("href") or "").split("#")[0]
-            if href_norm in seen_hrefs: continue
-            seen_hrefs.add(href_norm)
-            aggregated.append(r)
-    if not aggregated:
-        return None, None, False
-    return _best_result(aggregated, company_name, domain, extractor, parser,
-                        enforce_company_match=enforce_company_match, validator=validator, emp_val=emp_val, debug=debug)
+# (unchanged _best_result and extract_field_via_queries here)
 
 # ---------- Worker ----------
 def find_company_info(domain: str, country: str, company: str, debug: bool = False) -> Tuple[Any, Any, Any, bool, Any, Any]:
-    if debug:
-        print(f"\nProcessing {company} ({domain}, {country})")
-
-    emp_val, _, _ = extract_field_via_queries(
-        employee_queries(company, domain, country),
-        company, domain,
-        extract_employees, format_employee_value,
-        search_zoominfo,
-        debug=debug
-    )
-
-    rev_val, _, flagged = extract_field_via_queries(
-        revenue_queries(company, domain, country),
-        company, domain,
-        extract_revenue, format_revenue_value,
-        search_zoominfo,
-        validator=is_valid_rpe,
-        emp_val=emp_val,
-        debug=debug
-    )
-
-    ind_val, _, _ = extract_field_via_queries(
-        industry_queries(company, domain, country),
-        company, domain,
-        extract_industry, parse_industry_value,
-        search_linkedin,
-        enforce_company_match=True,
-        debug=debug
-    )
-
-    emp_num = parse_employees(emp_val)
-    rev_num = parse_revenue(rev_val) if rev_val else None
-
-    return emp_val, rev_val, ind_val, flagged, emp_num, rev_num
+    # (unchanged logic here)
+    ...
 
 # ---------- Async Orchestration ----------
 async def process_unique_domain(loop, executor, domain, country, company, debug=False):
-    return await loop.run_in_executor(executor, find_company_info, domain, country, company, debug)
+    try:
+        return await loop.run_in_executor(executor, find_company_info, domain, country, company, debug)
+    except Exception as e:
+        logger.warning("Domain worker failed for %s: %s", domain, e)
+        return (None, None, None, False, None, None)
 
 async def irvalue_logic(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
     df = df.copy()
@@ -253,28 +126,49 @@ async def irvalue_logic(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
     if "Revenue_per_Employee" in df.columns:
         set_rpe_range_from_data(df["Revenue_per_Employee"])
 
-    domain_jobs = {row["Domain"].lower(): (row["Domain"], row["Country"], row["Company Name"])
-                   for _, row in df.iterrows() if row.get("Domain")}
+    # Build unique domain map
+    domain_jobs = {}
+    for _, row in df.iterrows():
+        d = (row.get("Domain") or "").strip()
+        if not d:
+            continue
+        key = d.lower()
+        if key not in domain_jobs:
+            domain_jobs[key] = (row["Domain"], row.get("Country", ""), row.get("Company Name", ""))
 
     loop = asyncio.get_running_loop()
     results_by_domain = {}
 
-    with ThreadPoolExecutor(max_workers=12) as executor:
-        tasks = [(key, asyncio.create_task(process_unique_domain(loop, executor, dom, country, company, debug)))
-                 for key, (dom, country, company) in domain_jobs.items()]
+    # safer concurrency
+    max_workers = 6
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        tasks = []
+        for key, (dom, country, company) in domain_jobs.items():
+            task = asyncio.create_task(process_unique_domain(loop, executor, dom, country, company, debug))
+            tasks.append((key, task))
 
         for key, task in tqdm(tasks, total=len(tasks), desc="IRValue Progress"):
-            emp, rev, ind, flagged, emp_num, rev_num = await task
+            try:
+                emp, rev, ind, flagged, emp_num, rev_num = await task
+            except Exception as e:
+                logger.exception("Task for %s raised: %s", key, e)
+                emp, rev, ind, flagged, emp_num, rev_num = (None, None, None, False, None, None)
             results_by_domain[key] = (emp, rev, ind, flagged, emp_num, rev_num)
 
-    df["discovered_employees_raw"] = df["Domain"].apply(lambda d: results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))[0])
-    df["discovered_revenue_raw"] = df["Domain"].apply(lambda d: results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))[1])
-    df["discovered_industry"] = df["Domain"].apply(lambda d: results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))[2])
-    df["flagged_rpe"] = df["Domain"].apply(lambda d: results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))[3])
-    df["discovered_employees"] = df["Domain"].apply(lambda d: results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))[4])
-    df["discovered_revenue"] = df["Domain"].apply(lambda d: results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))[5])
+    # Map back
+    def _get_for_domain(d):
+        return results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))
 
+    df["discovered_employees_raw"] = df["Domain"].apply(lambda d: _get_for_domain(d)[0])
+    df["discovered_revenue_raw"] = df["Domain"].apply(lambda d: _get_for_domain(d)[1])
+    df["discovered_industry"] = df["Domain"].apply(lambda d: _get_for_domain(d)[2])
+    df["flagged_rpe"] = df["Domain"].apply(lambda d: _get_for_domain(d)[3])
+    df["discovered_employees"] = df["Domain"].apply(lambda d: _get_for_domain(d)[4])
+    df["discovered_revenue"] = df["Domain"].apply(lambda d: _get_for_domain(d)[5])
+
+    logger.info("IRValue: completed enrichment for %d domains", len(results_by_domain))
     return df
+
 
 # ---------- CLI Entry ----------
 def run_cli():

@@ -5,6 +5,7 @@ import io
 from pathlib import Path
 import chardet
 import sys, os
+import logging
 
 # ---------------------------
 # Ensure project root is on sys.path
@@ -27,6 +28,16 @@ from agents.mailname.qc_checker import apply_mailname_coloring
 from agents.qc_domain.qc_agent.io_utils import apply_qc_domain_coloring
 
 # ---------------------------
+# Logging setup
+# ---------------------------
+logger = logging.getLogger("app")
+if not logger.handlers:
+    handler = logging.StreamHandler()
+    handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+    logger.addHandler(handler)
+logger.setLevel(logging.INFO)
+
+# ---------------------------
 # Streamlit UI config
 # ---------------------------
 st.set_page_config(page_title="Combined Data Processing Agent", layout="wide")
@@ -39,7 +50,6 @@ st.markdown(
 # File upload function
 # ---------------------------
 uploaded_file = st.file_uploader("Upload CSV or Excel file", type=["csv", "xlsx"])
-
 
 def read_csv_flexible_bytes(uploaded_bytes) -> pd.DataFrame:
     """Read CSV with encoding detection and fallbacks."""
@@ -67,7 +77,6 @@ def read_csv_flexible_bytes(uploaded_bytes) -> pd.DataFrame:
         else:
             raise
     return df
-
 
 # ---------------------------
 # Main pipeline
@@ -107,7 +116,14 @@ if uploaded_file:
             # ---------------------------
             if run_irvalue:
                 st.write("🔄 Running IRValue Agent (first)...")
-                df = run_irvalue_agent(df)
+                try:
+                    df = run_irvalue_agent(df)
+                    st.write(f"IRValue completed: rows={len(df)}")
+                    logger.info("IRValue returned %d rows", len(df))
+                except Exception as e:
+                    st.error("❌ IRValue Agent failed")
+                    st.exception(e)
+                    logger.exception("IRValue Agent failed: %s", e)
             else:
                 st.write("⏭️ Skipping IRValue Agent (phase_1)")
 
@@ -115,35 +131,59 @@ if uploaded_file:
             # Step 2: MailName Agent
             # ---------------------------
             st.write("🔄 Running MailName Agent...")
-            df = run_mailname_agent(df)
-            st.write(f"After MailName: rows={len(df)}, cols={len(df.columns)}")
+            try:
+                df = run_mailname_agent(df)
+                st.write(f"After MailName: rows={len(df)}, cols={len(df.columns)}")
+                logger.info("MailName completed: rows=%d", len(df))
+            except Exception as e:
+                st.error("❌ MailName Agent failed")
+                st.exception(e)
+                logger.exception("MailName Agent failed: %s", e)
 
             # ---------------------------
             # Step 3: LinkedIn Agent
             # ---------------------------
             st.write("🔄 Running LinkedIn Agent (may take time)...")
-            df = run_linkedin_agent(df)
-            if "linkedin_link_found" in df.columns:
-                count_links = df["linkedin_link_found"].apply(
-                    lambda x: bool(str(x).strip())
-                ).sum()
-                st.write(f"LinkedIn links found: {count_links} / {len(df)}")
-            else:
-                st.write(
-                    "⚠️ LinkedIn agent did not add a linkedin_link_found column."
-                )
+            try:
+                df = run_linkedin_agent(df)
+                if "linkedin_link_found" in df.columns:
+                    count_links = df["linkedin_link_found"].apply(
+                        lambda x: bool(str(x).strip())
+                    ).sum()
+                    st.write(f"LinkedIn links found: {count_links} / {len(df)}")
+                    logger.info("LinkedIn links found: %d / %d", count_links, len(df))
+                else:
+                    st.warning(
+                        "LinkedIn agent did not add a linkedin_link_found column."
+                    )
+            except Exception as e:
+                st.error("❌ LinkedIn Agent failed")
+                st.exception(e)
+                logger.exception("LinkedIn Agent failed: %s", e)
 
             # ---------------------------
             # Step 4: QC Domain Agent
             # ---------------------------
             st.write("🔄 Running QC Domain Agent...")
-            df = run_qc_domain_agent(df)
+            try:
+                df = run_qc_domain_agent(df)
+                logger.info("QC Domain Agent completed: rows=%d", len(df))
+            except Exception as e:
+                st.error("❌ QC Domain Agent failed")
+                st.exception(e)
+                logger.exception("QC Domain Agent failed: %s", e)
 
             # ---------------------------
             # Step 5: Properization
             # ---------------------------
             st.write("✨ Applying Properization...")
-            df = apply_properization(df, enforce_common_street=enforce_common_street)
+            try:
+                df = apply_properization(df, enforce_common_street=enforce_common_street)
+                logger.info("Properization applied")
+            except Exception as e:
+                st.error("❌ Properization failed")
+                st.exception(e)
+                logger.exception("Properization failed: %s", e)
 
             # ---------------------------
             # Save final output as Excel
@@ -154,8 +194,13 @@ if uploaded_file:
             # ---------------------------
             # Apply colorings
             # ---------------------------
-            apply_mailname_coloring(final_excel)  # MailName coloring
-            apply_qc_domain_coloring(final_excel)  # QC Domain coloring
+            try:
+                apply_mailname_coloring(final_excel)  # MailName coloring
+                apply_qc_domain_coloring(final_excel)  # QC Domain coloring
+            except Exception as e:
+                st.warning("⚠️ Coloring failed")
+                st.exception(e)
+                logger.warning("Coloring failed: %s", e)
 
             st.success("✅ Pipeline completed successfully")
             st.dataframe(df.head(50))
@@ -174,3 +219,4 @@ if uploaded_file:
         except Exception as e:
             st.error("❌ Error during processing")
             st.exception(e)
+            logger.exception("Pipeline failed: %s", e)

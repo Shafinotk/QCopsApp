@@ -11,6 +11,7 @@ XlsxWriter>=3.2
 
 # Parsing & text utilities
 beautifulsoup4>=4.12
+lxml>=4.9
 requests>=2.31
 httpx
 chardet
@@ -22,8 +23,6 @@ tldextract>=5.1
 # Search & external APIs
 duckduckgo-search>=8.1.0
 ddgs>=9.0.0
-
-# OR: ddgs>=9.0.0  (but don’t use both)
 
 # Config & environment
 python-dotenv>=1.0

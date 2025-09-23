@@ -2,6 +2,13 @@ services:
   - type: web
     name: qcops-app
     env: python
-    plan: free   # change to starter/standard if you need bigger resources
+    plan: free   # Change to starter/standard if you need more CPU/memory or longer timeouts
     buildCommand: "pip install -r requirements.txt"
     startCommand: "streamlit run app.py --server.port $PORT --server.headless true --server.enableCORS false"
+    envVars:
+      # Add any optional API keys here
+      DDGS_API_KEY: ""
+      ZOOMINFO_API_KEY: ""
+      LINKEDIN_API_KEY: ""
+    # Optional: increase deploy timeout if heavy scraping or Playwright is used
+    # deployTimeout: 900  # in seconds, uncomment if using longer scraping
