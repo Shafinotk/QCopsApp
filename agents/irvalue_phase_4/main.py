@@ -15,6 +15,9 @@ from .extract_utils import (
     format_employee_value, format_revenue_value, parse_industry_value,
     parse_employees, parse_revenue, is_valid_rpe, set_rpe_range_from_data
 )
+# NEW: validation helpers
+from .validation_utils import validate_domain, is_same_company, sanity_check
+
 
 # ---------- Logging ----------
 logger = logging.getLogger("irvalue.main")
@@ -112,46 +115,64 @@ def find_company_info(domain: str, country: str, company: str, debug: bool = Fal
     flagged = False
 
     try:
-        # --- Employee ---
+        # --- Employees (ZoomInfo candidates) ---
+        emp_candidates = []
         for q in employee_queries(company, domain, country):
             results = search_zoominfo(q)
             for r in results:
-                txt = f"{r.get('title','')} {r.get('body','')}"
-                cand = extract_employees(txt)
-                if cand:
-                    emp = format_employee_value(cand)
-                    emp_num = parse_employees(cand)
-                    break
-            if emp:
-                break
+                href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
+                text = f"{title} {body}"
 
-        # --- Revenue ---
+                cand = extract_employees(text)
+                if cand:
+                    score = score_candidate(company, domain, title, body, href)
+                    emp_candidates.append((score, cand))
+
+        if emp_candidates:
+            best_emp = max(emp_candidates, key=lambda x: x[0])
+            emp = format_employee_value(best_emp[1])
+            emp_num = parse_employees(best_emp[1])
+
+        # --- Revenue (ZoomInfo candidates) ---
+        rev_candidates = []
         for q in revenue_queries(company, domain, country):
             results = search_zoominfo(q)
             for r in results:
-                txt = f"{r.get('title','')} {r.get('body','')}"
-                cand = extract_revenue(txt)
-                if cand:
-                    rev = format_revenue_value(cand)
-                    rev_num = parse_revenue(cand)
-                    break
-            if rev:
-                break
+                href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
+                text = f"{title} {body}"
 
-        # --- Industry ---
+                cand = extract_revenue(text, emp_num)
+                if cand:
+                    score = score_candidate(company, domain, title, body, href)
+                    rev_candidates.append((score, cand))
+
+        if rev_candidates:
+            best_rev = max(rev_candidates, key=lambda x: x[0])
+            rev = format_revenue_value(best_rev[1])
+            rev_num = parse_revenue(best_rev[1])
+            if not sanity_check(emp_num, rev_num):
+                rev, rev_num = None, None
+
+        # --- Industry (LinkedIn candidates only) ---
+        ind_candidates = []
         for q in industry_queries(company, domain, country):
             results = search_zoominfo(q)
             for r in results:
-                href = r.get("href") or ""
-                if "linkedin.com/company" in href:
-                    cand = fetch_industry_from_linkedin_about(href)
-                    if cand:
-                        ind = parse_industry_value(cand)
-                        break
-            if ind:
-                break
+                href, title, body = r.get("href") or "", r.get("title", ""), r.get("body", "")
 
-        # --- Flagged check (RPE validity) ---
+                if "linkedin.com/company" not in href:
+                    continue
+
+                cand = fetch_industry_from_linkedin_about(href)
+                if cand:
+                    score = score_candidate(company, domain, title, body, href)
+                    ind_candidates.append((score, cand))
+
+        if ind_candidates:
+            best_ind = max(ind_candidates, key=lambda x: x[0])
+            ind = parse_industry_value(best_ind[1])
+
+        # --- Flagged check ---
         if not is_valid_rpe(emp_num, rev_num):
             flagged = True
 
@@ -159,8 +180,7 @@ def find_company_info(domain: str, country: str, company: str, debug: bool = Fal
         logger.exception("find_company_info failed for %s: %s", domain, e)
 
     return emp, rev, ind, flagged, emp_num, rev_num
-    # (unchanged logic here)
-    ...
+
 
 # ---------- Async Orchestration ----------
 async def process_unique_domain(loop, executor, domain, country, company, debug=False):
