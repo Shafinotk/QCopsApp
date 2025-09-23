@@ -9,7 +9,7 @@ from urllib.parse import urlparse, unquote
 from typing import Optional, Tuple, Any
 import logging
 
-from .search_utils import search_zoominfo, search_linkedin, fetch_html
+from .search_utils import search_zoominfo, fetch_industry_from_linkedin_about, fetch_html
 from .extract_utils import (
     extract_employees, extract_revenue, extract_industry,
     format_employee_value, format_revenue_value, parse_industry_value,
@@ -107,6 +107,58 @@ def company_near_revenue(text: str, company_name: str, revenue_substring: str, w
 
 # ---------- Worker ----------
 def find_company_info(domain: str, country: str, company: str, debug: bool = False) -> Tuple[Any, Any, Any, bool, Any, Any]:
+    emp, rev, ind = None, None, None
+    emp_num, rev_num = None, None
+    flagged = False
+
+    try:
+        # --- Employee ---
+        for q in employee_queries(company, domain, country):
+            results = search_zoominfo(q)
+            for r in results:
+                txt = f"{r.get('title','')} {r.get('body','')}"
+                cand = extract_employees(txt)
+                if cand:
+                    emp = format_employee_value(cand)
+                    emp_num = parse_employees(cand)
+                    break
+            if emp:
+                break
+
+        # --- Revenue ---
+        for q in revenue_queries(company, domain, country):
+            results = search_zoominfo(q)
+            for r in results:
+                txt = f"{r.get('title','')} {r.get('body','')}"
+                cand = extract_revenue(txt)
+                if cand:
+                    rev = format_revenue_value(cand)
+                    rev_num = parse_revenue(cand)
+                    break
+            if rev:
+                break
+
+        # --- Industry ---
+        for q in industry_queries(company, domain, country):
+            results = search_zoominfo(q)
+            for r in results:
+                href = r.get("href") or ""
+                if "linkedin.com/company" in href:
+                    cand = fetch_industry_from_linkedin_about(href)
+                    if cand:
+                        ind = parse_industry_value(cand)
+                        break
+            if ind:
+                break
+
+        # --- Flagged check (RPE validity) ---
+        if not is_valid_rpe(emp_num, rev_num):
+            flagged = True
+
+    except Exception as e:
+        logger.exception("find_company_info failed for %s: %s", domain, e)
+
+    return emp, rev, ind, flagged, emp_num, rev_num
     # (unchanged logic here)
     ...
 
