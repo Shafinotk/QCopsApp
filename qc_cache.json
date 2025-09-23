@@ -1645,5 +1645,311 @@
     "match_status": "need_manual_check",
     "reason": "Provided domain is invalid or unreachable.",
     "evidence_url": "https://www.epelectric.com/"
+  },
+  "Viasat Inc.||viasat.com||ddg": {
+    "provided_company": "Viasat Inc.",
+    "provided_domain": "viasat.com",
+    "discovered_domain": "viasat.com",
+    "discovered_company": "Global Communications | Services, Solutions & Satellite Internet | Viasat",
+    "match_status": "match",
+    "reason": "Domain root 'viasat' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.viasat.com/",
+    "evidence_url": "https://www.viasat.com/"
+  },
+  "Vanguard||vanguard.com||ddg": {
+    "provided_company": "Vanguard",
+    "provided_domain": "vanguard.com",
+    "discovered_domain": "vanguard.com",
+    "discovered_company": "Mutual funds, IRAs, ETFs, 401(k) plans, and more | Vanguard",
+    "match_status": "match",
+    "reason": "Domain root 'vanguard' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://investor.vanguard.com/corporate-portal",
+    "evidence_url": "https://investor.vanguard.com/corporate-portal"
+  },
+  "Wells Fargo||wellsfargo.com||ddg": {
+    "provided_company": "Wells Fargo",
+    "provided_domain": "wellsfargo.com",
+    "discovered_domain": "wellsfargo.com",
+    "discovered_company": "Wells Fargo Bank | Financial Services & Online Banking",
+    "match_status": "match",
+    "reason": "Provided company 'Wells Fargo' strongly matches discovered company 'Wells Fargo Bank | Financial Services & Online Banking' (similarity=100.0%). (source: ddg) Evidence: https://www.wellsfargo.com/",
+    "evidence_url": "https://www.wellsfargo.com/"
+  },
+  "Verisk Analytics||verisk.com||ddg": {
+    "provided_company": "Verisk Analytics",
+    "provided_domain": "verisk.com",
+    "discovered_domain": "verisk.com",
+    "discovered_company": "Leading source of information about insurance risk",
+    "match_status": "match",
+    "reason": "Domain root 'verisk' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.verisk.com/",
+    "evidence_url": "https://www.verisk.com/"
+  },
+  "Verisk||verisk.com||ddg": {
+    "provided_company": "Verisk",
+    "provided_domain": "verisk.com",
+    "discovered_domain": "verisk.com",
+    "discovered_company": "Leading source of information about insurance risk",
+    "match_status": "match",
+    "reason": "Domain root 'verisk' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.verisk.com/",
+    "evidence_url": "https://www.verisk.com/"
+  },
+  "Wayfair||wayfair.com||ddg": {
+    "provided_company": "Wayfair",
+    "provided_domain": "wayfair.com",
+    "discovered_domain": "wayfair.com",
+    "discovered_company": "Wayfair.com - Online Home Store for Furniture, Decor, Outdoors & More",
+    "match_status": "match",
+    "reason": "Domain root 'wayfair' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.wayfair.com/",
+    "evidence_url": "https://www.wayfair.com/"
+  },
+  "Vestis Corporation||vestis.com||ddg": {
+    "provided_company": "Vestis Corporation",
+    "provided_domain": "vestis.com",
+    "discovered_domain": "vestis.com",
+    "discovered_company": "Uniforms & Workplace Supplies Provider | Vestis",
+    "match_status": "match",
+    "reason": "Domain root 'vestis' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.vestis.com/",
+    "evidence_url": "https://www.vestis.com/"
+  },
+  "WALT DISNEY CO||thewaltdisneycompany.com||ddg": {
+    "provided_company": "WALT DISNEY CO",
+    "provided_domain": "thewaltdisneycompany.com",
+    "discovered_domain": "thewaltdisneycompany.com",
+    "discovered_company": "The Walt Disney Company",
+    "match_status": "match",
+    "reason": "Provided company 'WALT DISNEY CO' strongly matches discovered company 'The Walt Disney Company' (similarity=100.0%). (source: ddg) Evidence: https://thewaltdisneycompany.com/",
+    "evidence_url": "https://thewaltdisneycompany.com/"
+  },
+  "Verkada||verkada.com||ddg": {
+    "provided_company": "Verkada",
+    "provided_domain": "verkada.com",
+    "discovered_domain": "verkada.com",
+    "discovered_company": "Security Systems for the Modern Enterprise | Verkada",
+    "match_status": "match",
+    "reason": "Domain root 'verkada' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.verkada.com/",
+    "evidence_url": "https://www.verkada.com/"
+  },
+  "Vertafore||vertafore.com||ddg": {
+    "provided_company": "Vertafore",
+    "provided_domain": "vertafore.com",
+    "discovered_domain": "vertafore.com",
+    "discovered_company": "Insurance Software Solutions - Carriers, Agencies, MGAs, Independent Agents",
+    "match_status": "match",
+    "reason": "Domain root 'vertafore' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.vertafore.com/",
+    "evidence_url": "https://www.vertafore.com/"
+  },
+  "Verisk Analytics, Inc.||verisk.com||ddg": {
+    "provided_company": "Verisk Analytics, Inc.",
+    "provided_domain": "verisk.com",
+    "discovered_domain": "verisk.com",
+    "discovered_company": "Leading source of information about insurance risk",
+    "match_status": "match",
+    "reason": "Domain root 'verisk' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.verisk.com/",
+    "evidence_url": "https://www.verisk.com/"
+  },
+  "Visa||visa.com||ddg": {
+    "provided_company": "Visa",
+    "provided_domain": "visa.com",
+    "discovered_domain": "visa.co.in",
+    "discovered_company": "Visa, a trusted leader in digital payments. | Visa",
+    "match_status": "match",
+    "reason": "Domain root 'visa' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.visa.co.in/",
+    "evidence_url": "https://www.visa.co.in/"
+  },
+  "VERIZON||verizon.com||ddg": {
+    "provided_company": "VERIZON",
+    "provided_domain": "verizon.com",
+    "discovered_domain": "verizon.com",
+    "discovered_company": "Verizon: Wireless, Internet, TV and Phone Services | Official Site",
+    "match_status": "match",
+    "reason": "Domain root 'verizon' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.verizon.com",
+    "evidence_url": "https://www.verizon.com"
+  },
+  "Veradigm||veradigm.com||ddg": {
+    "provided_company": "Veradigm",
+    "provided_domain": "veradigm.com",
+    "discovered_domain": "veradigm.com",
+    "discovered_company": "VeradigmÂ® | Data-driven Healthcare Solutions & Insights",
+    "match_status": "match",
+    "reason": "Domain root 'veradigm' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://veradigm.com/",
+    "evidence_url": "https://veradigm.com/"
+  },
+  "Washington State University||wsu.edu||ddg": {
+    "provided_company": "Washington State University",
+    "provided_domain": "wsu.edu",
+    "discovered_domain": "wsu.edu",
+    "discovered_company": "Washington State University |  Washington State University",
+    "match_status": "match",
+    "reason": "Provided company 'Washington State University' strongly matches discovered company 'Washington State University |  Washington State University' (similarity=100.0%). (source: ddg) Evidence: https://wsu.edu/",
+    "evidence_url": "https://wsu.edu/"
+  },
+  "Waste Connections Inc||wasteconnections.com||ddg": {
+    "provided_company": "Waste Connections Inc",
+    "provided_domain": "wasteconnections.com",
+    "discovered_domain": "wasteconnections.com",
+    "discovered_company": "Waste Connections | Trash Pickup Services",
+    "match_status": "match",
+    "reason": "Provided company 'Waste Connections Inc' strongly matches discovered company 'Waste Connections | Trash Pickup Services' (similarity=91.42857142857143%). (source: ddg) Evidence: https://www.wasteconnections.com/",
+    "evidence_url": "https://www.wasteconnections.com/"
+  },
+  "Webster Bank||websterbank.com||ddg": {
+    "provided_company": "Webster Bank",
+    "provided_domain": "websterbank.com",
+    "discovered_domain": "websterbank.com",
+    "discovered_company": "Personal, Commercial & Business Banking | Webster Bank",
+    "match_status": "match",
+    "reason": "Provided company 'Webster Bank' strongly matches discovered company 'Personal, Commercial & Business Banking | Webster Bank' (similarity=100.0%). (source: ddg) Evidence: https://www.websterbank.com/",
+    "evidence_url": "https://www.websterbank.com/"
+  },
+  "Ventura Foods||venturafoods.com||ddg": {
+    "provided_company": "Ventura Foods",
+    "provided_domain": "venturafoods.com",
+    "discovered_domain": "venturafoods.com",
+    "discovered_company": "Ventura Foods | Together We Make Food Extraordinary",
+    "match_status": "match",
+    "reason": "Provided company 'Ventura Foods' strongly matches discovered company 'Ventura Foods | Together We Make Food Extraordinary' (similarity=100.0%). (source: ddg) Evidence: https://www.venturafoods.com/",
+    "evidence_url": "https://www.venturafoods.com/"
+  },
+  "Verano||verano.com||ddg": {
+    "provided_company": "Verano",
+    "provided_domain": "verano.com",
+    "discovered_domain": "verano.com",
+    "discovered_company": "Verano - Proving That Cannabis Can And Should Be Better",
+    "match_status": "match",
+    "reason": "Domain root 'verano' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://verano.com/",
+    "evidence_url": "https://verano.com/"
+  },
+  "Wabtec Corporation||wabtec.com||ddg": {
+    "provided_company": "Wabtec Corporation",
+    "provided_domain": "wabtec.com",
+    "discovered_domain": "wabteccorp.com",
+    "discovered_company": "Homepage | Wabtec Corporation",
+    "match_status": "match",
+    "reason": "Provided company 'Wabtec Corporation' strongly matches discovered company 'Homepage | Wabtec Corporation' (similarity=100.0%). (source: ddg) Evidence: https://www.wabteccorp.com/",
+    "evidence_url": "https://www.wabteccorp.com/"
+  },
+  "VML Enterprise Solutions||vml.com||ddg": {
+    "provided_company": "VML Enterprise Solutions",
+    "provided_domain": "vml.com",
+    "discovered_domain": "vml.com",
+    "discovered_company": "VML",
+    "match_status": "match",
+    "reason": "Domain root 'vml' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.vml.com/",
+    "evidence_url": "https://www.vml.com/"
+  },
+  "Weber-Stephen Products LLC||weber.com||ddg": {
+    "provided_company": "Weber-Stephen Products LLC",
+    "provided_domain": "weber.com",
+    "discovered_domain": "weber.com",
+    "discovered_company": "BBQ Grills | Weber Charcoal & Gas Grills | Weber India",
+    "match_status": "match",
+    "reason": "Domain root 'weber' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.weber.com/IN/en/home/",
+    "evidence_url": "https://www.weber.com/IN/en/home/"
+  },
+  "WEC ENERGY GROUP INC||wecenergygroup.com||ddg": {
+    "provided_company": "WEC ENERGY GROUP INC",
+    "provided_domain": "wecenergygroup.com",
+    "discovered_domain": "wecenergygroup.com",
+    "discovered_company": "WEC Energy Group",
+    "match_status": "match",
+    "reason": "Provided company 'WEC ENERGY GROUP INC' strongly matches discovered company 'WEC Energy Group' (similarity=100.0%). (source: ddg) Evidence: https://wecenergygroup.com/",
+    "evidence_url": "https://wecenergygroup.com/"
+  },
+  "Weatherford||weatherford.com||ddg": {
+    "provided_company": "Weatherford",
+    "provided_domain": "weatherford.com",
+    "discovered_domain": "weatherford.com",
+    "discovered_company": "Home | Weatherford International",
+    "match_status": "match",
+    "reason": "Domain root 'weatherford' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.weatherford.com/",
+    "evidence_url": "https://www.weatherford.com/"
+  },
+  "Vertiv||vertivco.com||ddg": {
+    "provided_company": "Vertiv",
+    "provided_domain": "vertivco.com",
+    "discovered_domain": "vertiv.com",
+    "discovered_company": "Vertiv | A global leader in critical digital infrastructure",
+    "match_status": "match",
+    "reason": "Provided company 'Vertiv' strongly matches discovered company 'Vertiv | A global leader in critical digital infrastructure' (similarity=100.0%). (source: ddg) Evidence: https://www.vertiv.com/en-us/?sk=NetworkPower+Documents",
+    "evidence_url": "https://www.vertiv.com/en-us/?sk=NetworkPower+Documents"
+  },
+  "Washington County||washingtoncountyor.gov||ddg": {
+    "provided_company": "Washington County",
+    "provided_domain": "washingtoncountyor.gov",
+    "discovered_domain": "localconditions.com",
+    "discovered_company": "Washington, DC Road Conditions with Driving and Traffic Flow - LocalConditions.com",
+    "match_status": "match",
+    "reason": "Provided company 'Washington County' strongly matches discovered company 'Washington, DC Road Conditions with Driving and Traffic Flow - LocalConditions.com' (similarity=80.0%). (source: ddg) Evidence: https://www.localconditions.com/weather-washington-d.c./20036/traffic.php",
+    "evidence_url": "https://www.localconditions.com/weather-washington-d.c./20036/traffic.php"
+  },
+  "Weis Markets||weismarkets.com||ddg": {
+    "provided_company": "Weis Markets",
+    "provided_domain": "weismarkets.com",
+    "discovered_domain": "froggyads.com",
+    "discovered_company": "Weis Market Job Application Online - Froggy Ads",
+    "match_status": "match",
+    "reason": "Provided company 'Weis Markets' strongly matches discovered company 'Weis Market Job Application Online - Froggy Ads' (similarity=95.23809523809523%). (source: ddg) Evidence: https://froggyads.com/blog/weis-market-job-application-online/",
+    "evidence_url": "https://froggyads.com/blog/weis-market-job-application-online/"
+  },
+  "Virginia Tech||vt.edu||ddg": {
+    "provided_company": "Virginia Tech",
+    "provided_domain": "vt.edu",
+    "discovered_domain": "vt.edu",
+    "discovered_company": "Home | Virginia Tech",
+    "match_status": "match",
+    "reason": "Provided company 'Virginia Tech' strongly matches discovered company 'Home | Virginia Tech' (similarity=100.0%). (source: ddg) Evidence: https://www.vt.edu/",
+    "evidence_url": "https://www.vt.edu/"
+  },
+  "W. L. Gore & Associates, Inc.||wlgore.com||ddg": {
+    "provided_company": "W. L. Gore & Associates, Inc.",
+    "provided_domain": "wlgore.com",
+    "discovered_domain": "gore.com",
+    "discovered_company": "Gore | Together, improving life",
+    "match_status": "mismatch",
+    "reason": "No match or relation found. Marked as mismatch. (source: ddg) Evidence: https://www.gore.com/?RDCT=wlgore.com",
+    "evidence_url": "https://www.gore.com/?RDCT=wlgore.com"
+  },
+  "Wachs Water Services||xylem.com||ddg": {
+    "provided_company": "Wachs Water Services",
+    "provided_domain": "xylem.com",
+    "discovered_domain": "xylem.com",
+    "discovered_company": "Xylem Water Solutions & Water Technology | Xylem US",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.xylem.com/en-us/",
+    "evidence_url": "https://www.xylem.com/en-us/"
+  },
+  "Washington University in St Louis||wustl.edu||ddg": {
+    "provided_company": "Washington University in St Louis",
+    "provided_domain": "wustl.edu",
+    "discovered_domain": "washu.edu",
+    "discovered_company": "Home | WashU",
+    "match_status": "mismatch",
+    "reason": "No match or relation found. Marked as mismatch. (source: ddg) Evidence: https://washu.edu/",
+    "evidence_url": "https://washu.edu/"
+  },
+  "VIRGINIA BEACH CITY PUBLIC SCHOOLS||vbschools.com||ddg": {
+    "provided_company": "VIRGINIA BEACH CITY PUBLIC SCHOOLS",
+    "provided_domain": "vbschools.com",
+    "discovered_domain": "wtkr.com",
+    "discovered_company": "Virginia Beach Public Schools lays out latest COVID-19 protocols while struggling with staffing in the new year",
+    "match_status": "match",
+    "reason": "Provided company 'VIRGINIA BEACH CITY PUBLIC SCHOOLS' strongly matches discovered company 'Virginia Beach Public Schools lays out latest COVID-19 protocols while struggling with staffing in the new year' (similarity=92.85714285714286%). (source: ddg) Evidence: https://www.wtkr.com/news/virginia-beach-public-schools-lays-out-latest-covid-19-protocols-while-struggling-with-staffing-in-the-new-year",
+    "evidence_url": "https://www.wtkr.com/news/virginia-beach-public-schools-lays-out-latest-covid-19-protocols-while-struggling-with-staffing-in-the-new-year"
+  },
+  "Vista Outdoor Inc.||vistaoutdoor.com||ddg": {
+    "provided_company": "Vista Outdoor Inc.",
+    "provided_domain": "vistaoutdoor.com",
+    "discovered_domain": "thekineticgroup.com",
+    "discovered_company": "The Kinetic Group - The World Leader In Ammunition",
+    "match_status": "mismatch",
+    "reason": "No match or relation found. Marked as mismatch. (source: ddg) Evidence: https://www.thekineticgroup.com",
+    "evidence_url": "https://www.thekineticgroup.com"
+  },
+  "Veeco||veeco.com||ddg": {
+    "provided_company": "Veeco",
+    "provided_domain": "veeco.com",
+    "discovered_domain": "veeco.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "invalid_domain",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": ""
   }
 }
