@@ -16,7 +16,7 @@ from .extract_utils import (
     parse_employees, parse_revenue, is_valid_rpe, set_rpe_range_from_data
 )
 # NEW: validation helpers
-from .validation_utils import validate_domain, is_same_company, sanity_check
+from .validation_utils import validate_domain, is_same_company, sanity_check, score_candidate
 
 
 # ---------- Logging ----------
