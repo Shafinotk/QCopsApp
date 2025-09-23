@@ -9,8 +9,8 @@ from urllib.parse import urlparse, unquote
 from typing import Optional, Tuple, Any
 import logging
 
-from search_utils import search_zoominfo, search_linkedin, fetch_html
-from extract_utils import (
+from .search_utils import search_zoominfo, search_linkedin, fetch_html
+from .extract_utils import (
     extract_employees, extract_revenue, extract_industry,
     format_employee_value, format_revenue_value, parse_industry_value,
     parse_employees, parse_revenue, is_valid_rpe, set_rpe_range_from_data
