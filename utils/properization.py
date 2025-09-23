@@ -94,17 +94,17 @@ def _properize_zip(zipcode: str, country: str) -> str:
 
 def apply_properization(df: pd.DataFrame, enforce_common_street: bool = True) -> pd.DataFrame:
     """Apply properization rules to DataFrame.
-    enforce_common_street: if True, will enforce most common street per Domain
+    enforce_common_street: if True, will enforce most common street, city, state, zip, country per Domain
     """
     df = df.copy()
 
     mapping = {}
-    for target in ["Company Name", "First Name", "Last Name", "Street", "City", "Domain", "Country", "Zip Code"]:
+    for target in ["Company Name", "First Name", "Last Name", "Street", "City", "State", "Domain", "Country", "Zip Code"]:
         found = _canonical_col(df, target)
         if found:
             mapping[target] = found
 
-    for col in ["Company Name", "First Name", "Last Name", "City"]:
+    for col in ["Company Name", "First Name", "Last Name", "City", "State", "Country"]:
         if col in mapping:
             c = mapping[col]
             df[c] = df[c].fillna("").astype(str).apply(clean_text)
@@ -118,16 +118,19 @@ def apply_properization(df: pd.DataFrame, enforce_common_street: bool = True) ->
         cc = mapping["Country"]
         df[zc] = df.apply(lambda row: _properize_zip(row[zc], row[cc]), axis=1)
 
-    # 🔑 Only apply this step if enforce_common_street=True
-    if enforce_common_street and "Domain" in mapping and "Street" in mapping:
+    # 🔑 Apply common values per domain
+    if enforce_common_street and "Domain" in mapping:
         dom_col = mapping["Domain"]
-        street_col = mapping["Street"]
-        chosen = {}
-        for domain, group in df.groupby(dom_col):
-            non_empty = [s for s in group[street_col].astype(str) if s and s.strip()]
-            chosen_val = Counter(non_empty).most_common(1)[0][0] if non_empty else ""
-            chosen[domain] = chosen_val
-        df[street_col] = df[dom_col].map(lambda d: chosen.get(d, ""))
+        columns_to_enforce = ["Street", "City", "State", "Zip Code", "Country"]
+        for col_name in columns_to_enforce:
+            if col_name in mapping:
+                col = mapping[col_name]
+                chosen = {}
+                for domain, group in df.groupby(dom_col):
+                    non_empty = [s for s in group[col].astype(str) if s and s.strip()]
+                    chosen_val = Counter(non_empty).most_common(1)[0][0] if non_empty else ""
+                    chosen[domain] = chosen_val
+                df[col] = df[dom_col].map(lambda d: chosen.get(d, ""))
 
     return df
 
@@ -139,6 +142,7 @@ if __name__ == "__main__":
         'Last Name': ['doe', "o'neil"],
         'Street': ['123 N Main St.', '123 north main st'],
         'City': ['new york', 'NEW YORK'],
+        'State': ['NY', 'ny'],
         'Domain': ['acme.com', 'acme.com'],
         'Country': ['United States', 'US'],
         'Zip Code': ['2345', '123456']
