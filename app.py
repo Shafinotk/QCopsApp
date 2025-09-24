@@ -26,6 +26,7 @@ from utils.properization import apply_properization
 # Import coloring functions
 from agents.mailname.qc_checker import apply_mailname_coloring
 from agents.qc_domain.qc_agent.io_utils import apply_qc_domain_coloring
+from agents.irvalue_phase_4.irvalue_checker import apply_irvalue_coloring
 
 # ---------------------------
 # Logging setup
@@ -195,6 +196,7 @@ if uploaded_file:
             # Apply colorings
             # ---------------------------
             try:
+                apply_irvalue_coloring(final_excel)  # IR value coloring
                 apply_mailname_coloring(final_excel)  # MailName coloring
                 apply_qc_domain_coloring(final_excel)  # QC Domain coloring
             except Exception as e:
