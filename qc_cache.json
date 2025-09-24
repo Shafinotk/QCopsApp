@@ -1951,5 +1951,293 @@
     "match_status": "invalid_domain",
     "reason": "Provided domain is invalid or unreachable.",
     "evidence_url": ""
+  },
+  "ASH GROVE CEMENT COMPANY||ashgrove.com||ddg": {
+    "provided_company": "ASH GROVE CEMENT COMPANY",
+    "provided_domain": "ashgrove.com",
+    "discovered_domain": "ashgrove.com",
+    "discovered_company": "Ash Grove Cement",
+    "match_status": "match",
+    "reason": "Provided company 'ASH GROVE CEMENT COMPANY' strongly matches discovered company 'Ash Grove Cement' (similarity=100.0%). (source: ddg) Evidence: https://www.ashgrove.com/",
+    "evidence_url": "https://www.ashgrove.com/"
+  },
+  "Bridgebio||bridgebio.com||ddg": {
+    "provided_company": "Bridgebio",
+    "provided_domain": "bridgebio.com",
+    "discovered_domain": "bridgebio.com",
+    "discovered_company": "BridgeBio | Biotechnology Company | Designing Transformative Medicines",
+    "match_status": "match",
+    "reason": "Domain root 'bridgebio' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://bridgebio.com/",
+    "evidence_url": "https://bridgebio.com/"
+  },
+  "Batory Foods Inc||batoryfoods.com||ddg": {
+    "provided_company": "Batory Foods Inc",
+    "provided_domain": "batoryfoods.com",
+    "discovered_domain": "batoryfoods.com",
+    "discovered_company": "Food Ingredient Supplier for Manufacturers • Batory Foods",
+    "match_status": "match",
+    "reason": "Domain root 'batoryfoods' matches and company-domain similarity is strong (81%). (source: ddg) Evidence: https://www.batoryfoods.com/",
+    "evidence_url": "https://www.batoryfoods.com/"
+  },
+  "Blueshore Financial||blueshorefinancial.com||ddg": {
+    "provided_company": "Blueshore Financial",
+    "provided_domain": "blueshorefinancial.com",
+    "discovered_domain": "blueshorefinancial.com",
+    "discovered_company": "Home Page | BlueShore Financial",
+    "match_status": "match",
+    "reason": "Domain root 'blueshorefinancial' matches and company-domain similarity is strong (97%). (source: ddg) Evidence: https://www.blueshorefinancial.com/",
+    "evidence_url": "https://www.blueshorefinancial.com/"
+  },
+  "Amur Financial Group||amurfinancialgroup.ca||ddg": {
+    "provided_company": "Amur Financial Group",
+    "provided_domain": "amurfinancialgroup.ca",
+    "discovered_domain": "amurfinancialgroup.ca",
+    "discovered_company": "Home - Amur Financial GroupAmur Financial Group | Simple Financial Solutions for Canadians",
+    "match_status": "match",
+    "reason": "Domain root 'amurfinancialgroup' matches and company-domain similarity is strong (94%). (source: ddg) Evidence: https://amurfinancialgroup.ca/",
+    "evidence_url": "https://amurfinancialgroup.ca/"
+  },
+  "407 Etr||407etr.com||ddg": {
+    "provided_company": "407 Etr",
+    "provided_domain": "407etr.com",
+    "discovered_domain": "407etr.com",
+    "discovered_company": "Company name not found",
+    "match_status": "match",
+    "reason": "Domain reachable but company name could not be extracted.",
+    "evidence_url": "https://407etr.com/"
+  },
+  "Atwell Llc||atwell.com||ddg": {
+    "provided_company": "Atwell Llc",
+    "provided_domain": "atwell.com",
+    "discovered_domain": "atwell.com",
+    "discovered_company": "Full-Service Engineering & Construction Consulting Firm | Atwell",
+    "match_status": "match",
+    "reason": "Domain root 'atwell' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://atwell.com/",
+    "evidence_url": "https://atwell.com/"
+  },
+  "Alberta Investment Management Corporation Aimco||alberta.ca||ddg": {
+    "provided_company": "Alberta Investment Management Corporation Aimco",
+    "provided_domain": "alberta.ca",
+    "discovered_domain": "alberta.ca",
+    "discovered_company": "Government of Alberta | Alberta.ca",
+    "match_status": "match",
+    "reason": "Domain root 'alberta' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.alberta.ca/",
+    "evidence_url": "https://www.alberta.ca/"
+  },
+  "Blackberry||blackberry.com||ddg": {
+    "provided_company": "Blackberry",
+    "provided_domain": "blackberry.com",
+    "discovered_domain": "blackberry.com",
+    "discovered_company": "BlackBerry – Intelligent Security. Everywhere.",
+    "match_status": "match",
+    "reason": "Domain root 'blackberry' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.blackberry.com/us/en",
+    "evidence_url": "https://www.blackberry.com/us/en"
+  },
+  "Aero Gear||aerogear.com||ddg": {
+    "provided_company": "Aero Gear",
+    "provided_domain": "aerogear.com",
+    "discovered_domain": "aerogear.com",
+    "discovered_company": "Home - Aero Gear - A Global Leader in Aerospace",
+    "match_status": "match",
+    "reason": "Domain root 'aerogear' matches and company-domain similarity is strong (94%). (source: ddg) Evidence: https://www.aerogear.com/",
+    "evidence_url": "https://www.aerogear.com/"
+  },
+  "Alerus||alerus.com||ddg": {
+    "provided_company": "Alerus",
+    "provided_domain": "alerus.com",
+    "discovered_domain": "alerus.com",
+    "discovered_company": "Personal - Alerus Financial",
+    "match_status": "match",
+    "reason": "Domain root 'alerus' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.alerus.com/",
+    "evidence_url": "https://www.alerus.com/"
+  },
+  "Blink Charging||blinkcharging.com||ddg": {
+    "provided_company": "Blink Charging",
+    "provided_domain": "blinkcharging.com",
+    "discovered_domain": "blinkcharging.com",
+    "discovered_company": "Blink Charging: Electric Vehicle (EV) Charging Stations (EVSE)",
+    "match_status": "match",
+    "reason": "Domain root 'blinkcharging' matches and company-domain similarity is strong (96%). (source: ddg) Evidence: https://blinkcharging.com/en-in",
+    "evidence_url": "https://blinkcharging.com/en-in"
+  },
+  "Affinity Development Group||affinitydev.com||ddg": {
+    "provided_company": "Affinity Development Group",
+    "provided_domain": "affinitydev.com",
+    "discovered_domain": "affinitydev.com",
+    "discovered_company": "Affinity Development Group (ADG) - Business, Marketing, Development, and More",
+    "match_status": "match",
+    "reason": "Provided company 'Affinity Development Group' strongly matches discovered company 'Affinity Development Group (ADG) - Business, Marketing, Development, and More' (similarity=100.0%). (source: ddg) Evidence: https://www.affinitydev.com/",
+    "evidence_url": "https://www.affinitydev.com/"
+  },
+  "Ajw Group||ajw-group.com||ddg": {
+    "provided_company": "Ajw Group",
+    "provided_domain": "ajw-group.com",
+    "discovered_domain": "ajw-group.com",
+    "discovered_company": "AJW Group | Transforming Aviation Efficiency",
+    "match_status": "match",
+    "reason": "Domain root 'ajw-group' matches and company-domain similarity is strong (88%). (source: ddg) Evidence: https://www.ajw-group.com/",
+    "evidence_url": "https://www.ajw-group.com/"
+  },
+  "Fraser Valley Building Supplies Inc||buildingsupplies.ca||ddg": {
+    "provided_company": "Fraser Valley Building Supplies Inc",
+    "provided_domain": "buildingsupplies.ca",
+    "discovered_domain": "buildingsupplies.ca",
+    "discovered_company": "RONA Fraser Valley Building Supplies - Hardware Store",
+    "match_status": "match",
+    "reason": "Provided company 'Fraser Valley Building Supplies Inc' strongly matches discovered company 'RONA Fraser Valley Building Supplies - Hardware Store' (similarity=90.32258064516128%). (source: ddg) Evidence: https://www.buildingsupplies.ca/",
+    "evidence_url": "https://www.buildingsupplies.ca/"
+  },
+  "CAPTRUST||captrust.com||ddg": {
+    "provided_company": "CAPTRUST",
+    "provided_domain": "captrust.com",
+    "discovered_domain": "captrust.com",
+    "discovered_company": "CAPTRUST | Financial Advice From Advisors You Can Trust",
+    "match_status": "match",
+    "reason": "Domain root 'captrust' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.captrust.com/",
+    "evidence_url": "https://www.captrust.com/"
+  },
+  "Axiologic Solutions Llc||axiologicsolutions.com||ddg": {
+    "provided_company": "Axiologic Solutions Llc",
+    "provided_domain": "axiologicsolutions.com",
+    "discovered_domain": "axiologicsolutions.com",
+    "discovered_company": "Axiologic Solutions | Possible to Proven",
+    "match_status": "match",
+    "reason": "Domain root 'axiologicsolutions' matches and company-domain similarity is strong (87%). (source: ddg) Evidence: https://axiologicsolutions.com/",
+    "evidence_url": "https://axiologicsolutions.com/"
+  },
+  "Ait Worldwide Logistics||aitworldwide.com||ddg": {
+    "provided_company": "Ait Worldwide Logistics",
+    "provided_domain": "aitworldwide.com",
+    "discovered_domain": "aitworldwide.com",
+    "discovered_company": "AIT Worldwide Logistics | Global Freight Forwarder",
+    "match_status": "match",
+    "reason": "Provided company 'Ait Worldwide Logistics' strongly matches discovered company 'AIT Worldwide Logistics | Global Freight Forwarder' (similarity=100.0%). (source: ddg) Evidence: https://www.aitworldwide.com:443/",
+    "evidence_url": "https://www.aitworldwide.com:443/"
+  },
+  "MBIA||mbia.com||ddg": {
+    "provided_company": "MBIA",
+    "provided_domain": "mbia.com",
+    "discovered_domain": "mbia.com",
+    "discovered_company": "MBIA.com",
+    "match_status": "match",
+    "reason": "Domain root 'mbia' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.mbia.com/",
+    "evidence_url": "https://www.mbia.com/"
+  },
+  "Booster Juice||boosterjuice.com||ddg": {
+    "provided_company": "Booster Juice",
+    "provided_domain": "boosterjuice.com",
+    "discovered_domain": "boosterjuice.com",
+    "discovered_company": "Booster Juice",
+    "match_status": "match",
+    "reason": "Domain root 'boosterjuice' matches and company-domain similarity is strong (96%). (source: ddg) Evidence: https://boosterjuice.com/",
+    "evidence_url": "https://boosterjuice.com/"
+  },
+  "Blackline||blackline.com||ddg": {
+    "provided_company": "Blackline",
+    "provided_domain": "blackline.com",
+    "discovered_domain": "blackline.com",
+    "discovered_company": "BlackLine: Unstoppable Finance Through AI-Enabled Solutions",
+    "match_status": "match",
+    "reason": "Domain root 'blackline' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.blackline.com/",
+    "evidence_url": "https://www.blackline.com/"
+  },
+  "Avi Resort & Casino||avicasino.com||ddg": {
+    "provided_company": "Avi Resort & Casino",
+    "provided_domain": "avicasino.com",
+    "discovered_domain": "avicasino.com",
+    "discovered_company": "Avi Resort & Casino in Laughlin, Nevada — Your ultimate getaway on the Colorado River! Play, win, dine, and stay for an unforgettable experience.",
+    "match_status": "match",
+    "reason": "Provided company 'Avi Resort & Casino' strongly matches discovered company 'Avi Resort & Casino in Laughlin, Nevada — Your ultimate getaway on the Colorado River! Play, win, dine, and stay for an unforgettable experience.' (similarity=100.0%). (source: ddg) Evidence: https://avicasino.com/",
+    "evidence_url": "https://avicasino.com/"
+  },
+  "Aheadcomputing||aheadcomputing.com||ddg": {
+    "provided_company": "Aheadcomputing",
+    "provided_domain": "aheadcomputing.com",
+    "discovered_domain": "aheadcomputing.com",
+    "discovered_company": "AheadComputing Inc. | CPU",
+    "match_status": "match",
+    "reason": "Domain root 'aheadcomputing' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.aheadcomputing.com/",
+    "evidence_url": "https://www.aheadcomputing.com/"
+  },
+  "Apache Stainless Equipment Corporation And Mepaco||apachestainless.com||ddg": {
+    "provided_company": "Apache Stainless Equipment Corporation And Mepaco",
+    "provided_domain": "apachestainless.com",
+    "discovered_domain": "apachestainless.com",
+    "discovered_company": "Apache Stainless Equipment | Stainless Steel Tank Manufacturers USA",
+    "match_status": "match",
+    "reason": "Provided company 'Apache Stainless Equipment Corporation And Mepaco' strongly matches discovered company 'Apache Stainless Equipment | Stainless Steel Tank Manufacturers USA' (similarity=74.66666666666666%). (source: ddg) Evidence: https://www.apachestainless.com/",
+    "evidence_url": "https://www.apachestainless.com/"
+  },
+  "FNF Canada||fnf.ca||ddg": {
+    "provided_company": "FNF Canada",
+    "provided_domain": "fnf.ca",
+    "discovered_domain": "fnf.ca",
+    "discovered_company": "FNF Canada – A Symbol of Strength with a Passion to Serve – A Symbol of Strength with a Passion to Serve",
+    "match_status": "match",
+    "reason": "Domain root 'fnf' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.fnf.ca/",
+    "evidence_url": "https://www.fnf.ca/"
+  },
+  "Acgi Shipping Inc||acgishipping.com||ddg": {
+    "provided_company": "Acgi Shipping Inc",
+    "provided_domain": "acgishipping.com",
+    "discovered_domain": "acgishipping.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "match",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "http://acgishipping.com"
+  },
+  "Bci Burke Company||bciburke.com||ddg": {
+    "provided_company": "Bci Burke Company",
+    "provided_domain": "bciburke.com",
+    "discovered_domain": "bciburke.com",
+    "discovered_company": "High-Quality Burke Commercial Playground Equipment",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.bciburke.com/",
+    "evidence_url": "https://www.bciburke.com/"
+  },
+  "Mogo||brianjesselbmw.com||ddg": {
+    "provided_company": "Mogo",
+    "provided_domain": "brianjesselbmw.com",
+    "discovered_domain": "mogo.md",
+    "discovered_company": "Credit auto pÃ¢nÄ la 300.000 MDL | SoluÈii rapide pentru nevoile tale. | www.mogo.md",
+    "match_status": "match",
+    "reason": "Provided company 'Mogo' strongly matches discovered company 'Credit auto pÃ¢nÄ la 300.000 MDL | SoluÈii rapide pentru nevoile tale. | www.mogo.md' (similarity=100.0%). (source: ddg) Evidence: https://www.mogo.md/",
+    "evidence_url": "https://www.mogo.md/"
+  },
+  "Federal Home Loan Bank of Atlanta||fhlbatl.com||ddg": {
+    "provided_company": "Federal Home Loan Bank of Atlanta",
+    "provided_domain": "fhlbatl.com",
+    "discovered_domain": "fhfa.gov",
+    "discovered_company": "Federal Home Loan Bank Districts​ | FHFA",
+    "match_status": "match",
+    "reason": "Provided company 'Federal Home Loan Bank of Atlanta' strongly matches discovered company 'Federal Home Loan Bank Districts​ | FHFA' (similarity=80.85106382978724%). (source: ddg) Evidence: https://www.fhfa.gov/supervision/federal-home-loan-bank-system/districts",
+    "evidence_url": "https://www.fhfa.gov/supervision/federal-home-loan-bank-system/districts"
+  },
+  "Bestbet||bestbetjax.com||ddg": {
+    "provided_company": "Bestbet",
+    "provided_domain": "bestbetjax.com",
+    "discovered_domain": "bestbetting.ke",
+    "discovered_company": "22Bet Kenya Review - Bestbetting.ke",
+    "match_status": "match",
+    "reason": "Provided company 'Bestbet' strongly matches discovered company '22Bet Kenya Review - Bestbetting.ke' (similarity=100.0%). (source: ddg) Evidence: https://bestbetting.ke/22bet/",
+    "evidence_url": "https://bestbetting.ke/22bet/"
+  },
+  "Ashp||ashp.org||ddg": {
+    "provided_company": "Ashp",
+    "provided_domain": "ashp.org",
+    "discovered_domain": "ashpmedia.org",
+    "discovered_company": "ASHP Media",
+    "match_status": "match",
+    "reason": "Provided company 'Ashp' strongly matches discovered company 'ASHP Media' (similarity=100.0%). (source: ddg) Evidence: https://www.ashpmedia.org/",
+    "evidence_url": "https://www.ashpmedia.org/"
+  },
+  "Bmo Global Asset Management||bmo.com||ddg": {
+    "provided_company": "Bmo Global Asset Management",
+    "provided_domain": "bmo.com",
+    "discovered_domain": "bmo.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "match",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "http://bmo.com"
   }
 }

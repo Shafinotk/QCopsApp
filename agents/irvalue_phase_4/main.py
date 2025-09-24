@@ -110,20 +110,27 @@ def company_near_revenue(text: str, company_name: str, revenue_substring: str, w
 
 # ---------- Worker ----------
 def find_company_info(domain: str, country: str, company: str, debug: bool = False) -> Tuple[Any, Any, Any, bool, Any, Any]:
+    """
+    Fetch company information (employees, revenue, industry) using ZoomInfo + LinkedIn.
+    Returns tuple: (emp, rev, ind, flagged, emp_num, rev_num)
+    """
     emp, rev, ind = None, None, None
     emp_num, rev_num = None, None
     flagged = False
 
     try:
-        # --- Employees (ZoomInfo candidates) ---
+        if not domain and not company:
+            if debug:
+                logger.warning("find_company_info: No domain/company provided, skipping.")
+            return emp, rev, ind, flagged, emp_num, rev_num
+
+        # --- Employees ---
         emp_candidates = []
         for q in employee_queries(company, domain, country):
             results = search_zoominfo(q)
             for r in results:
                 href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
-                text = f"{title} {body}"
-
-                cand = extract_employees(text)
+                cand = extract_employees(f"{title} {body}")
                 if cand:
                     score = score_candidate(company, domain, title, body, href)
                     emp_candidates.append((score, cand))
@@ -132,16 +139,16 @@ def find_company_info(domain: str, country: str, company: str, debug: bool = Fal
             best_emp = max(emp_candidates, key=lambda x: x[0])
             emp = format_employee_value(best_emp[1])
             emp_num = parse_employees(best_emp[1])
+            if debug:
+                logger.debug(f"[{domain}] Selected Employees: {emp} (Score={best_emp[0]})")
 
-        # --- Revenue (ZoomInfo candidates) ---
+        # --- Revenue ---
         rev_candidates = []
         for q in revenue_queries(company, domain, country):
             results = search_zoominfo(q)
             for r in results:
                 href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
-                text = f"{title} {body}"
-
-                cand = extract_revenue(text, emp_num)
+                cand = extract_revenue(f"{title} {body}", emp_num)
                 if cand:
                     score = score_candidate(company, domain, title, body, href)
                     rev_candidates.append((score, cand))
@@ -151,18 +158,20 @@ def find_company_info(domain: str, country: str, company: str, debug: bool = Fal
             rev = format_revenue_value(best_rev[1])
             rev_num = parse_revenue(best_rev[1])
             if not sanity_check(emp_num, rev_num):
+                if debug:
+                    logger.debug(f"[{domain}] Revenue sanity check failed. Ignoring revenue.")
                 rev, rev_num = None, None
+            elif debug:
+                logger.debug(f"[{domain}] Selected Revenue: {rev} (Score={best_rev[0]})")
 
-        # --- Industry (LinkedIn candidates only) ---
+        # --- Industry ---
         ind_candidates = []
         for q in industry_queries(company, domain, country):
             results = search_zoominfo(q)
             for r in results:
-                href, title, body = r.get("href") or "", r.get("title", ""), r.get("body", "")
-
+                href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
                 if "linkedin.com/company" not in href:
                     continue
-
                 cand = fetch_industry_from_linkedin_about(href)
                 if cand:
                     score = score_candidate(company, domain, title, body, href)
@@ -171,8 +180,10 @@ def find_company_info(domain: str, country: str, company: str, debug: bool = Fal
         if ind_candidates:
             best_ind = max(ind_candidates, key=lambda x: x[0])
             ind = parse_industry_value(best_ind[1])
+            if debug:
+                logger.debug(f"[{domain}] Selected Industry: {ind}")
 
-        # --- Flagged check ---
+        # --- Flagging ---
         if not is_valid_rpe(emp_num, rev_num):
             flagged = True
 
@@ -190,6 +201,7 @@ async def process_unique_domain(loop, executor, domain, country, company, debug=
         logger.warning("Domain worker failed for %s: %s", domain, e)
         return (None, None, None, False, None, None)
 
+
 async def irvalue_logic(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
     df = df.copy()
     for col in ["Domain", "Country", "Company Name"]:
@@ -198,7 +210,7 @@ async def irvalue_logic(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
     if "Revenue_per_Employee" in df.columns:
         set_rpe_range_from_data(df["Revenue_per_Employee"])
 
-    # Build unique domain map
+    # Build unique domain jobs
     domain_jobs = {}
     for _, row in df.iterrows():
         d = (row.get("Domain") or "").strip()
@@ -211,13 +223,10 @@ async def irvalue_logic(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
     loop = asyncio.get_running_loop()
     results_by_domain = {}
 
-    # safer concurrency
     max_workers = 6
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        tasks = []
-        for key, (dom, country, company) in domain_jobs.items():
-            task = asyncio.create_task(process_unique_domain(loop, executor, dom, country, company, debug))
-            tasks.append((key, task))
+        tasks = [(key, asyncio.create_task(process_unique_domain(loop, executor, dom, country, company, debug)))
+                 for key, (dom, country, company) in domain_jobs.items()]
 
         for key, task in tqdm(tasks, total=len(tasks), desc="IRValue Progress"):
             try:
@@ -227,7 +236,6 @@ async def irvalue_logic(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
                 emp, rev, ind, flagged, emp_num, rev_num = (None, None, None, False, None, None)
             results_by_domain[key] = (emp, rev, ind, flagged, emp_num, rev_num)
 
-    # Map back
     def _get_for_domain(d):
         return results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))
 
@@ -240,6 +248,7 @@ async def irvalue_logic(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
 
     logger.info("IRValue: completed enrichment for %d domains", len(results_by_domain))
     return df
+
 
 
 # ---------- CLI Entry ----------
