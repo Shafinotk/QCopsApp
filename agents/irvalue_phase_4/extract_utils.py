@@ -88,7 +88,13 @@ def parse_revenue(s):
     digits = re.findall(r"[\d.]+", s)
     if not digits:
         return None
-    val = float(digits[0]) * mult
+
+    # ✅ FIX: strip trailing '.' or ',' before converting to float
+    num_str = digits[0].rstrip(".,")
+    try:
+        val = float(num_str) * mult
+    except ValueError:
+        return None  # gracefully handle bad inputs instead of crashing
 
     if val < 1_000_000 and mult == 1:
         val *= 1_000_000
