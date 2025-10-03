@@ -137,9 +137,9 @@ def format_number(number: str, country: str = None, pattern: str = None) -> str:
             return f"{digits[:2]} {digits[2:]}"  # 91 9876543210
         elif len(digits) == 10:
             return f"91 {digits}"  # Add country code if missing
-    elif country_key == "US":
+    elif country_key in ("US", "CA"):
         if digits.startswith("1") and len(digits) == 11:
-            return digits[1:]  # Keep as 10 digits
+            return digits[1:]  # Strip leading 1
         elif len(digits) == 10:
             return digits  # Keep as 10 digits
 

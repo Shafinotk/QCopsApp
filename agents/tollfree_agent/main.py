@@ -43,7 +43,7 @@ def run_tollfree_agent(df: pd.DataFrame, pattern: str = None) -> pd.DataFrame:
                 is_invalid_length = True
 
         # Pass country_val to format_number
-        formatted = format_number(number, country=country_val, pattern=pattern)
+        formatted = format_number(number, country=country_key, pattern=pattern)
 
         # --- Checks ---
         toll_free = is_toll_free(number, country_key)

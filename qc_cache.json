@@ -3886,5 +3886,23 @@
     "match_status": "mismatch",
     "reason": "Domain reachable but company name could not be extracted.",
     "evidence_url": "https://www.boehringer-ingelheim.com"
+  },
+  "Brinkâ€™s Canada Limited||brinks.com||ddg": {
+    "provided_company": "Brinkâ€™s Canada Limited",
+    "provided_domain": "brinks.com",
+    "discovered_domain": "brinks.com",
+    "discovered_company": "Home - Brink's India",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://in.brinks.com/",
+    "evidence_url": "https://in.brinks.com/"
+  },
+  "Ville de MontrÃ©al||montreal.ca||ddg": {
+    "provided_company": "Ville de MontrÃ©al",
+    "provided_domain": "montreal.ca",
+    "discovered_domain": "montreal.ca",
+    "discovered_company": "Bienvenue sur Montréal.ca | Ville de Montréal",
+    "match_status": "match",
+    "reason": "Provided company 'Ville de MontrÃ©al' strongly matches discovered company 'Bienvenue sur Montréal.ca | Ville de Montréal' (similarity=100.0%). (source: ddg) Evidence: https://montreal.ca/",
+    "evidence_url": "https://montreal.ca/"
   }
 }
