@@ -19,14 +19,16 @@ from wrappers.mailname_wrapper import run_mailname_agent
 from wrappers.qc_domain_wrapper import run_qc_domain_agent
 from wrappers.irvalue_wrapper import run_irvalue_agent
 from wrappers.linkedin_wrapper import run_linkedin_agent
+from wrappers.tollfree_wrapper import run_tollfree_wrapper
 
 # Import properization utils
-from utils.properization import apply_properization
+from utils.properization import apply_properization, apply_pobox_coloring
 
 # Import coloring functions
 from agents.mailname.qc_checker import apply_mailname_coloring
 from agents.qc_domain.qc_agent.io_utils import apply_qc_domain_coloring
 from agents.irvalue_phase_4.irvalue_checker import apply_irvalue_coloring
+from agents.tollfree_agent.utils import apply_tollfree_coloring
 
 # ---------------------------
 # Logging setup
@@ -93,11 +95,28 @@ if uploaded_file:
     col1, col2 = st.columns(2)
     with col1:
         run_irvalue = st.checkbox("Run IRValue Agent (phase_1)", value=False)
+        if run_irvalue:
+            irvalue_fields = st.multiselect(
+                "Select IRValue fields to fetch",
+                options=["employees", "revenue", "industry"],
+                default=["employees", "revenue", "industry"],
+                help="Choose which fields to enrich from IRValue"
+            )
+        else:
+            irvalue_fields = []
+
     with col2:
         enforce_common_street = st.checkbox(
             "Enforce most common street per Domain",
             value=True,
             help="If checked, all rows with the same domain will get the most common street value."
+        )
+    with st.expander("☎️ Toll-Free Number Options"):
+        run_tollfree = st.checkbox("Run Toll-Free Agent", value=False)
+        tollfree_pattern = st.text_input(
+            "Optional Phone Pattern",
+            placeholder="e.g., 000-000-0000 or (+00) 000000000",
+            help="If left empty, default formatting rules are applied.",
         )
 
     if st.button("▶️ Run Pipeline"):
@@ -115,10 +134,11 @@ if uploaded_file:
             # ---------------------------
             # Step 1: IRValue (optional, run first now)
             # ---------------------------
+            # Step 1: IRValue (optional, run first now)
             if run_irvalue:
                 st.write("🔄 Running IRValue Agent (first)...")
                 try:
-                    df = run_irvalue_agent(df)
+                    df = run_irvalue_agent(df, fields=irvalue_fields)
                     st.write(f"IRValue completed: rows={len(df)}")
                     logger.info("IRValue returned %d rows", len(df))
                 except Exception as e:
@@ -127,6 +147,7 @@ if uploaded_file:
                     logger.exception("IRValue Agent failed: %s", e)
             else:
                 st.write("⏭️ Skipping IRValue Agent (phase_1)")
+
 
             # ---------------------------
             # Step 2: MailName Agent
@@ -140,6 +161,24 @@ if uploaded_file:
                 st.error("❌ MailName Agent failed")
                 st.exception(e)
                 logger.exception("MailName Agent failed: %s", e)
+                
+                
+                
+            # ---------------------------
+            # Step 3: Toll-Free Agent
+            # ---------------------------
+            if run_tollfree:
+                st.write("🔄 Running Toll-Free Agent...")
+                try:
+                    df = run_tollfree_wrapper(df, tollfree_pattern if tollfree_pattern.strip() else None)
+                    
+                except Exception as e:
+                    st.error("❌ Toll-Free Agent failed")
+                    st.exception(e)
+                    logger.exception("Toll-Free Agent failed: %s", e)
+            else:
+                st.write("⏭️ Skipping Toll-Free Agent")
+
 
             # ---------------------------
             # Step 3: LinkedIn Agent
@@ -199,6 +238,10 @@ if uploaded_file:
                 apply_irvalue_coloring(final_excel)  # IR value coloring
                 apply_mailname_coloring(final_excel)  # MailName coloring
                 apply_qc_domain_coloring(final_excel)  # QC Domain coloring
+                apply_tollfree_coloring(final_excel, df) # Toll free coloring 
+                apply_pobox_coloring(final_excel, df)
+                
+                
             except Exception as e:
                 st.warning("⚠️ Coloring failed")
                 st.exception(e)

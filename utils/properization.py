@@ -2,6 +2,8 @@
 import pandas as pd
 import re
 from collections import Counter
+import openpyxl
+from openpyxl.styles import PatternFill
 
 # Direction tokens that should always be uppercase
 DIRECTION_TOKENS = {
@@ -20,6 +22,15 @@ STREET_TYPE_MAP = {
 PUNCT_TO_REMOVE = r"[,\.\'\:\(\);]"
 ORDINAL_RE = re.compile(r"(\d+)(st|nd|rd|th)", flags=re.IGNORECASE)
 ZIPCODE_RE = re.compile(r"^\d+$")  # match only digits
+
+# 🔑 Robust PO Box detection (supports P.O.Box, Pobox, Box 123, Post Office Box 123)
+POBOX_RE = re.compile(
+    r"\bP\.?\s*O\.?\s*Box\b|"       # P.O. Box
+    r"\bPobox\b|"                   # Pobox
+    r"\bPost\s*Office\s*Box\b|"     # Post Office Box
+    r"\bBox\s*\d+\b",               # Box 123
+    flags=re.IGNORECASE
+)
 
 
 def _canonical_col(df, target_name: str):
@@ -92,6 +103,14 @@ def _properize_zip(zipcode: str, country: str) -> str:
     return zipcode
 
 
+def _detect_pobox(street: str) -> bool:
+    """Return True if PO Box is detected in the street"""
+    if not street or pd.isna(street):
+        return False
+    # 🔑 Use original street, no cleaning
+    return bool(POBOX_RE.search(street))
+
+
 def apply_properization(df: pd.DataFrame, enforce_common_street: bool = True) -> pd.DataFrame:
     """Apply properization rules to DataFrame.
     enforce_common_street: if True, will enforce most common street, city, state, zip, country per Domain
@@ -111,6 +130,9 @@ def apply_properization(df: pd.DataFrame, enforce_common_street: bool = True) ->
 
     if "Street" in mapping:
         c = mapping["Street"]
+        # --- Detect PO Box using original street value before cleaning ---
+        df["Street_POBox_Flag"] = df[c].fillna("").astype(str).apply(_detect_pobox)
+        # Then clean street for display
         df[c] = df[c].fillna("").astype(str).apply(clean_street)
 
     if "Zip Code" in mapping and "Country" in mapping:
@@ -135,17 +157,49 @@ def apply_properization(df: pd.DataFrame, enforce_common_street: bool = True) ->
     return df
 
 
+def apply_pobox_coloring(excel_path: str, df: pd.DataFrame):
+    """
+    Color the 'Street' column if it contains PO Box.
+    Yellow color fill.
+    """
+    wb = openpyxl.load_workbook(excel_path)
+    ws = wb.active
+
+    fill = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type="solid")  # Yellow
+
+    col_idx = None
+    for idx, cell in enumerate(ws[1], 1):
+        if cell.value == "Street":
+            col_idx = idx
+            break
+    if col_idx is None:
+        return
+
+    for row_num, flag in enumerate(df.get("Street_POBox_Flag", []), 2):
+        if flag:
+            ws.cell(row=row_num, column=col_idx).fill = fill
+
+    wb.save(excel_path)
+
+
 if __name__ == "__main__":
     sample = pd.DataFrame({
         'Company Name': ['ACME, Inc.', 'acme inc'],
         'First Name': ['john', 'MARY'],
         'Last Name': ['doe', "o'neil"],
-        'Street': ['123 N Main St.', '123 north main st'],
+        'Street': [
+            '123 N Main St.',
+            'Pobox 79 Taman Perindustrian Lot 60334 Persiaran 3 Bukit Rahman Putra'
+        ],
         'City': ['new york', 'NEW YORK'],
         'State': ['NY', 'ny'],
         'Domain': ['acme.com', 'acme.com'],
         'Country': ['United States', 'US'],
         'Zip Code': ['2345', '123456']
     })
-    print(apply_properization(sample, enforce_common_street=True))
-    print(apply_properization(sample, enforce_common_street=False))
+    result = apply_properization(sample, enforce_common_street=True)
+    print(result)
+
+    # Example usage of Excel coloring
+    # result.to_excel("sample.xlsx", index=False)
+    # apply_pobox_coloring("sample.xlsx", result)

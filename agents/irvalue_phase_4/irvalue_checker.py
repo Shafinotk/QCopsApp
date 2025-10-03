@@ -1,7 +1,7 @@
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 
-LOW_VALUE_COLOR = "FFFF99"  # Light Yellow (you can change to red if needed)
+LOW_VALUE_COLOR = "FFFF99"  # Light Yellow
 
 def apply_irvalue_coloring(excel_file: str):
     """
@@ -26,9 +26,16 @@ def apply_irvalue_coloring(excel_file: str):
         "discovered_revenue",
     ]
 
+    # Skip if required columns don't exist
+    emp_col_idx = col_map.get("discovered_employees")
+    rev_col_idx = col_map.get("discovered_revenue")
+    if emp_col_idx is None and rev_col_idx is None:
+        # Nothing to color, exit safely
+        return
+
     for i, row in enumerate(ws.iter_rows(min_row=2, max_row=ws.max_row), start=2):
-        emp = ws.cell(row=i, column=col_map.get("discovered_employees")).value
-        rev = ws.cell(row=i, column=col_map.get("discovered_revenue")).value
+        emp = ws.cell(row=i, column=emp_col_idx).value if emp_col_idx else None
+        rev = ws.cell(row=i, column=rev_col_idx).value if rev_col_idx else None
 
         try:
             emp_val = float(emp) if emp is not None and emp != "" else None
@@ -37,11 +44,12 @@ def apply_irvalue_coloring(excel_file: str):
             emp_val = None
             rev_val = None
 
-        # ✅ Updated condition to use OR instead of AND
+        # Condition: highlight if emp < 40 OR rev < 10M
         if (emp_val is not None and emp_val < 40) or (rev_val is not None and rev_val < 10_000_000):
             fill = PatternFill(start_color=LOW_VALUE_COLOR, end_color=LOW_VALUE_COLOR, fill_type="solid")
             for col_name in target_cols:
-                if col_name in col_map:
-                    ws.cell(row=i, column=col_map[col_name]).fill = fill
+                col_idx = col_map.get(col_name)
+                if col_idx:  # Only fill if column exists
+                    ws.cell(row=i, column=col_idx).fill = fill
 
     wb.save(excel_file)

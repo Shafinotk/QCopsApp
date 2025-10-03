@@ -13,7 +13,7 @@ from .search_utils import search_zoominfo, fetch_industry_from_linkedin_about, f
 from .extract_utils import (
     extract_employees, extract_revenue, extract_industry,
     format_employee_value, format_revenue_value, parse_industry_value,
-    parse_employees, parse_revenue, is_valid_rpe, set_rpe_range_from_data
+    parse_employees, parse_revenue, is_valid_rpe, set_rpe_range_from_data, RANGE_DASH
 )
 # NEW: validation helpers
 from .validation_utils import validate_domain, is_same_company, sanity_check, score_candidate
@@ -109,11 +109,65 @@ def company_near_revenue(text: str, company_name: str, revenue_substring: str, w
 # (unchanged _best_result and extract_field_via_queries here)
 
 # ---------- Worker ----------
-def find_company_info(domain: str, country: str, company: str, debug: bool = False) -> Tuple[Any, Any, Any, bool, Any, Any]:
+from typing import Any, Tuple
+
+# ---------- Helper: parse employee column from input ----------
+def get_emp_num_from_input(emp_str: str) -> int | None:
+    """
+    Convert input string like '50-100', '1000+', '500' into an integer.
+    - Range: take average
+    - '1000+': treat as 10000
+    - Single number: return as int
+    """
+    if not emp_str:
+        return None
+    emp_str = str(emp_str).strip().replace(",", "")
+    # Handle range
+    if re.search(rf"\d+{RANGE_DASH}\d+", emp_str):
+        parts = re.split(RANGE_DASH, emp_str)
+        try:
+            nums = [int(p) for p in parts]
+            return int(sum(nums) / len(nums))
+        except ValueError:
+            return None
+    # Handle "1000+" type
+    m = re.match(r"(\d+)\+", emp_str)
+    if m:
+        return int(m.group(1)) * 10  # 1000+ -> 10000
+    # Handle single number
+    try:
+        return int(emp_str)
+    except ValueError:
+        return None
+
+
+
+def find_company_info(
+    domain: str,
+    country: str,
+    company: str,
+    debug: bool = False,
+    fields: list[str] | None = None,
+    company_emp_input: dict | None = None,
+) -> tuple[Any, Any, Any, bool, Any, Any]:
     """
     Fetch company information (employees, revenue, industry) using ZoomInfo + LinkedIn.
-    Returns tuple: (emp, rev, ind, flagged, emp_num, rev_num)
+
+    Args:
+        domain (str): Company domain
+        country (str): Country
+        company (str): Company name
+        debug (bool): Enable debug logging
+        fields (list[str] | None): Which fields to fetch. Options: 
+            ["employees", "revenue", "industry"]. Default=None (all)
+        company_emp_input (dict | None): Optional mapping of domain -> employee count from input CSV
+
+    Returns:
+        tuple: (emp, rev, ind, flagged, emp_num, rev_num)
     """
+    if fields is None:
+        fields = ["employees", "revenue", "industry"]
+
     emp, rev, ind = None, None, None
     emp_num, rev_num = None, None
     flagged = False
@@ -124,68 +178,83 @@ def find_company_info(domain: str, country: str, company: str, debug: bool = Fal
                 logger.warning("find_company_info: No domain/company provided, skipping.")
             return emp, rev, ind, flagged, emp_num, rev_num
 
-        # --- Employees ---
-        emp_candidates = []
-        for q in employee_queries(company, domain, country):
-            results = search_zoominfo(q)
-            for r in results:
-                href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
-                cand = extract_employees(f"{title} {body}")
-                if cand:
-                    score = score_candidate(company, domain, title, body, href)
-                    emp_candidates.append((score, cand))
+        domain_key = str(domain).lower().strip()
 
-        if emp_candidates:
-            best_emp = max(emp_candidates, key=lambda x: x[0])
-            emp = format_employee_value(best_emp[1])
-            emp_num = parse_employees(best_emp[1])
-            if debug:
-                logger.debug(f"[{domain}] Selected Employees: {emp} (Score={best_emp[0]})")
+        # --- Employees ---
+        if "employees" in fields:
+            emp_candidates = []
+            for q in employee_queries(company, domain, country):
+                results = search_zoominfo(q)
+                for r in results:
+                    href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
+                    cand = extract_employees(f"{title} {body}")
+                    if cand:
+                        score = score_candidate(company, domain, title, body, href)
+                        emp_candidates.append((score, cand))
+
+            if emp_candidates:
+                best_emp = max(emp_candidates, key=lambda x: x[0])
+                emp = format_employee_value(best_emp[1])
+                emp_num = parse_employees(best_emp[1])
+                if debug:
+                    logger.debug(f"[{domain}] Selected Employees: {emp} (Score={best_emp[0]})")
+
+        # --- If revenue is requested but emp_num not found, use company_emp_input ---
+        if "revenue" in fields and not emp_num and company_emp_input:
+            emp_input_val = company_emp_input.get(domain_key, None)
+            if emp_input_val:
+                emp_num = get_emp_num_from_input(emp_input_val)
+                emp = str(emp_num) if emp_num else None
+                if debug:
+                    logger.debug(f"[{domain}] Employees taken from input CSV for revenue: {emp}")
 
         # --- Revenue ---
-        rev_candidates = []
-        for q in revenue_queries(company, domain, country):
-            results = search_zoominfo(q)
-            for r in results:
-                href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
-                cand = extract_revenue(f"{title} {body}", emp_num)
-                if cand:
-                    score = score_candidate(company, domain, title, body, href)
-                    rev_candidates.append((score, cand))
+        if "revenue" in fields:
+            rev_candidates = []
+            for q in revenue_queries(company, domain, country):
+                results = search_zoominfo(q)
+                for r in results:
+                    href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
+                    cand = extract_revenue(f"{title} {body}", emp_num)
+                    if cand:
+                        score = score_candidate(company, domain, title, body, href)
+                        rev_candidates.append((score, cand))
 
-        if rev_candidates:
-            best_rev = max(rev_candidates, key=lambda x: x[0])
-            rev = format_revenue_value(best_rev[1])
-            rev_num = parse_revenue(best_rev[1])
-            if not sanity_check(emp_num, rev_num):
-                if debug:
-                    logger.debug(f"[{domain}] Revenue sanity check failed. Ignoring revenue.")
-                rev, rev_num = None, None
-            elif debug:
-                logger.debug(f"[{domain}] Selected Revenue: {rev} (Score={best_rev[0]})")
+            if rev_candidates:
+                best_rev = max(rev_candidates, key=lambda x: x[0])
+                rev = format_revenue_value(best_rev[1])
+                rev_num = parse_revenue(best_rev[1])
+                if not sanity_check(emp_num, rev_num):
+                    if debug:
+                        logger.debug(f"[{domain}] Revenue sanity check failed. Ignoring revenue.")
+                    rev, rev_num = None, None
+                elif debug:
+                    logger.debug(f"[{domain}] Selected Revenue: {rev} (Score={best_rev[0]})")
 
         # --- Industry ---
-        ind_candidates = []
-        for q in industry_queries(company, domain, country):
-            results = search_zoominfo(q)
-            for r in results:
-                href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
-                if "linkedin.com/company" not in href:
-                    continue
-                cand = fetch_industry_from_linkedin_about(href)
-                if cand:
-                    score = score_candidate(company, domain, title, body, href)
-                    ind_candidates.append((score, cand))
+        if "industry" in fields:
+            ind_candidates = []
+            for q in industry_queries(company, domain, country):
+                results = search_zoominfo(q)
+                for r in results:
+                    href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
+                    if "linkedin.com/company" not in href:
+                        continue
+                    cand = fetch_industry_from_linkedin_about(href)
+                    if cand:
+                        score = score_candidate(company, domain, title, body, href)
+                        ind_candidates.append((score, cand))
 
-        if ind_candidates:
-            best_ind = max(ind_candidates, key=lambda x: x[0])
-            ind = parse_industry_value(best_ind[1])
-            if debug:
-                logger.debug(f"[{domain}] Selected Industry: {ind}")
+            if ind_candidates:
+                best_ind = max(ind_candidates, key=lambda x: x[0])
+                ind = parse_industry_value(best_ind[1])
+                if debug:
+                    logger.debug(f"[{domain}] Selected Industry: {ind}")
 
         # --- Flagging ---
-        if not is_valid_rpe(emp_num, rev_num):
-            flagged = True
+        if "employees" in fields and "revenue" in fields:
+            if not is_valid_rpe(emp_num, rev_num):
+                flagged = True
 
     except Exception as e:
         logger.exception("find_company_info failed for %s: %s", domain, e)
@@ -193,42 +262,132 @@ def find_company_info(domain: str, country: str, company: str, debug: bool = Fal
     return emp, rev, ind, flagged, emp_num, rev_num
 
 
+
 # ---------- Async Orchestration ----------
-async def process_unique_domain(loop, executor, domain, country, company, debug=False):
+async def process_unique_domain(
+    loop,
+    executor,
+    domain: str,
+    country: str = "",
+    company: str = "",
+    debug: bool = False,
+    fields: list[str] | None = None,
+    company_emp_input: dict | None = None,  # NEW
+):
+    """
+    Run find_company_info in a thread executor for a single domain.
+
+    Args:
+        loop: Asyncio event loop
+        executor: ThreadPoolExecutor
+        domain (str): Company domain
+        country (str): Country
+        company (str): Company name
+        debug (bool): Enable debug logging
+        fields (list[str] | None): Fields to fetch ["employees", "revenue", "industry"]
+        company_emp_input (dict | None): Optional mapping of domain -> employee count from input CSV
+
+    Returns:
+        tuple: (emp, rev, ind, flagged, emp_num, rev_num)
+    """
     try:
-        return await loop.run_in_executor(executor, find_company_info, domain, country, company, debug)
+        domain = (domain or "").strip()
+        country = (country or "").strip()
+        company = (company or "").strip()
+
+        if not domain:
+            return (None, None, None, False, None, None)
+
+        # Ensure fields has a default
+        if fields is None:
+            fields = ["employees", "revenue", "industry"]
+
+        # --- Run find_company_info in executor ---
+        result = await loop.run_in_executor(
+            executor,
+            lambda d=domain, c=country, n=company: find_company_info(
+                domain=d,
+                country=c,
+                company=n,
+                debug=debug,
+                fields=fields,
+                company_emp_input=company_emp_input
+            ),
+        )
+
+        if not isinstance(result, tuple) or len(result) != 6:
+            return (None, None, None, False, None, None)
+
+        return result
+
     except Exception as e:
-        logger.warning("Domain worker failed for %s: %s", domain, e)
+        logger.warning("Domain worker failed for %s: %s", domain, e, exc_info=True)
         return (None, None, None, False, None, None)
 
 
-async def irvalue_logic(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
+async def irvalue_logic(df: pd.DataFrame, debug: bool = False, fields: list[str] | None = None) -> pd.DataFrame:
+    """
+    Enrich dataframe with employee, revenue, and industry info per unique domain.
+    Uses async + ThreadPoolExecutor for parallel domain lookups.
+
+    Args:
+        df (pd.DataFrame): Input dataframe with columns "Domain", "Country", "Company Name"
+        debug (bool): Enable debug logging
+        fields (list[str] | None): Which fields to fetch. Options: ["employees", "revenue", "industry"]. Default=None (all)
+
+    Returns:
+        pd.DataFrame: Enriched dataframe
+    """
     df = df.copy()
+
+    # --- Create mapping domain -> input employee string ---
+    company_emp_input = {}
+    if "Company Employees" in df.columns:
+        company_emp_input = {
+            str(d).lower(): emp
+            for d, emp in zip(df["Domain"], df["Company Employees"])
+            if str(d).strip()
+        }
+
+    # --- Ensure fields has a default value ---
+    if fields is None:
+        fields = ["employees", "revenue", "industry"]
+
+    # --- Ensure required columns exist ---
     for col in ["Domain", "Country", "Company Name"]:
-        df[col] = df[col].astype(str).str.strip() if col in df.columns else ""
+        if col not in df.columns:
+            df[col] = ""
+        else:
+            df[col] = df[col].astype(str).str.strip()
 
+    # --- Setup Revenue_per_Employee ranges if present ---
     if "Revenue_per_Employee" in df.columns:
-        set_rpe_range_from_data(df["Revenue_per_Employee"])
+        try:
+            set_rpe_range_from_data(df["Revenue_per_Employee"])
+        except Exception as e:
+            logger.warning("Failed to set RPE ranges: %s", e)
 
-    # Build unique domain jobs
-    domain_jobs = {}
-    for _, row in df.iterrows():
-        d = (row.get("Domain") or "").strip()
-        if not d:
-            continue
-        key = d.lower()
-        if key not in domain_jobs:
-            domain_jobs[key] = (row["Domain"], row.get("Country", ""), row.get("Company Name", ""))
+    # --- Build unique domain jobs ---
+    domain_jobs = {
+        d.lower(): (d, c, n)
+        for d, c, n in zip(df["Domain"], df["Country"], df["Company Name"])
+        if str(d).strip()
+    }
 
     loop = asyncio.get_running_loop()
     results_by_domain = {}
 
+    # --- Run jobs concurrently ---
     max_workers = 6
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        tasks = [(key, asyncio.create_task(process_unique_domain(loop, executor, dom, country, company, debug)))
-                 for key, (dom, country, company) in domain_jobs.items()]
+        tasks = {
+            key: asyncio.create_task(
+                process_unique_domain(loop, executor, dom, country, company, debug, fields, company_emp_input)
+            )
+            for key, (dom, country, company) in domain_jobs.items()
+        }
 
-        for key, task in tqdm(tasks, total=len(tasks), desc="IRValue Progress"):
+        for key, task in tqdm(tasks.items(), total=len(tasks), desc="IRValue Progress"):
             try:
                 emp, rev, ind, flagged, emp_num, rev_num = await task
             except Exception as e:
@@ -236,19 +395,20 @@ async def irvalue_logic(df: pd.DataFrame, debug: bool = False) -> pd.DataFrame:
                 emp, rev, ind, flagged, emp_num, rev_num = (None, None, None, False, None, None)
             results_by_domain[key] = (emp, rev, ind, flagged, emp_num, rev_num)
 
-    def _get_for_domain(d):
-        return results_by_domain.get((d or "").lower(), (None, None, None, False, None, None))
+    # --- Helper to safely get results ---
+    def _get_for_domain(domain: str):
+        return results_by_domain.get(str(domain).lower(), (None, None, None, False, None, None))
 
-    df["discovered_employees_raw"] = df["Domain"].apply(lambda d: _get_for_domain(d)[0])
-    df["discovered_revenue_raw"] = df["Domain"].apply(lambda d: _get_for_domain(d)[1])
-    df["discovered_industry"] = df["Domain"].apply(lambda d: _get_for_domain(d)[2])
-    df["flagged_rpe"] = df["Domain"].apply(lambda d: _get_for_domain(d)[3])
-    df["discovered_employees"] = df["Domain"].apply(lambda d: _get_for_domain(d)[4])
-    df["discovered_revenue"] = df["Domain"].apply(lambda d: _get_for_domain(d)[5])
+    # --- Vectorized assignment ---
+    df["discovered_employees_raw"] = df["Domain"].map(lambda d: _get_for_domain(d)[0])
+    df["discovered_revenue_raw"] = df["Domain"].map(lambda d: _get_for_domain(d)[1])
+    df["discovered_industry"] = df["Domain"].map(lambda d: _get_for_domain(d)[2])
+    df["flagged_rpe"] = df["Domain"].map(lambda d: _get_for_domain(d)[3])
+    df["discovered_employees"] = df["Domain"].map(lambda d: _get_for_domain(d)[4])
+    df["discovered_revenue"] = df["Domain"].map(lambda d: _get_for_domain(d)[5])
 
-    logger.info("IRValue: completed enrichment for %d domains", len(results_by_domain))
+    logger.info("IRValue: completed enrichment for %d unique domains", len(results_by_domain))
     return df
-
 
 
 # ---------- CLI Entry ----------
