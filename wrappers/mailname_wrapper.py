@@ -1,12 +1,19 @@
 # wrappers/mailname_wrapper.py
-import subprocess
-from pathlib import Path
 import pandas as pd
+import subprocess
 import sys
+import io
+from pathlib import Path
+import logging
+from tempfile import NamedTemporaryFile
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
 
 def run_mailname_agent(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Run the MailName agent on a DataFrame.
+    Run the MailName agent on a DataFrame using in-memory optimizations.
 
     Parameters
     ----------
@@ -18,30 +25,44 @@ def run_mailname_agent(df: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Processed DataFrame.
     """
-    # Save df to a temporary CSV
-    tmp_input = Path("temp_mailname_input.csv")
-    tmp_output = Path("temp_mailname_output.xlsx")
-    df.to_csv(tmp_input, index=False)
+    try:
+        # ✅ Save DataFrame to a temporary CSV file
+        with NamedTemporaryFile(delete=False, suffix=".csv") as tmp_input:
+            df.to_csv(tmp_input.name, index=False)
 
-    # Path to the MailName agent main.py
-    mailname_main = Path(__file__).resolve().parents[1] / "agents" / "mailname" / "main.py"
-    if not mailname_main.exists():
-        raise FileNotFoundError(f"MailName agent main.py not found: {mailname_main}")
+        tmp_output = Path(tmp_input.name.replace(".csv", "_output.xlsx"))
 
-    # Run MailName CLI using the *same* Python interpreter as Streamlit
-    subprocess.run(
-        [sys.executable, str(mailname_main), "--input", str(tmp_input), "--output", str(tmp_output)],
-        check=True
-    )
+        # ✅ Path to MailName agent main.py
+        mailname_main = Path(__file__).resolve().parents[1] / "agents" / "mailname" / "main.py"
+        if not mailname_main.exists():
+            raise FileNotFoundError(f"MailName agent main.py not found: {mailname_main}")
 
-    if not tmp_output.exists():
-        raise FileNotFoundError("MailName agent did not produce the expected output.")
+        # ✅ Run MailName CLI using same Python interpreter
+        subprocess.run(
+            [sys.executable, str(mailname_main), "--input", tmp_input.name, "--output", str(tmp_output)],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
 
-    # Read processed output
-    processed_df = pd.read_excel(tmp_output, dtype=str)
+        # ✅ Verify output
+        if not tmp_output.exists():
+            raise FileNotFoundError("MailName agent did not produce the expected output file.")
 
-    # Clean up temp files
-    tmp_input.unlink(missing_ok=True)
-    tmp_output.unlink(missing_ok=True)
+        # ✅ Load processed output
+        processed_df = pd.read_excel(tmp_output, dtype=str)
 
-    return processed_df
+        # ✅ Optional: Clean up temp files
+        Path(tmp_input.name).unlink(missing_ok=True)
+        tmp_output.unlink(missing_ok=True)
+
+        logger.info("MailName agent completed successfully with %d rows.", len(processed_df))
+        return processed_df
+
+    except subprocess.CalledProcessError as e:
+        logger.error("MailName subprocess failed:\n%s", e.stderr)
+        raise RuntimeError(f"MailName agent failed: {e.stderr}") from e
+    except Exception as e:
+        logger.exception("MailName agent crashed: %s", e)
+        raise

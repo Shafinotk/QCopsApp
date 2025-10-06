@@ -1,44 +1,51 @@
 # wrappers/irvalue_wrapper.py
 import pandas as pd
-from pathlib import Path
-import tempfile
 import traceback
+import inspect
 import sys
 import os
-import inspect
+import asyncio
+import logging
+from typing import Optional, List
 
-# Import the IRValue logic directly (runs in-process instead of subprocess)
+# ------------------------------------------
+# Logging setup
+# ------------------------------------------
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# ------------------------------------------
+# Import IRValue logic
+# ------------------------------------------
 try:
     from agents.irvalue_phase_4.main import irvalue_logic
 except Exception:
-    # Fallback if path issues — try adjusting sys.path
     repo_root = os.path.dirname(os.path.dirname(__file__))
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
     from agents.irvalue_phase_4.main import irvalue_logic
 
 
+# ------------------------------------------
+# Main Function
+# ------------------------------------------
 def run_irvalue_agent(
     df: pd.DataFrame,
     debug: bool = False,
-    fields: list[str] | None = None
+    fields: Optional[List[str]] = None
 ) -> pd.DataFrame:
     """
-    Run the IRValue agent in-process on the given DataFrame.
-    This avoids fragile subprocess invocations on cloud platforms.
+    Run the IRValue agent in-process (no subprocess) for efficiency.
+    Adds intelligent error handling and async support.
 
     Args:
         df (pd.DataFrame): Input dataframe with at least Domain, Country, Company Name
-        debug (bool): Enable debug logging
-        fields (list[str] | None): Which fields to fetch. Options:
-            ["employees", "revenue", "industry"]
-            Default = None (fetch all)
+        debug (bool): Enable debug logs.
+        fields (list[str] | None): Fields to fetch (['employees', 'revenue', 'industry'])
 
     Returns:
-        pd.DataFrame: Enriched DataFrame; on failure, returns the original df with
-        added empty columns so downstream code doesn't break.
+        pd.DataFrame: Enriched DataFrame or placeholder DataFrame on failure.
     """
-    # Defensive copy
     df = df.copy()
 
     # Ensure required columns exist
@@ -47,38 +54,46 @@ def run_irvalue_agent(
             df[col] = ""
 
     try:
-        import asyncio
-
-        # check if irvalue_logic supports "fields"
+        # -----------------------------
+        # Detect function signature
+        # -----------------------------
         sig = inspect.signature(irvalue_logic)
         accepts_fields = "fields" in sig.parameters
 
+        # -----------------------------
+        # Async support
+        # -----------------------------
         if asyncio.iscoroutinefunction(irvalue_logic):
-            if accepts_fields:
-                enriched = asyncio.run(irvalue_logic(df, debug=debug, fields=fields))
-            else:
-                enriched = asyncio.run(irvalue_logic(df, debug=debug))
+            enriched = asyncio.run(
+                irvalue_logic(df, debug=debug, fields=fields) if accepts_fields
+                else irvalue_logic(df, debug=debug)
+            )
         else:
-            if accepts_fields:
-                enriched = irvalue_logic(df, debug=debug, fields=fields)
-            else:
-                enriched = irvalue_logic(df, debug=debug)
+            enriched = (
+                irvalue_logic(df, debug=debug, fields=fields)
+                if accepts_fields else irvalue_logic(df, debug=debug)
+            )
 
-        # ensure we return a DataFrame
+        # -----------------------------
+        # Validation
+        # -----------------------------
         if not isinstance(enriched, pd.DataFrame):
-            raise RuntimeError("IRValue returned non-DataFrame result")
+            raise RuntimeError("IRValue agent returned a non-DataFrame result")
+
+        # ✅ Optional: add post-processing hooks here (AI enrichment)
+        # Example: add semantic checks, ML anomaly detection, etc.
+        # enriched = enrich_with_ai_model(enriched)
+
+        logger.info("IRValue agent completed successfully with %d rows", len(enriched))
         return enriched
 
-    except Exception:
-        # Log the traceback to stdout so Render/Streamlit logs show it
-        print("ERROR running IRValue agent:", file=sys.stderr)
+    except Exception as e:
+        logger.error("IRValue agent failed: %s", str(e))
         traceback.print_exc()
-        print(
-            "IRValue failed — returning original DataFrame with placeholder columns",
-            file=sys.stderr,
-        )
 
-        # Add the discovered columns (empty) so downstream code won't break
+        # -----------------------------
+        # Fallback DataFrame structure
+        # -----------------------------
         placeholder_cols = [
             "discovered_employees_raw",
             "discovered_revenue_raw",
@@ -91,19 +106,33 @@ def run_irvalue_agent(
             if c not in df.columns:
                 df[c] = ""
 
+        logger.warning("Returning fallback DataFrame due to IRValue failure.")
         return df
 
 
-# quick local test if run directly
+# ------------------------------------------
+# Optional AI enrichment hook (future use)
+# ------------------------------------------
+def enrich_with_ai_model(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Optional placeholder for integrating an open-source model to refine
+    or validate IRValue outputs — ready for future extension.
+    """
+    # Example (pseudo-code):
+    # from transformers import pipeline
+    # model = pipeline("text-classification", model="distilbert-base-uncased")
+    # df["ai_validated"] = df["Company Name"].apply(lambda x: model(x)[0]["label"])
+    return df
+
+
+# ------------------------------------------
+# Local test
+# ------------------------------------------
 if __name__ == "__main__":
-    df = pd.DataFrame({
+    test_df = pd.DataFrame({
         "Company Name": ["Example Inc", "Foo LLC"],
         "Domain": ["example.com", "foo.com"],
         "Country": ["USA", "USA"]
     })
 
-    # Example: only fetch employees (only works if irvalue_logic supports fields)
-    print(run_irvalue_agent(df, debug=True, fields=["employees"]).head())
-
-    # Example: fetch all (default)
-    print(run_irvalue_agent(df, debug=True).head())
+    print(run_irvalue_agent(test_df, debug=True, fields=["employees", "revenue"]).head())
