@@ -8,6 +8,10 @@ from tqdm import tqdm
 from urllib.parse import urlparse, unquote
 from typing import Optional, Tuple, Any
 import logging
+import os, json, hashlib
+from transformers import pipeline
+from pathlib import Path
+
 
 from .search_utils import search_zoominfo, fetch_industry_from_linkedin_about, fetch_html
 from .extract_utils import (
@@ -17,6 +21,67 @@ from .extract_utils import (
 )
 # NEW: validation helpers
 from .validation_utils import validate_domain, is_same_company, sanity_check, score_candidate
+
+
+# Directory-based cache (persistent across runs)
+CACHE_DIR = Path(__file__).parent / "cache"
+CACHE_DIR.mkdir(exist_ok=True)
+
+def _cache_path(domain: str, field: str) -> Path:
+    key = hashlib.md5(f"{domain}_{field}".encode()).hexdigest()
+    return CACHE_DIR / f"{key}.json"
+
+def load_cache(domain: str, field: str):
+    path = _cache_path(domain, field)
+    if path.exists():
+        try:
+            return json.load(open(path, "r"))
+        except Exception:
+            return None
+    return None
+
+def save_cache(domain: str, field: str, data):
+    try:
+        json.dump(data, open(_cache_path(domain, field), "w"))
+    except Exception:
+        pass
+
+# ---------- Lightweight LLM Extractor ----------
+# flan-t5-small is ~300MB, much faster than base/large
+try:
+    llm_extractor = pipeline(
+        "text2text-generation",
+        model="google/flan-t5-small",
+        truncation=True,
+        device=-1  # CPU-safe
+    )
+except Exception as e:
+    llm_extractor = None
+    print("⚠️ Could not load LLM extractor:", e)
+
+def semantic_extract(text: str, field: str) -> Optional[str]:
+    """
+    Use LLM to extract a missing field.
+    Field ∈ {'employees', 'revenue', 'industry'}
+    """
+    if not text or not llm_extractor:
+        return None
+
+    prompt = f"""
+    Extract the {field} of the company from this text.
+    If not found, output 'None'.
+    Text: {text[:1200]}
+    """
+
+    try:
+        response = llm_extractor(prompt, max_length=100, do_sample=False)
+        val = response[0]['generated_text']
+        if "none" in val.lower():
+            return None
+        return val.strip()
+    except Exception:
+        return None
+
 
 
 # ---------- Logging ----------
@@ -149,42 +214,53 @@ def find_company_info(
     debug: bool = False,
     fields: list[str] | None = None,
     company_emp_input: dict | None = None,
-) -> tuple[Any, Any, Any, bool, Any, Any]:
+) -> tuple[Any, Any, Any, bool, Any, Any, Any, Any, Any]:
     """
-    Fetch company information (employees, revenue, industry) using ZoomInfo + LinkedIn.
-
-    Args:
-        domain (str): Company domain
-        country (str): Country
-        company (str): Company name
-        debug (bool): Enable debug logging
-        fields (list[str] | None): Which fields to fetch. Options: 
-            ["employees", "revenue", "industry"]. Default=None (all)
-        company_emp_input (dict | None): Optional mapping of domain -> employee count from input CSV
+    Fetch company information (employees, revenue, industry) using ZoomInfo + LinkedIn + LLM fallback.
 
     Returns:
-        tuple: (emp, rev, ind, flagged, emp_num, rev_num)
+        tuple: (emp, rev, ind, flagged, emp_num, rev_num, emp_score, rev_score, ind_score)
     """
     if fields is None:
         fields = ["employees", "revenue", "industry"]
 
     emp, rev, ind = None, None, None
     emp_num, rev_num = None, None
+    emp_score, rev_score, ind_score = None, None, None
     flagged = False
 
     try:
         if not domain and not company:
             if debug:
                 logger.warning("find_company_info: No domain/company provided, skipping.")
-            return emp, rev, ind, flagged, emp_num, rev_num
+            return emp, rev, ind, flagged, emp_num, rev_num, emp_score, rev_score, ind_score
 
         domain_key = str(domain).lower().strip()
+
+        # --- Cache hit check ---
+        try:
+            cache_hit = load_cache(domain_key, "all")
+        except Exception:
+            cache_hit = None
+        if cache_hit:
+            if debug:
+                logger.debug(f"[CACHE] Using cached result for {domain_key}")
+            # Add default None scores if old cache format
+            if len(cache_hit) == 6:
+                cache_hit.extend([None, None, None])
+            return tuple(cache_hit)
 
         # --- Employees ---
         if "employees" in fields:
             emp_candidates = []
+            collected_results = []
             for q in employee_queries(company, domain, country):
                 results = search_zoominfo(q)
+                if results:
+                    for r in results:
+                        if len(collected_results) >= 6:
+                            break
+                        collected_results.append(r)
                 for r in results:
                     href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
                     cand = extract_employees(f"{title} {body}")
@@ -196,8 +272,25 @@ def find_company_info(
                 best_emp = max(emp_candidates, key=lambda x: x[0])
                 emp = format_employee_value(best_emp[1])
                 emp_num = parse_employees(best_emp[1])
+                emp_score = best_emp[0]
                 if debug:
-                    logger.debug(f"[{domain}] Selected Employees: {emp} (Score={best_emp[0]})")
+                    logger.debug(f"[{domain}] Selected Employees: {emp} (Score={emp_score})")
+
+            # Fallback using LLM
+            if not emp:
+                try:
+                    llm_text = " ".join([r.get("title", "") + " " + r.get("body", "") for r in collected_results[:2]])
+                    if llm_text.strip():
+                        emp_llm = semantic_extract(llm_text, "employees")
+                        if emp_llm:
+                            emp = emp_llm.strip()
+                            emp_num = parse_employees(emp) if emp else None
+                            emp_score = 0.5  # assign mid-confidence for LLM fallback
+                            if debug and emp:
+                                logger.debug(f"[{domain}] LLM extracted employees: {emp}")
+                except Exception as e:
+                    if debug:
+                        logger.debug(f"[{domain}] LLM employees fallback failed: {e}")
 
         # --- If revenue is requested but emp_num not found, use company_emp_input ---
         if "revenue" in fields and not emp_num and company_emp_input:
@@ -211,8 +304,14 @@ def find_company_info(
         # --- Revenue ---
         if "revenue" in fields:
             rev_candidates = []
+            collected_results = []
             for q in revenue_queries(company, domain, country):
                 results = search_zoominfo(q)
+                if results:
+                    for r in results:
+                        if len(collected_results) >= 6:
+                            break
+                        collected_results.append(r)
                 for r in results:
                     href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
                     cand = extract_revenue(f"{title} {body}", emp_num)
@@ -224,18 +323,41 @@ def find_company_info(
                 best_rev = max(rev_candidates, key=lambda x: x[0])
                 rev = format_revenue_value(best_rev[1])
                 rev_num = parse_revenue(best_rev[1])
+                rev_score = best_rev[0]
                 if not sanity_check(emp_num, rev_num):
                     if debug:
                         logger.debug(f"[{domain}] Revenue sanity check failed. Ignoring revenue.")
-                    rev, rev_num = None, None
+                    rev, rev_num, rev_score = None, None, None
                 elif debug:
-                    logger.debug(f"[{domain}] Selected Revenue: {rev} (Score={best_rev[0]})")
+                    logger.debug(f"[{domain}] Selected Revenue: {rev} (Score={rev_score})")
+
+            # LLM fallback for revenue
+            if not rev:
+                try:
+                    llm_text = " ".join([r.get("title", "") + " " + r.get("body", "") for r in collected_results[:2]])
+                    if llm_text.strip():
+                        rev_llm = semantic_extract(llm_text, "revenue")
+                        if rev_llm:
+                            rev = rev_llm.strip()
+                            rev_num = parse_revenue(rev) if rev else None
+                            rev_score = 0.5
+                            if debug and rev:
+                                logger.debug(f"[{domain}] LLM extracted revenue: {rev}")
+                except Exception as e:
+                    if debug:
+                        logger.debug(f"[{domain}] LLM revenue fallback failed: {e}")
 
         # --- Industry ---
         if "industry" in fields:
             ind_candidates = []
+            collected_results = []
             for q in industry_queries(company, domain, country):
                 results = search_zoominfo(q)
+                if results:
+                    for r in results:
+                        if len(collected_results) >= 6:
+                            break
+                        collected_results.append(r)
                 for r in results:
                     href, title, body = r.get("href", ""), r.get("title", ""), r.get("body", "")
                     if "linkedin.com/company" not in href:
@@ -248,18 +370,40 @@ def find_company_info(
             if ind_candidates:
                 best_ind = max(ind_candidates, key=lambda x: x[0])
                 ind = parse_industry_value(best_ind[1])
+                ind_score = best_ind[0]
                 if debug:
-                    logger.debug(f"[{domain}] Selected Industry: {ind}")
+                    logger.debug(f"[{domain}] Selected Industry: {ind} (Score={ind_score})")
+
+            # LLM fallback for industry
+            if not ind:
+                try:
+                    llm_text = " ".join([r.get("title", "") + " " + r.get("body", "") for r in collected_results[:2]])
+                    if llm_text.strip():
+                        ind_llm = semantic_extract(llm_text, "industry")
+                        if ind_llm:
+                            ind = ind_llm.strip()
+                            ind_score = 0.5
+                            if debug and ind:
+                                logger.debug(f"[{domain}] LLM extracted industry: {ind}")
+                except Exception as e:
+                    if debug:
+                        logger.debug(f"[{domain}] LLM industry fallback failed: {e}")
 
         # --- Flagging ---
         if "employees" in fields and "revenue" in fields:
             if not is_valid_rpe(emp_num, rev_num):
                 flagged = True
 
+        # --- Cache result ---
+        try:
+            save_cache(domain_key, "all", [emp, rev, ind, flagged, emp_num, rev_num, emp_score, rev_score, ind_score])
+        except Exception:
+            pass
+
     except Exception as e:
         logger.exception("find_company_info failed for %s: %s", domain, e)
 
-    return emp, rev, ind, flagged, emp_num, rev_num
+    return emp, rev, ind, flagged, emp_num, rev_num, emp_score, rev_score, ind_score
 
 
 
@@ -378,7 +522,7 @@ async def irvalue_logic(df: pd.DataFrame, debug: bool = False, fields: list[str]
     results_by_domain = {}
 
     # --- Run jobs concurrently ---
-    max_workers = 6
+    max_workers = min(12, os.cpu_count() or 6)
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         tasks = {
             key: asyncio.create_task(
