@@ -214,7 +214,7 @@ def find_company_info(
     debug: bool = False,
     fields: list[str] | None = None,
     company_emp_input: dict | None = None,
-) -> tuple[Any, Any, Any, bool, Any, Any]:
+) -> tuple[Any, Any, Any, bool, Any, Any, Any, Any, Any]:
     """
     Fetch company information (employees, revenue, industry) using ZoomInfo + LinkedIn.
 
@@ -228,20 +228,24 @@ def find_company_info(
         company_emp_input (dict | None): Optional mapping of domain -> employee count from input CSV
 
     Returns:
-        tuple: (emp, rev, ind, flagged, emp_num, rev_num)
+        tuple: (
+            emp, rev, ind, flagged, emp_num, rev_num,
+            emp_score, rev_score, ind_score
+        )
     """
     if fields is None:
         fields = ["employees", "revenue", "industry"]
 
     emp, rev, ind = None, None, None
     emp_num, rev_num = None, None
+    emp_score, rev_score, ind_score = None, None, None
     flagged = False
 
     try:
         if not domain and not company:
             if debug:
                 logger.warning("find_company_info: No domain/company provided, skipping.")
-            return emp, rev, ind, flagged, emp_num, rev_num
+            return emp, rev, ind, flagged, emp_num, rev_num, emp_score, rev_score, ind_score
 
         domain_key = str(domain).lower().strip()
 
@@ -254,6 +258,9 @@ def find_company_info(
             if debug:
                 logger.debug(f"[CACHE] Using cached result for {domain_key}")
             # ensure tuple shape
+            # backward compatibility for older cache versions
+            if len(cache_hit) == 6:
+                return tuple(cache_hit) + (None, None, None)
             return tuple(cache_hit)
 
         # --- Employees ---
@@ -263,7 +270,6 @@ def find_company_info(
             for q in employee_queries(company, domain, country):
                 results = search_zoominfo(q)
                 if results:
-                    # extend collected_results until we have enough snippets (keep small)
                     for r in results:
                         if len(collected_results) >= 6:
                             break
@@ -277,10 +283,11 @@ def find_company_info(
 
             if emp_candidates:
                 best_emp = max(emp_candidates, key=lambda x: x[0])
+                emp_score = best_emp[0]
                 emp = format_employee_value(best_emp[1])
                 emp_num = parse_employees(best_emp[1])
                 if debug:
-                    logger.debug(f"[{domain}] Selected Employees: {emp} (Score={best_emp[0]})")
+                    logger.debug(f"[{domain}] Selected Employees: {emp} (Score={emp_score})")
 
             # Fallback using LLM (fast; use only top 2 snippets)
             if not emp:
@@ -291,6 +298,7 @@ def find_company_info(
                         if emp_llm:
                             emp = emp_llm.strip()
                             emp_num = parse_employees(emp) if emp else None
+                            emp_score = 0  # indicate LLM fallback (no score)
                             if debug and emp:
                                 logger.debug(f"[{domain}] LLM extracted employees: {emp}")
                 except Exception as e:
@@ -326,14 +334,15 @@ def find_company_info(
 
             if rev_candidates:
                 best_rev = max(rev_candidates, key=lambda x: x[0])
+                rev_score = best_rev[0]
                 rev = format_revenue_value(best_rev[1])
                 rev_num = parse_revenue(best_rev[1])
                 if not sanity_check(emp_num, rev_num):
                     if debug:
                         logger.debug(f"[{domain}] Revenue sanity check failed. Ignoring revenue.")
-                    rev, rev_num = None, None
+                    rev, rev_num, rev_score = None, None, None
                 elif debug:
-                    logger.debug(f"[{domain}] Selected Revenue: {rev} (Score={best_rev[0]})")
+                    logger.debug(f"[{domain}] Selected Revenue: {rev} (Score={rev_score})")
 
             # LLM fallback for revenue
             if not rev:
@@ -344,6 +353,7 @@ def find_company_info(
                         if rev_llm:
                             rev = rev_llm.strip()
                             rev_num = parse_revenue(rev) if rev else None
+                            rev_score = 0  # LLM fallback (no score)
                             if debug and rev:
                                 logger.debug(f"[{domain}] LLM extracted revenue: {rev}")
                 except Exception as e:
@@ -372,9 +382,10 @@ def find_company_info(
 
             if ind_candidates:
                 best_ind = max(ind_candidates, key=lambda x: x[0])
+                ind_score = best_ind[0]
                 ind = parse_industry_value(best_ind[1])
                 if debug:
-                    logger.debug(f"[{domain}] Selected Industry: {ind}")
+                    logger.debug(f"[{domain}] Selected Industry: {ind} (Score={ind_score})")
 
             # LLM fallback for industry
             if not ind:
@@ -384,6 +395,7 @@ def find_company_info(
                         ind_llm = semantic_extract(llm_text, "industry")
                         if ind_llm:
                             ind = ind_llm.strip()
+                            ind_score = 0  # LLM fallback
                             if debug and ind:
                                 logger.debug(f"[{domain}] LLM extracted industry: {ind}")
                 except Exception as e:
@@ -397,15 +409,18 @@ def find_company_info(
 
         # --- Cache result ---
         try:
-            save_cache(domain_key, "all", [emp, rev, ind, flagged, emp_num, rev_num])
+            save_cache(domain_key, "all", [
+                emp, rev, ind, flagged, emp_num, rev_num,
+                emp_score, rev_score, ind_score
+            ])
         except Exception:
-            # don't fail the whole function if cache save fails
             pass
 
     except Exception as e:
         logger.exception("find_company_info failed for %s: %s", domain, e)
 
-    return emp, rev, ind, flagged, emp_num, rev_num
+    return emp, rev, ind, flagged, emp_num, rev_num, emp_score, rev_score, ind_score
+
 
 
 # ---------- Async Orchestration ----------
@@ -534,26 +549,38 @@ async def irvalue_logic(df: pd.DataFrame, debug: bool = False, fields: list[str]
 
         for key, task in tqdm(tasks.items(), total=len(tasks), desc="IRValue Progress"):
             try:
-                emp, rev, ind, flagged, emp_num, rev_num = await task
+                # Await task and ensure tuple format
+                result = await task
+                if not isinstance(result, tuple) or len(result) != 6:
+                    logger.warning(f"[{key}] Invalid result shape from task, using None placeholders")
+                    result = (None, None, None, False, None, None)
+                results_by_domain[key] = result
+                if debug:
+                    logger.debug(f"[CACHE/RESULT] Stored results for {key}: {result}")
             except Exception as e:
                 logger.exception("Task for %s raised: %s", key, e)
-                emp, rev, ind, flagged, emp_num, rev_num = (None, None, None, False, None, None)
-            results_by_domain[key] = (emp, rev, ind, flagged, emp_num, rev_num)
+                results_by_domain[key] = (None, None, None, False, None, None)
 
-    # --- Helper to safely get results ---
-    def _get_for_domain(domain: str):
-        return results_by_domain.get(str(domain).lower(), (None, None, None, False, None, None))
+    # --- Map results back to dataframe ---
+    df["Employees"], df["Revenue"], df["Industry"] = None, None, None
+    df["Flagged"], df["Employee_Num"], df["Revenue_Num"] = False, None, None
+    df["Cache_Status"] = "fresh"
 
-    # --- Vectorized assignment ---
-    df["discovered_employees_raw"] = df["Domain"].map(lambda d: _get_for_domain(d)[0])
-    df["discovered_revenue_raw"] = df["Domain"].map(lambda d: _get_for_domain(d)[1])
-    df["discovered_industry"] = df["Domain"].map(lambda d: _get_for_domain(d)[2])
-    df["flagged_rpe"] = df["Domain"].map(lambda d: _get_for_domain(d)[3])
-    df["discovered_employees"] = df["Domain"].map(lambda d: _get_for_domain(d)[4])
-    df["discovered_revenue"] = df["Domain"].map(lambda d: _get_for_domain(d)[5])
+    for idx, row in df.iterrows():
+        key = str(row["Domain"]).lower().strip()
+        if key in results_by_domain:
+            emp, rev, ind, flagged, emp_num, rev_num = results_by_domain[key]
+            df.at[idx, "Employees"] = emp
+            df.at[idx, "Revenue"] = rev
+            df.at[idx, "Industry"] = ind
+            df.at[idx, "Flagged"] = flagged
+            df.at[idx, "Employee_Num"] = emp_num
+            df.at[idx, "Revenue_Num"] = rev_num
+            # Optional: mark cached entries
+            df.at[idx, "Cache_Status"] = "cached" if emp or rev or ind else "fresh"
 
-    logger.info("IRValue: completed enrichment for %d unique domains", len(results_by_domain))
     return df
+
 
 
 # ---------- CLI Entry ----------
