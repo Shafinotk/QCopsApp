@@ -214,26 +214,34 @@ def find_company_info(
     debug: bool = False,
     fields: list[str] | None = None,
     company_emp_input: dict | None = None,
-) -> tuple[Any, Any, Any, bool, Any, Any, Any, Any, Any]:
+) -> tuple[Any, Any, Any, bool, Any, Any]:
     """
-    Fetch company information (employees, revenue, industry) using ZoomInfo + LinkedIn + LLM fallback.
+    Fetch company information (employees, revenue, industry) using ZoomInfo + LinkedIn.
+
+    Args:
+        domain (str): Company domain
+        country (str): Country
+        company (str): Company name
+        debug (bool): Enable debug logging
+        fields (list[str] | None): Which fields to fetch. Options: 
+            ["employees", "revenue", "industry"]. Default=None (all)
+        company_emp_input (dict | None): Optional mapping of domain -> employee count from input CSV
 
     Returns:
-        tuple: (emp, rev, ind, flagged, emp_num, rev_num, emp_score, rev_score, ind_score)
+        tuple: (emp, rev, ind, flagged, emp_num, rev_num)
     """
     if fields is None:
         fields = ["employees", "revenue", "industry"]
 
     emp, rev, ind = None, None, None
     emp_num, rev_num = None, None
-    emp_score, rev_score, ind_score = None, None, None
     flagged = False
 
     try:
         if not domain and not company:
             if debug:
                 logger.warning("find_company_info: No domain/company provided, skipping.")
-            return emp, rev, ind, flagged, emp_num, rev_num, emp_score, rev_score, ind_score
+            return emp, rev, ind, flagged, emp_num, rev_num
 
         domain_key = str(domain).lower().strip()
 
@@ -245,18 +253,17 @@ def find_company_info(
         if cache_hit:
             if debug:
                 logger.debug(f"[CACHE] Using cached result for {domain_key}")
-            # Add default None scores if old cache format
-            if len(cache_hit) == 6:
-                cache_hit.extend([None, None, None])
+            # ensure tuple shape
             return tuple(cache_hit)
 
         # --- Employees ---
         if "employees" in fields:
             emp_candidates = []
-            collected_results = []
+            collected_results = []  # keep top snippets for LLM fallback
             for q in employee_queries(company, domain, country):
                 results = search_zoominfo(q)
                 if results:
+                    # extend collected_results until we have enough snippets (keep small)
                     for r in results:
                         if len(collected_results) >= 6:
                             break
@@ -272,11 +279,10 @@ def find_company_info(
                 best_emp = max(emp_candidates, key=lambda x: x[0])
                 emp = format_employee_value(best_emp[1])
                 emp_num = parse_employees(best_emp[1])
-                emp_score = best_emp[0]
                 if debug:
-                    logger.debug(f"[{domain}] Selected Employees: {emp} (Score={emp_score})")
+                    logger.debug(f"[{domain}] Selected Employees: {emp} (Score={best_emp[0]})")
 
-            # Fallback using LLM
+            # Fallback using LLM (fast; use only top 2 snippets)
             if not emp:
                 try:
                     llm_text = " ".join([r.get("title", "") + " " + r.get("body", "") for r in collected_results[:2]])
@@ -285,7 +291,6 @@ def find_company_info(
                         if emp_llm:
                             emp = emp_llm.strip()
                             emp_num = parse_employees(emp) if emp else None
-                            emp_score = 0.5  # assign mid-confidence for LLM fallback
                             if debug and emp:
                                 logger.debug(f"[{domain}] LLM extracted employees: {emp}")
                 except Exception as e:
@@ -323,13 +328,12 @@ def find_company_info(
                 best_rev = max(rev_candidates, key=lambda x: x[0])
                 rev = format_revenue_value(best_rev[1])
                 rev_num = parse_revenue(best_rev[1])
-                rev_score = best_rev[0]
                 if not sanity_check(emp_num, rev_num):
                     if debug:
                         logger.debug(f"[{domain}] Revenue sanity check failed. Ignoring revenue.")
-                    rev, rev_num, rev_score = None, None, None
+                    rev, rev_num = None, None
                 elif debug:
-                    logger.debug(f"[{domain}] Selected Revenue: {rev} (Score={rev_score})")
+                    logger.debug(f"[{domain}] Selected Revenue: {rev} (Score={best_rev[0]})")
 
             # LLM fallback for revenue
             if not rev:
@@ -340,7 +344,6 @@ def find_company_info(
                         if rev_llm:
                             rev = rev_llm.strip()
                             rev_num = parse_revenue(rev) if rev else None
-                            rev_score = 0.5
                             if debug and rev:
                                 logger.debug(f"[{domain}] LLM extracted revenue: {rev}")
                 except Exception as e:
@@ -370,9 +373,8 @@ def find_company_info(
             if ind_candidates:
                 best_ind = max(ind_candidates, key=lambda x: x[0])
                 ind = parse_industry_value(best_ind[1])
-                ind_score = best_ind[0]
                 if debug:
-                    logger.debug(f"[{domain}] Selected Industry: {ind} (Score={ind_score})")
+                    logger.debug(f"[{domain}] Selected Industry: {ind}")
 
             # LLM fallback for industry
             if not ind:
@@ -382,7 +384,6 @@ def find_company_info(
                         ind_llm = semantic_extract(llm_text, "industry")
                         if ind_llm:
                             ind = ind_llm.strip()
-                            ind_score = 0.5
                             if debug and ind:
                                 logger.debug(f"[{domain}] LLM extracted industry: {ind}")
                 except Exception as e:
@@ -396,15 +397,15 @@ def find_company_info(
 
         # --- Cache result ---
         try:
-            save_cache(domain_key, "all", [emp, rev, ind, flagged, emp_num, rev_num, emp_score, rev_score, ind_score])
+            save_cache(domain_key, "all", [emp, rev, ind, flagged, emp_num, rev_num])
         except Exception:
+            # don't fail the whole function if cache save fails
             pass
 
     except Exception as e:
         logger.exception("find_company_info failed for %s: %s", domain, e)
 
-    return emp, rev, ind, flagged, emp_num, rev_num, emp_score, rev_score, ind_score
-
+    return emp, rev, ind, flagged, emp_num, rev_num
 
 
 # ---------- Async Orchestration ----------
