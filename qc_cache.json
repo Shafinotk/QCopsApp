@@ -3904,5 +3904,230 @@
     "match_status": "match",
     "reason": "Provided company 'Ville de MontrÃ©al' strongly matches discovered company 'Bienvenue sur Montréal.ca | Ville de Montréal' (similarity=100.0%). (source: ddg) Evidence: https://montreal.ca/",
     "evidence_url": "https://montreal.ca/"
+  },
+  "Exelon||exeloncorp.com||ddg": {
+    "provided_company": "Exelon",
+    "provided_domain": "exeloncorp.com",
+    "discovered_domain": "exeloncorp.com",
+    "discovered_company": "Exelon Corporation - Home - Exelon",
+    "match_status": "match",
+    "reason": "Domain root 'exeloncorp' matches and company-domain similarity is strong (75%). (source: ddg) Evidence: https://www.exeloncorp.com/",
+    "evidence_url": "https://www.exeloncorp.com/"
+  },
+  "Eastern Propane & Oil||eastern.com||ddg": {
+    "provided_company": "Eastern Propane & Oil",
+    "provided_domain": "eastern.com",
+    "discovered_domain": "eastern.com",
+    "discovered_company": "Home - Eastern Propane & Oil",
+    "match_status": "match",
+    "reason": "Domain root 'eastern' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://eastern.com/",
+    "evidence_url": "https://eastern.com/"
+  },
+  "Fiserv||fiserv.com||ddg": {
+    "provided_company": "Fiserv",
+    "provided_domain": "fiserv.com",
+    "discovered_domain": "fiserv.com",
+    "discovered_company": "Financial Services Technology, Mobile Banking, Payments | Fiserv",
+    "match_status": "match",
+    "reason": "Domain root 'fiserv' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.fiserv.com/",
+    "evidence_url": "https://www.fiserv.com/"
+  },
+  "Gates Corporation||gates.com||ddg": {
+    "provided_company": "Gates Corporation",
+    "provided_domain": "gates.com",
+    "discovered_domain": "gates.com",
+    "discovered_company": "Gates Region Selector",
+    "match_status": "match",
+    "reason": "Domain root 'gates' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.gates.com/",
+    "evidence_url": "https://www.gates.com/"
+  },
+  "Engineered Products Pallet Rack||engprod.com||ddg": {
+    "provided_company": "Engineered Products Pallet Rack",
+    "provided_domain": "engprod.com",
+    "discovered_domain": "engprod.com",
+    "discovered_company": "Carton Flow, Pallet Flow, ASRS Rack, Pallet Rack | Engineered Products",
+    "match_status": "match",
+    "reason": "Provided company 'Engineered Products Pallet Rack' strongly matches discovered company 'Carton Flow, Pallet Flow, ASRS Rack, Pallet Rack | Engineered Products' (similarity=78.26086956521739%). (source: ddg) Evidence: https://engprod.com/",
+    "evidence_url": "https://engprod.com/"
+  },
+  "Forever 21||forever21.com||ddg": {
+    "provided_company": "Forever 21",
+    "provided_domain": "forever21.com",
+    "discovered_domain": "forever21.com",
+    "discovered_company": "Forever 21 | Shop The Latest Trends & Must-Have Styles",
+    "match_status": "match",
+    "reason": "Domain root 'forever21' matches and company-domain similarity is strong (73%). (source: ddg) Evidence: https://www.forever21.com/",
+    "evidence_url": "https://www.forever21.com/"
+  },
+  "Hawkins, Inc.||hawkinsinc.com||ddg": {
+    "provided_company": "Hawkins, Inc.",
+    "provided_domain": "hawkinsinc.com",
+    "discovered_domain": "hawkinsinc.com",
+    "discovered_company": "Quality Chemicals, Ingredients, Equipment & Service - Hawkins",
+    "match_status": "match",
+    "reason": "Domain root 'hawkinsinc' matches and company-domain similarity is strong (95%). (source: ddg) Evidence: https://www.hawkinsinc.com/",
+    "evidence_url": "https://www.hawkinsinc.com/"
+  },
+  "Gas South||gassouth.com||ddg": {
+    "provided_company": "Gas South",
+    "provided_domain": "gassouth.com",
+    "discovered_domain": "gassouth.com",
+    "discovered_company": "Natural Gas from Gas South - Georgia's Natural Gas Company",
+    "match_status": "match",
+    "reason": "Domain root 'gassouth' matches and company-domain similarity is strong (94%). (source: ddg) Evidence: https://www.gassouth.com/",
+    "evidence_url": "https://www.gassouth.com/"
+  },
+  "FLEXTRONICS INTERNATIONAL USA INC||flex.com||ddg": {
+    "provided_company": "FLEXTRONICS INTERNATIONAL USA INC",
+    "provided_domain": "flex.com",
+    "discovered_domain": "flex.com",
+    "discovered_company": "Flex | Advanced Manufacturing with End-to-End Solutions",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://flex.com/",
+    "evidence_url": "https://flex.com/"
+  },
+  "Denver International Airport||flydenver.com||ddg": {
+    "provided_company": "Denver International Airport",
+    "provided_domain": "flydenver.com",
+    "discovered_domain": "fineairportparking.com",
+    "discovered_company": "Denver - Fine Airport Parking: Elevate Your Parking Experience",
+    "match_status": "match",
+    "reason": "Provided company 'Denver International Airport' strongly matches discovered company 'Denver - Fine Airport Parking: Elevate Your Parking Experience' (similarity=74.4186046511628%). (source: ddg) Evidence: https://fineairportparking.com/den/",
+    "evidence_url": "https://fineairportparking.com/den/"
+  },
+  "Brickworks Building Products||glengery.com||ddg": {
+    "provided_company": "Brickworks Building Products",
+    "provided_domain": "glengery.com",
+    "discovered_domain": "glengery.com",
+    "discovered_company": "Glen-Gery | The Premier Brick Manufacturer Since 1890",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.glengery.com",
+    "evidence_url": "https://www.glengery.com"
+  },
+  "E Ink Corporation||eink.com||ddg": {
+    "provided_company": "E Ink Corporation",
+    "provided_domain": "eink.com",
+    "discovered_domain": "eink.com",
+    "discovered_company": "E Ink. We Make Surfaces Smart and Green",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.eink.com/",
+    "evidence_url": "https://www.eink.com/"
+  },
+  "Fujikura Automotive America||fujikuraauto.com||ddg": {
+    "provided_company": "Fujikura Automotive America",
+    "provided_domain": "fujikuraauto.com",
+    "discovered_domain": "fujikura.co.jp",
+    "discovered_company": "404 Not Found | Fujikura Ltd.",
+    "match_status": "mismatch",
+    "reason": "No match or relation found. Marked as mismatch. (source: ddg) Evidence: https://www.fujikura.co.jp/en/404.html",
+    "evidence_url": "https://www.fujikura.co.jp/en/404.html"
+  },
+  "HALLIBURTON CO - AU||halliburton.com||ddg": {
+    "provided_company": "HALLIBURTON CO - AU",
+    "provided_domain": "halliburton.com",
+    "discovered_domain": "halliburton.com",
+    "discovered_company": "Halliburton",
+    "match_status": "match",
+    "reason": "Domain root 'halliburton' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.halliburton.com/",
+    "evidence_url": "https://www.halliburton.com/"
+  },
+  "Firefly Space||fireflyspace.com||ddg": {
+    "provided_company": "Firefly Space",
+    "provided_domain": "fireflyspace.com",
+    "discovered_domain": "fireflyspace.com",
+    "discovered_company": "Home - Firefly Aerospace",
+    "match_status": "match",
+    "reason": "Domain root 'fireflyspace' matches and company-domain similarity is strong (96%). (source: ddg) Evidence: https://fireflyspace.com/",
+    "evidence_url": "https://fireflyspace.com/"
+  },
+  "EPTAM Precision Solutions, Inc.||eptam.com||ddg": {
+    "provided_company": "EPTAM Precision Solutions, Inc.",
+    "provided_domain": "eptam.com",
+    "discovered_domain": "eptam.com",
+    "discovered_company": "EPTAM Precision | Home",
+    "match_status": "match",
+    "reason": "Domain root 'eptam' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://eptam.com/",
+    "evidence_url": "https://eptam.com/"
+  },
+  "Echo Global Logistics||echo.com||ddg": {
+    "provided_company": "Echo Global Logistics",
+    "provided_domain": "echo.com",
+    "discovered_domain": "echo.com",
+    "discovered_company": "Freight Shipping Solutions | Echo Global Logistics",
+    "match_status": "match",
+    "reason": "Domain root 'echo' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.echo.com/",
+    "evidence_url": "https://www.echo.com/"
+  },
+  "Feedonomics||feedonomics.com||ddg": {
+    "provided_company": "Feedonomics",
+    "provided_domain": "feedonomics.com",
+    "discovered_domain": "feedonomics.com",
+    "discovered_company": "The #1 Full-Service Product Feed Management Platform | Feedonomics™",
+    "match_status": "match",
+    "reason": "Domain root 'feedonomics' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://feedonomics.com/",
+    "evidence_url": "https://feedonomics.com/"
+  },
+  "Ecowater Systems Llc||ecowater.com||ddg": {
+    "provided_company": "Ecowater Systems Llc",
+    "provided_domain": "ecowater.com",
+    "discovered_domain": "ecowater.com",
+    "discovered_company": "Water Filtration & Water Treatment Company | EcoWater Systems",
+    "match_status": "match",
+    "reason": "Domain root 'ecowater' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://www.ecowater.com/",
+    "evidence_url": "https://www.ecowater.com/"
+  },
+  "Ergon Inc.||ergon.com||ddg": {
+    "provided_company": "Ergon Inc.",
+    "provided_domain": "ergon.com",
+    "discovered_domain": "ergon.com",
+    "discovered_company": "Ergon, Inc -  Home",
+    "match_status": "match",
+    "reason": "Domain root 'ergon' matches and company-domain similarity is strong (100%). (source: ddg) Evidence: https://ergon.com/",
+    "evidence_url": "https://ergon.com/"
+  },
+  "Hansen & Adkins Auto Transport||hansenadkins.com||ddg": {
+    "provided_company": "Hansen & Adkins Auto Transport",
+    "provided_domain": "hansenadkins.com",
+    "discovered_domain": "hansenadkins.com",
+    "discovered_company": "Hansen & Adkins - Transportation service in Los Alamitos, California",
+    "match_status": "match",
+    "reason": "Provided company 'Hansen & Adkins Auto Transport' strongly matches discovered company 'Hansen & Adkins - Transportation service in Los Alamitos, California' (similarity=91.30434782608697%). (source: ddg) Evidence: https://www.hansenadkins.com/",
+    "evidence_url": "https://www.hansenadkins.com/"
+  },
+  "Emerald Technologies||emeraldems.com||ddg": {
+    "provided_company": "Emerald Technologies",
+    "provided_domain": "emeraldems.com",
+    "discovered_domain": "emeraldtechnologies.com",
+    "discovered_company": "Electronic Manufacturing Services - Emerald Technologies",
+    "match_status": "match",
+    "reason": "Provided company 'Emerald Technologies' strongly matches discovered company 'Electronic Manufacturing Services - Emerald Technologies' (similarity=100.0%). (source: ddg) Evidence: https://www.emeraldtechnologies.com/",
+    "evidence_url": "https://www.emeraldtechnologies.com/"
+  },
+  "Fleet Equipment, LLC||fleetequip.com||ddg": {
+    "provided_company": "Fleet Equipment, LLC",
+    "provided_domain": "fleetequip.com",
+    "discovered_domain": "fleetequip.com",
+    "discovered_company": "Pardon Our Interruption",
+    "match_status": "need_manual_check",
+    "reason": "Domain matches, company names differ. Manual verification required. (source: ddg) Evidence: https://www.fleetequip.com/",
+    "evidence_url": "https://www.fleetequip.com/"
+  },
+  "Fencing Supply Group||fencingsupplygroup.com||ddg": {
+    "provided_company": "Fencing Supply Group",
+    "provided_domain": "fencingsupplygroup.com",
+    "discovered_domain": "fencingsupplygroup.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "need_manual_check",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "http://fencingsupplygroup.com/"
+  },
+  "Eaton||eaton.com||ddg": {
+    "provided_company": "Eaton",
+    "provided_domain": "eaton.com",
+    "discovered_domain": "eaton.com",
+    "discovered_company": "Invalid domain",
+    "match_status": "match",
+    "reason": "Provided domain is invalid or unreachable.",
+    "evidence_url": "http://eaton.com"
   }
 }
