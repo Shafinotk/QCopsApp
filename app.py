@@ -7,6 +7,7 @@ import chardet
 import sys, os
 import logging
 from openpyxl import Workbook
+import zipfile
 
 # ---------------------------
 # Ensure project root is on sys.path
@@ -206,29 +207,76 @@ if uploaded_file:
         st.subheader("📋 List Checker Configuration")
         colA, colB, colC = st.columns(3)
 
+        # --- Competitor List ---
         with colA:
             comp_selected = st.checkbox("Competitor List", value=False)
             if comp_selected:
-                comp_file = st.file_uploader("Upload Competitor List", type=["csv", "xlsx"], key="comp_list")
-                if comp_file:
-                    competitor_df = pd.read_excel(comp_file, dtype=str) if comp_file.name.endswith(".xlsx") else pd.read_csv(comp_file, dtype=str)
-                    st.success("Competitor list uploaded.")
+                comp_files = st.file_uploader(
+                    "Upload one or more Competitor Lists (CSV/XLSX)",
+                    type=["csv", "xlsx"],
+                    accept_multiple_files=True,
+                    key="comp_list_multi"
+                )
+                comp_dfs = []
+                if comp_files:
+                    for file in comp_files:
+                        try:
+                            df_temp = pd.read_excel(file, dtype=str) if file.name.endswith(".xlsx") else pd.read_csv(file, dtype=str)
+                            comp_dfs.append(df_temp)
+                            st.success(f"✅ Uploaded Competitor file: {file.name}")
+                        except Exception as e:
+                            st.warning(f"⚠️ Could not read {file.name}: {e}")
+                    if comp_dfs:
+                        competitor_df = pd.concat(comp_dfs, ignore_index=True)
 
+        # --- Suppression List ---
         with colB:
             sup_selected = st.checkbox("Suppression List", value=False)
             if sup_selected:
-                sup_file = st.file_uploader("Upload Suppression List", type=["csv", "xlsx"], key="sup_list")
+                sup_file = st.file_uploader(
+                    "Upload Suppression List ZIP (contains CSV/XLSX)",
+                    type=["zip"],
+                    key="sup_list_zip"
+                )
                 if sup_file:
-                    suppression_df = pd.read_excel(sup_file, dtype=str) if sup_file.name.endswith(".xlsx") else pd.read_csv(sup_file, dtype=str)
-                    st.success("Suppression list uploaded.")
+                    try:
+                        with zipfile.ZipFile(sup_file, "r") as z:
+                            for name in z.namelist():
+                                if name.endswith((".csv", ".xlsx")):
+                                    with z.open(name) as f:
+                                        if name.endswith(".csv"):
+                                            suppression_df = pd.read_csv(f, dtype=str)
+                                        else:
+                                            suppression_df = pd.read_excel(f, dtype=str)
+                                    st.success(f"✅ Extracted and loaded: {name}")
+                                    break
+                            else:
+                                st.warning("⚠️ No CSV/XLSX found inside ZIP.")
+                    except Exception as e:
+                        st.warning(f"⚠️ Failed to process suppression ZIP: {e}")
 
+        # --- TD List ---
         with colC:
             if td_list_enabled:
-                td_file = st.file_uploader("Upload TD List", type=["csv", "xlsx"], key="td_list")
-                if td_file:
-                    td_df_extra = pd.read_excel(td_file, dtype=str) if td_file.name.endswith(".xlsx") else pd.read_csv(td_file, dtype=str)
-                    st.success("TD list uploaded.")
-
+                td_files = st.file_uploader(
+                    "Upload one or more TD Lists (CSV/XLSX)",
+                    type=["csv", "xlsx"],
+                    accept_multiple_files=True,
+                    key="td_list_multi"
+                )
+                td_dfs = []
+                if td_files:
+                    for file in td_files:
+                        try:
+                            df_temp = pd.read_excel(file, dtype=str) if file.name.endswith(".xlsx") else pd.read_csv(file, dtype=str)
+                            td_dfs.append(df_temp)
+                            st.success(f"✅ Uploaded TD file: {file.name}")
+                        except Exception as e:
+                            st.warning(f"⚠️ Could not read {file.name}: {e}")
+                    if td_dfs:
+                        td_df_extra = pd.concat(td_dfs, ignore_index=True)
+                        
+                        
     # ---------------------------
     # Run Pipeline
     # ---------------------------
