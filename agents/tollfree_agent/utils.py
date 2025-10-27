@@ -42,7 +42,7 @@ TOLL_FREE_PREFIXES = {
 def load_extra_tollfrees():
     """
     Load toll-free prefixes and country codes from Excel file.
-    Supports multiple country aliases in one cell.
+    Supports multiple country aliases in one cell (with or without quotes).
     """
     excel_path = os.path.join(os.path.dirname(__file__), "Countries_TollFree.xlsx")
     if not os.path.exists(excel_path):
@@ -51,20 +51,35 @@ def load_extra_tollfrees():
 
     try:
         df = pd.read_excel(excel_path, dtype=str).fillna("")
+
         for _, row in df.iterrows():
-            # Country aliases
+            # --- Clean and split country aliases ---
             country_raw = str(row.get("Country", "")).replace("“", "").replace("”", "")
-            country_aliases = [c.strip().upper() for c in country_raw.split(",") if c.strip()]
+            country_aliases = []
+            for c in country_raw.split(","):
+                alias = c.strip().upper().replace('"', '').replace("'", "")
+                if alias:
+                    country_aliases.append(alias)
 
-            # Toll-free prefixes
+            # --- Clean and split toll-free prefixes ---
             prefixes_raw = str(row.get("Toll Free Numbers", "")).replace("“", "").replace("”", "")
-            prefixes = [re.sub(r"\D", "", p) for p in prefixes_raw.split(",") if p.strip()]
-            prefixes = [p for p in prefixes if p]
+            prefixes = []
+            for p in prefixes_raw.split(","):
+                prefix = re.sub(r"\D", "", p.replace('"', '').strip())
+                if prefix:
+                    prefixes.append(prefix)
 
-            # Country codes
-            country_code_raw = str(row.get("Country Codes", "")).replace("“", "").replace("”", "").replace(" ", "")
+            # --- Clean country code ---
+            country_code_raw = (
+                str(row.get("Country Codes", ""))
+                .replace("“", "")
+                .replace("”", "")
+                .replace(" ", "")
+                .replace('"', "")
+            )
             country_code = country_code_raw if country_code_raw.isdigit() else None
 
+            # --- Update dictionaries ---
             for alias in country_aliases:
                 country = COUNTRY_ALIASES.get(alias, alias)
                 if prefixes:
@@ -73,6 +88,10 @@ def load_extra_tollfrees():
                     TOLL_FREE_PREFIXES[country].update(prefixes)
                 if country_code:
                     COUNTRY_CODES[country] = country_code
+
+        # ✅ Debug print (optional)
+        print("✅ Loaded toll-free prefixes:", TOLL_FREE_PREFIXES)
+
     except Exception as e:
         print(f"⚠️ Could not load toll-free prefixes: {e}")
 
@@ -86,20 +105,23 @@ def normalize_number(number: str) -> str:
     return re.sub(r"\D", "", number)
 
 def is_toll_free(number: str, country: str = None) -> bool:
-    """Check if a number is toll-free based on the given country."""
     if not number:
         return False
 
     digits = normalize_number(number)
     country_key = COUNTRY_ALIASES.get(country.strip().upper(), country.strip().upper()) if country else None
 
+    if not digits:
+        return False
+
     # Country-specific prefixes
     if country_key and country_key in TOLL_FREE_PREFIXES:
-        for prefix in TOLL_FREE_PREFIXES[country_key]:
+        prefixes = TOLL_FREE_PREFIXES[country_key]
+        for prefix in prefixes:
             if digits.startswith(prefix):
                 return True
 
-    # Fallback: INTL prefixes
+    # Fallback: check international tollfree prefixes
     for prefix in TOLL_FREE_PREFIXES.get("INTL", []):
         if digits.startswith(prefix):
             return True
