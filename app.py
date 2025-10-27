@@ -168,14 +168,33 @@ if uploaded_file:
             help="BNZSA QC marks with ABM filename, Merit Campaign marks as 'ABM'."
         )
 
-        abm_file = st.file_uploader("Upload ABM List (Excel/CSV)", type=["csv", "xlsx"], key="abm")
-        if abm_file:
-            abm_filename = abm_file.name
-            if abm_file.name.lower().endswith(".csv"):
-                abm_df = pd.read_csv(abm_file, dtype=str, keep_default_na=False)
-            else:
-                abm_df = pd.read_excel(abm_file, dtype=str)
-            st.success(f"ABM file uploaded: {abm_filename}")
+        abm_files = st.file_uploader(
+            "Upload one or more ABM Lists (Excel/CSV)",
+            type=["csv", "xlsx"],
+            accept_multiple_files=True,
+            key="abm_multi"
+        )
+
+        abm_dfs = []
+        abm_filenames = []
+
+        if abm_files:
+            for abm_file in abm_files:
+                try:
+                    if abm_file.name.lower().endswith(".csv"):
+                        df_abm = pd.read_csv(abm_file, dtype=str, keep_default_na=False)
+                    else:
+                        df_abm = pd.read_excel(abm_file, dtype=str)
+                    abm_dfs.append(df_abm)
+                    abm_filenames.append(abm_file.name)
+                    st.success(f"✅ Uploaded ABM file: {abm_file.name}")
+                except Exception as e:
+                    st.warning(f"⚠️ Could not read ABM file {abm_file.name}: {e}")
+
+            # Combine all into one dataframe
+            if abm_dfs:
+                abm_df = pd.concat(abm_dfs, ignore_index=True)
+                abm_filename = ", ".join(abm_filenames)
 
     # ---------------------------
     # List Checker Agent
