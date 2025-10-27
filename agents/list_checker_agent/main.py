@@ -23,6 +23,13 @@ def run_list_checker_agent(
     """
 
     df = df.copy()
+    
+    # Ensure all list DataFrames are consistent
+    if competitor_df is not None and isinstance(competitor_df, list):
+        competitor_df = pd.concat(competitor_df, ignore_index=True)
+    if td_df is not None and isinstance(td_df, list):
+        td_df = pd.concat(td_df, ignore_index=True)
+
 
     # --- Normalize column names ---
     df.columns = df.columns.str.strip()
