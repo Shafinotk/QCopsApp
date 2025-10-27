@@ -26,10 +26,16 @@ def run_abm_agent(
     abm_df_lower.columns = abm_df_lower.columns.str.strip().str.lower()
 
     # Prepare ABM data
+# --- Combine multiple ABM lists safely ---
     abm_companies_series = abm_df_lower.get("company name", pd.Series(dtype=str)).dropna()
-    abm_companies = set(abm_companies_series.str.lower())
-    abm_domains = set(abm_df_lower.get("domain", pd.Series(dtype=str)).dropna().str.lower())
-    abm_company_map = {c.lower(): c for c in abm_companies_series}
+    abm_domains_series = abm_df_lower.get("domain", pd.Series(dtype=str)).dropna()
+
+    # Remove duplicates and clean
+    abm_companies = set(abm_companies_series.str.strip().str.lower())
+    abm_domains = set(abm_domains_series.str.strip().str.lower())
+    abm_company_map = {c.strip().lower(): c.strip() for c in abm_companies_series if str(c).strip()}
+
+    print(f"📁 ABM combined total companies: {len(abm_companies)} | domains: {len(abm_domains)}")
 
     if not abm_companies and not abm_domains:
         print("⚠️ ABM list has no 'company name' or 'domain' column.")
